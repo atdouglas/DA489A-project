@@ -10,6 +10,7 @@ import se.myhappyplants.client.model.RootName;
 import se.myhappyplants.client.view.ConfirmationBox;
 
 import java.io.IOException;
+import java.net.URL;
 
 /**
  * JavaFX Application Main class
@@ -44,14 +45,28 @@ public class StartClient extends Application {
             close();
         });
         scene = new Scene(loadFXML(RootName.loginPane.toString()), 1010, 640);
-        scene.getStylesheets().add("/se/myhappyplants/client/controller/Stylesheet.css");
+        String css = getCssResource("/se/myhappyplants/client/controller/Stylesheet.css");
+        scene.getStylesheets().add(css);
         window.setScene(scene);
         window.show();
     }
 
     /**
-     * Method handles close on request.
+     * Lods the css resource file.
+     * @param fileName The name of the css file.
+     * @return The css resource
      */
+    private static String getCssResource(String fileName) {
+        URL resource = StartClient.class.getResource(fileName);
+        if (resource == null) {
+            throw new IllegalArgumentException("Resource not found: " + fileName);
+        }
+        return resource.toExternalForm();
+
+    }
+        /**
+         * Method handles close on request.
+         */
     private void close() {
         if (ConfirmationBox.display("Exit", "Are you sure?")) {
             window.close();
