@@ -1,8 +1,6 @@
 package se.myhappyplants.client.model;
 
 import javafx.application.Platform;
-import se.myhappyplants.client.controller.LoginPaneController;
-import se.myhappyplants.client.controller.RegisterPaneController;
 import se.myhappyplants.client.view.MessageBox;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -17,8 +15,7 @@ public class Verifier {
      * Static method to validate the registration when a user register a new account
      * @return boolean if successful
      */
-    public boolean validateRegistration(RegisterPaneController registerPaneController) {
-        String[] loginInfoToCompare = registerPaneController.getComponentsToVerify();
+    public boolean validateRegistration(String[] loginInfoToCompare) {
 
             if (!validateEmail(loginInfoToCompare[0])) {
                 Platform.runLater(() -> MessageBox.display(BoxTitle.Error, "Please enter your email address in format: yourname@example.com"));

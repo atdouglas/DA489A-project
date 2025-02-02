@@ -41,7 +41,7 @@ public class RegisterPaneController {
     private void registerButtonPressed() {
         int answer = MessageBox.askYesNo(BoxTitle.GDPR, "Your account details will be saved in accordance with GDPR requirements" + "\n" + "Do you still want to create the account?");
         if(answer == 1){
-            boolean verifiedRegistration = verifier.validateRegistration(this);
+            boolean verifiedRegistration = verifier.validateRegistration(getComponentsToVerify());
             Thread registerThread = new Thread(() -> {
                 if (!verifiedRegistration) {
                     return;
