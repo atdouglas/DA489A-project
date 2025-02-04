@@ -6,7 +6,7 @@ module se.myhappyplants {
     requires javafx.swing;
     requires javafx.web;
     requires com.google.gson;
-    requires com.microsoft.sqlserver.jdbc;
+    requires org.postgresql.jdbc;
     requires java.sql;
     requires jbcrypt;
 

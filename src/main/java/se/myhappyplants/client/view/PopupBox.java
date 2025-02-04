@@ -18,6 +18,8 @@ import se.myhappyplants.client.controller.StartClient;
 
 import java.util.concurrent.atomic.AtomicReference;
 
+import static se.myhappyplants.client.controller.StartClient.getCssResource;
+
 /**
  * Creates a message box that disappears by itself
  * created by: Christopher O'Driscoll
@@ -56,7 +58,8 @@ public class PopupBox extends Popup {
         vBox.setAlignment(Pos.CENTER);
 
         Scene scene = new Scene(vBox, Color.TRANSPARENT);
-        scene.getStylesheets().add("/se/myhappyplants/client/controller/Stylesheet.css");
+        String css = getCssResource("/se/myhappyplants/client/controller/Stylesheet.css");
+        scene.getStylesheets().add(css);
         window.setScene(scene);
 
         showAndFade();

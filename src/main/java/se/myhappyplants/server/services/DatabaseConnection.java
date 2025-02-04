@@ -12,25 +12,29 @@ import java.sql.SQLException;
  */
 public class DatabaseConnection implements IDatabaseConnection {
 
-    private java.sql.Connection conn;
-    private String databaseName;
+    public DatabaseConnection() {
+        try {
+            DriverManager.registerDriver(new org.postgresql.Driver());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
-    public DatabaseConnection(String databaseName) {
-        this.databaseName = databaseName;
     }
+
+    private java.sql.Connection conn;
 
     private java.sql.Connection createConnection() throws SQLException, UnknownHostException {
         String dbServerIp = PasswordsAndKeys.dbServerIp;
-        String dbServerPort = PasswordsAndKeys.dbServerPort;
         String dbUser = PasswordsAndKeys.dbUsername;
         String dbPassword = PasswordsAndKeys.dbPassword;
-        DriverManager.registerDriver(new com.microsoft.sqlserver.jdbc.SQLServerDriver());
 
+        /*
         if (InetAddress.getLocalHost().getHostName().equals(PasswordsAndKeys.dbHostName)) {
             dbServerIp = "localhost";
-        }
-        String dbURL = String.format("jdbc:sqlserver://%s:%s;databaseName=" + databaseName + ";user=%s;password=%s", dbServerIp, dbServerPort, dbUser, dbPassword);
-        this.conn = DriverManager.getConnection(dbURL);
+        }*/
+
+        String dbURL = dbServerIp;
+        this.conn = DriverManager.getConnection(dbURL, dbUser, dbPassword);
         return conn;
     }
 

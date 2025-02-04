@@ -1,5 +1,6 @@
 package se.myhappyplants.server.services;
 
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -27,6 +28,7 @@ public class QueryExecutor implements IQueryExecutor {
                 return;
             }
             catch (SQLException sqlException) {
+                System.out.println(sqlException.getMessage());
                 connection.closeConnection();
                 retries++;
             }
@@ -43,6 +45,7 @@ public class QueryExecutor implements IQueryExecutor {
                 return resultSet;
             }
             catch (SQLException sqlException) {
+                System.out.println(sqlException.getMessage());
                 connection.closeConnection();
                 retries++;
             }

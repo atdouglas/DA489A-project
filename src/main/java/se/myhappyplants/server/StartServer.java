@@ -12,13 +12,12 @@ import java.sql.SQLException;
  * Updated by: Frida Jacobsson 2021-05-21
  */
 public class StartServer {
+    // TODO clean this up
     public static void main(String[] args) throws UnknownHostException, SQLException {
-        IDatabaseConnection connectionMyHappyPlants = new DatabaseConnection("MyHappyPlants");
-        IDatabaseConnection connectionSpecies = new DatabaseConnection("Species");
+        IDatabaseConnection connectionMyHappyPlants = new DatabaseConnection();
         IQueryExecutor databaseMyHappyPlants = new QueryExecutor(connectionMyHappyPlants);
-        IQueryExecutor databaseSpecies = new QueryExecutor(connectionSpecies);
         UserRepository userRepository = new UserRepository(databaseMyHappyPlants);
-        PlantRepository plantRepository = new PlantRepository(databaseSpecies);
+        PlantRepository plantRepository = new PlantRepository(databaseMyHappyPlants);
         UserPlantRepository userPlantRepository = new UserPlantRepository(plantRepository, databaseMyHappyPlants);
         ResponseController responseController = new ResponseController(userRepository,userPlantRepository,plantRepository);
         new Server(2555, responseController);
