@@ -56,7 +56,7 @@ public class StartClient extends Application {
      * @param fileName The name of the css file.
      * @return The css resource
      */
-    private static String getCssResource(String fileName) {
+    public static String getCssResource(String fileName) {
         URL resource = StartClient.class.getResource(fileName);
         if (resource == null) {
             throw new IllegalArgumentException("Resource not found: " + fileName);

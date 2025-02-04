@@ -16,6 +16,8 @@ import se.myhappyplants.client.model.BoxTitle;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
+import static se.myhappyplants.client.controller.StartClient.getCssResource;
+
 /**
  * Simple message box
  * Created by: Christopher O'Driscoll
@@ -54,7 +56,8 @@ public class MessageBox {
         vBox.setAlignment(Pos.CENTER);
 
         Scene scene = new Scene(vBox);
-        scene.getStylesheets().add("/se/myhappyplants/client/controller/Stylesheet.css");
+        String css = getCssResource("/se/myhappyplants/client/controller/Stylesheet.css");
+        scene.getStylesheets().add(css);
         window.setScene(scene);
         window.showAndWait();
     }
@@ -104,7 +107,8 @@ public class MessageBox {
         vBox.setAlignment(Pos.CENTER);
 
         Scene scene = new Scene(vBox);
-        scene.getStylesheets().add("/se/myhappyplants/client/controller/Stylesheet.css");
+        String css = getCssResource("/se/myhappyplants/client/controller/Stylesheet.css");
+        scene.getStylesheets().add(css);
         window.setScene(scene);
         window.showAndWait();
 
@@ -154,7 +158,8 @@ public class MessageBox {
         vBox.setAlignment(Pos.CENTER);
 
         Scene scene = new Scene(vBox);
-        scene.getStylesheets().add("/se/myhappyplants/client/controller/Stylesheet.css");
+        String css = getCssResource("/se/myhappyplants/client/controller/Stylesheet.css");
+        scene.getStylesheets().add(css);
         window.setScene(scene);
         window.showAndWait();
 
