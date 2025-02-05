@@ -139,7 +139,7 @@ public class UserRepository {
         return notificationsChanged;
     }
 
-    public boolean changeFunFacts(User user, Boolean funFactsActivated) {
+    public boolean changeFunFacts(User user, boolean funFactsActivated) {
         boolean funFactsChanged = false;
         String query = "UPDATE \"User\" SET fun_facts_activated = " + funFactsActivated + " WHERE email = '" + user.getEmail() + "';";
         try {
