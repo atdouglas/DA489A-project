@@ -15,8 +15,8 @@ public class DatabaseConnection {
     public DatabaseConnection() {
         try {
             DriverManager.registerDriver(new org.postgresql.Driver());
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } catch (SQLException sqlException) {
+            System.out.println(sqlException.getMessage());
         }
     }
 
@@ -25,7 +25,7 @@ public class DatabaseConnection {
             try {
                 conn = DriverManager.getConnection(PasswordsAndKeys.dbServerAddress, PasswordsAndKeys.dbUsername, PasswordsAndKeys.dbPassword);
             } catch (SQLException sqlException) {
-                sqlException.printStackTrace();
+                System.out.println(sqlException.getMessage());
             }
         }
         return conn;

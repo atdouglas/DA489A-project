@@ -37,7 +37,7 @@ public class PlantRepository {
             }
         }
         catch (SQLException sqlException) {
-            System.out.println(sqlException.fillInStackTrace());
+            System.out.println(sqlException.getMessage());
             plantList = null;
         }
         return plantList;
@@ -62,7 +62,7 @@ public class PlantRepository {
             }
         }
         catch (SQLException sqlException) {
-            System.out.println(sqlException.fillInStackTrace());
+            System.out.println(sqlException.getMessage());
         }
         return plantDetails;
     }
