@@ -15,8 +15,8 @@ public class UserRepository {
 
     private QueryExecutor database;
 
-    public UserRepository(QueryExecutor database){
-       this.database = database;
+    public UserRepository(QueryExecutor database) {
+        this.database = database;
     }
 
     /**
@@ -33,8 +33,7 @@ public class UserRepository {
         try {
             database.executeUpdate(query);
             success = true;
-        }
-        catch (SQLException sqlException) {
+        } catch (SQLException sqlException) {
             sqlException.printStackTrace();
         }
         return success;
@@ -57,8 +56,7 @@ public class UserRepository {
                 String hashedPassword = resultSet.getString(1);
                 isVerified = BCrypt.checkpw(password, hashedPassword);
             }
-        }
-        catch (SQLException sqlException) {
+        } catch (SQLException sqlException) {
             sqlException.printStackTrace();
         }
         return isVerified;
@@ -86,8 +84,7 @@ public class UserRepository {
                 funFactsActivated = resultSet.getBoolean(4);
             }
             user = new User(uniqueID, email, username, notificationActivated, funFactsActivated);
-        }
-        catch (SQLException sqlException) {
+        } catch (SQLException sqlException) {
             sqlException.printStackTrace();
         }
         return user;
@@ -119,13 +116,11 @@ public class UserRepository {
                 statement.executeUpdate(queryDeleteUser);
                 database.endTransaction();
                 accountDeleted = true;
-            }
-            catch (SQLException sqlException) {
+            } catch (SQLException sqlException) {
                 try {
-                   database.rollbackTransaction();
-                }
-                catch (SQLException throwables) {
-                    throwables.printStackTrace();
+                    database.rollbackTransaction();
+                } catch (SQLException throwables) {
+                    System.out.println(throwables.getMessage());
                 }
             }
         }
@@ -134,16 +129,11 @@ public class UserRepository {
 
     public boolean changeNotifications(User user, boolean notifications) {
         boolean notificationsChanged = false;
-        int notificationsActivated = 0;
-        if (notifications) {
-            notificationsActivated = 1;
-        }
-        String query = "UPDATE \"User\" SET notification_activated = " + notificationsActivated + " WHERE email = '" + user.getEmail() + "';";
+        String query = "UPDATE \"User\" SET notification_activated = " + notifications + " WHERE email = '" + user.getEmail() + "';";
         try {
             database.executeUpdate(query);
             notificationsChanged = true;
-        }
-        catch (SQLException sqlException) {
+        } catch (SQLException sqlException) {
             sqlException.printStackTrace();
         }
         return notificationsChanged;
@@ -151,16 +141,11 @@ public class UserRepository {
 
     public boolean changeFunFacts(User user, Boolean funFactsActivated) {
         boolean funFactsChanged = false;
-        int funFactsBitValue = 0;
-        if (funFactsActivated) {
-            funFactsBitValue = 1;
-        }
-        String query = "UPDATE \"User\" SET fun_facts_activated = " + funFactsBitValue + " WHERE email = '" + user.getEmail() + "';";
+        String query = "UPDATE \"User\" SET fun_facts_activated = " + funFactsActivated + " WHERE email = '" + user.getEmail() + "';";
         try {
             database.executeUpdate(query);
             funFactsChanged = true;
-        }
-        catch (SQLException sqlException) {
+        } catch (SQLException sqlException) {
             sqlException.printStackTrace();
         }
         return funFactsChanged;
