@@ -13,9 +13,9 @@ import java.sql.*;
  */
 public class UserRepository {
 
-    private IQueryExecutor database;
+    private QueryExecutor database;
 
-    public UserRepository(IQueryExecutor database){
+    public UserRepository(QueryExecutor database){
        this.database = database;
     }
 

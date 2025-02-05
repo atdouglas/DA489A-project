@@ -17,7 +17,7 @@ import java.util.ArrayList;
 public class UserPlantRepository {
 
     private PlantRepository plantRepository;
-    private IQueryExecutor database;
+    private QueryExecutor database;
 
     /**
      * Constructor that creates a connection to the database.
@@ -25,7 +25,7 @@ public class UserPlantRepository {
      * @throws SQLException
      * @throws UnknownHostException
      */
-    public UserPlantRepository(PlantRepository plantRepository, IQueryExecutor database) throws UnknownHostException, SQLException {
+    public UserPlantRepository(PlantRepository plantRepository, QueryExecutor database) {
         this.plantRepository = plantRepository;
         this.database = database;
 
