@@ -8,6 +8,8 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import static se.myhappyplants.client.controller.StartClient.getCssResource;
+
 /**
  * Simple yes/no confirmation box
  * Created by: Christopher O'Driscoll
@@ -51,7 +53,8 @@ public class ConfirmationBox {
         vBox.setAlignment(Pos.CENTER);
 
         Scene scene = new Scene(vBox);
-        scene.getStylesheets().add("/se/myhappyplants/client/controller/Stylesheet.css");
+        String css = getCssResource("/se/myhappyplants/client/controller/Stylesheet.css");
+        scene.getStylesheets().add(css);
         window.setScene(scene);
         window.showAndWait();
 
