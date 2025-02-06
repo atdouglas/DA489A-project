@@ -5,7 +5,6 @@ import se.myhappyplants.shared.Plant;
 import se.myhappyplants.shared.PlantDetails;
 
 import java.io.IOException;
-import java.net.UnknownHostException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -17,9 +16,9 @@ import java.util.ArrayList;
  */
 public class PlantRepository {
 
-    private IQueryExecutor database;
+    private QueryExecutor database;
 
-    public PlantRepository(IQueryExecutor database) {
+    public PlantRepository(QueryExecutor database) {
         this.database = database;
     }
 
@@ -38,7 +37,7 @@ public class PlantRepository {
             }
         }
         catch (SQLException sqlException) {
-            System.out.println(sqlException.fillInStackTrace());
+            System.out.println(sqlException.getMessage());
             plantList = null;
         }
         return plantList;
@@ -63,7 +62,7 @@ public class PlantRepository {
             }
         }
         catch (SQLException sqlException) {
-            System.out.println(sqlException.fillInStackTrace());
+            System.out.println(sqlException.getMessage());
         }
         return plantDetails;
     }
@@ -78,7 +77,7 @@ public class PlantRepository {
         }
     }
 
-    public long getWaterFrequency(String plantId) throws IOException, InterruptedException {
+    public long getWaterFrequency(String plantId) {
         long waterFrequency = -1;
         String query = "SELECT water_frequency FROM species WHERE id = '" + plantId + "';";
         try {
@@ -89,8 +88,8 @@ public class PlantRepository {
                 waterFrequency = WaterCalculator.calculateWaterFrequencyForWatering(water);
             }
         }
-        catch (SQLException throwables) {
-            throwables.printStackTrace();
+        catch (SQLException sqlException) {
+            System.out.println(sqlException.getMessage());
         }
         return waterFrequency;
     }
