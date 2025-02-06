@@ -75,8 +75,8 @@ public class UserPlantRepository {
                 plantList.add(new Plant(nickname, plantId, lastWatered, waterFrequency, imageURL));
             }
         }
-        catch (SQLException | IOException | InterruptedException exception) {
-            System.out.println(exception.fillInStackTrace());
+        catch (SQLException sqlException) {
+            System.out.println(sqlException.getMessage());
         }
         return plantList;
     }
@@ -99,8 +99,8 @@ public class UserPlantRepository {
             long waterFrequency = plantRepository.getWaterFrequency(plantId);
             plant = new Plant(nickname, plantId, lastWatered, waterFrequency, imageURL);
         }
-        catch (SQLException | IOException | InterruptedException sqlException) {
-            System.out.println(sqlException.fillInStackTrace());
+        catch (SQLException sqlException) {
+            System.out.println(sqlException.getMessage());
         }
         return plant;
     }
