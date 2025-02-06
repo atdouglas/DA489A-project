@@ -28,7 +28,6 @@ import static se.myhappyplants.client.controller.StartClient.getCssResource;
 public class PopupBox extends Popup {
 
     private static Stage window;
-    private static VBox vBox;
     private static ToggleButton toggleButton;
 
     /**
@@ -53,7 +52,7 @@ public class PopupBox extends Popup {
         label.setText(message);
         label.setTextAlignment(TextAlignment.CENTER);
 
-        vBox = new VBox(10);
+        VBox vBox = new VBox(10);
         vBox.getChildren().add(label);
         vBox.setAlignment(Pos.CENTER);
 
@@ -72,12 +71,10 @@ public class PopupBox extends Popup {
         window.show();
         AtomicReference<Double> opacity = new AtomicReference<>(1.0);
         Timeline timeline = new Timeline(
-                new KeyFrame(Duration.millis(20), event -> {
-                    window.getScene().getRoot().opacityProperty().set(opacity.updateAndGet(v -> (double) (v - 0.01)));
-                })
-        );
+                new KeyFrame(Duration.millis(20), _ ->
+                    window.getScene().getRoot().opacityProperty().set(opacity.updateAndGet(v -> (v - 0.01)))));
         timeline.setCycleCount(100);
-        timeline.setOnFinished(action -> {
+        timeline.setOnFinished(_ -> {
             if(toggleButton !=null){
                 toggleButton.setDisable(false);
             }
