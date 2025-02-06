@@ -37,7 +37,6 @@ public class SearchPlantPane extends Pane implements PlantPane {
     private Plant plant;
     private SearchTabPaneController searchTabPaneController;
     private ListView listView;
-    private ImageView imgViewPlusSign;
     private boolean gotInfoOnPlant;
     private boolean extended;
     /**
@@ -112,14 +111,14 @@ public class SearchPlantPane extends Pane implements PlantPane {
         addButton.setLayoutX(705.0);
         addButton.setLayoutY(16.0);
         addButton.setMnemonicParsing(false);
-        addButton.setOnAction(action -> searchTabPaneController.addPlantToCurrentUserLibrary(plant));
+        addButton.setOnAction(_ -> searchTabPaneController.addPlantToCurrentUserLibrary(plant));
     }
 
     /**
      * Method to initialize the plus sign to the add button
      */
     private void initImgViewPlusSign() {
-        this.imgViewPlusSign = new ImageView(ImageLibrary.getPlusSign());
+        ImageView imgViewPlusSign = new ImageView(ImageLibrary.getPlusSign());
         imgViewPlusSign.setFitHeight(16);
         imgViewPlusSign.setFitWidth(15);
         addButton.setGraphic(imgViewPlusSign);
@@ -129,29 +128,26 @@ public class SearchPlantPane extends Pane implements PlantPane {
      * Method for what happens when a user presses the more info button
      */
     public void initEventHandlerForInfo() {
-        EventHandler onPress = new EventHandler() {
-            @Override
-            public void handle(Event event) {
-                infoButton.setDisable(true);
-                commonName.setDisable(true);
-                if (!extended) {
-                    if (!gotInfoOnPlant) {
-                        PlantDetails plantDetails = searchTabPaneController.getPlantDetails(plant);
-                        String lightText = LightTextFormatter.getLightTextString(plantDetails.getLight());
-                        long waterInMilli = WaterCalculator.calculateWaterFrequencyForWatering(plantDetails.getWaterFrequency());
-                        String waterText = WaterTextFormatter.getWaterString(waterInMilli);
-                        ObservableList<String> plantInfo = FXCollections.observableArrayList();
-                        plantInfo.add("Genus: " +plantDetails.getGenus());
-                        plantInfo.add("Scientific name: "+plantDetails.getScientificName());
-                        plantInfo.add("Family: "+plantDetails.getFamily());
-                        plantInfo.add("Light: " +lightText);
-                        plantInfo.add("Water: "+waterText);
-                        listView.setItems(plantInfo);
-                    }
-                    extendPaneMoreInfoPlant();
-                } else {
-                    retractPane();
+        EventHandler onPress = _ -> {
+            infoButton.setDisable(true);
+            commonName.setDisable(true);
+            if (!extended) {
+                if (!gotInfoOnPlant) {
+                    PlantDetails plantDetails = searchTabPaneController.getPlantDetails(plant);
+                    String lightText = LightTextFormatter.getLightTextString(plantDetails.getLight());
+                    long waterInMilli = WaterCalculator.calculateWaterFrequencyForWatering(plantDetails.getWaterFrequency());
+                    String waterText = WaterTextFormatter.getWaterString(waterInMilli);
+                    ObservableList<String> plantInfo = FXCollections.observableArrayList();
+                    plantInfo.add("Genus: " +plantDetails.getGenus());
+                    plantInfo.add("Scientific name: "+plantDetails.getScientificName());
+                    plantInfo.add("Family: "+plantDetails.getFamily());
+                    plantInfo.add("Light: " +lightText);
+                    plantInfo.add("Water: "+waterText);
+                    listView.setItems(plantInfo);
                 }
+                extendPaneMoreInfoPlant();
+            } else {
+                retractPane();
             }
         };
 
@@ -205,11 +201,11 @@ public class SearchPlantPane extends Pane implements PlantPane {
     public void extendPaneMoreInfoPlant() {
         AtomicReference<Double> height = new AtomicReference<>(this.getHeight());
         Timeline timeline = new Timeline(
-                new KeyFrame(Duration.millis(7.5), event -> this.setPrefHeight(height.updateAndGet(v -> (double) (v + 6.25))))
+                new KeyFrame(Duration.millis(7.5), _ -> this.setPrefHeight(height.updateAndGet(v -> (v + 6.25))))
         );
         timeline.setCycleCount(32);
         timeline.play();
-        timeline.setOnFinished(action -> {
+        timeline.setOnFinished(_ -> {
             this.getChildren().addAll(listView);
             infoButton.setDisable(false);
             commonName.setDisable(false);
@@ -222,19 +218,19 @@ public class SearchPlantPane extends Pane implements PlantPane {
      * Method to collapse the pane
      */
     public void retractPane() {
-        int size = listView.getItems().size();
-        for (int i = 0; i < size; i++) {
-            listView.getItems().remove(0);
+        ObservableList list = listView.getItems();
+        for (int i = 0; i < list.size(); i++) {
+            list.removeFirst();
         }
 
         AtomicReference<Double> height = new AtomicReference<>(this.getHeight());
         Timeline timeline = new Timeline(
-                new KeyFrame(Duration.millis(7.5), event -> this.setPrefHeight(height.updateAndGet(v -> (double) (v - 6.25))))
+                new KeyFrame(Duration.millis(7.5), _ -> this.setPrefHeight(height.updateAndGet(v -> (v - 6.25))))
         );
         timeline.setCycleCount(32);
         timeline.play();
         this.getChildren().removeAll(listView);
-        timeline.setOnFinished(action -> {
+        timeline.setOnFinished(_ -> {
             infoButton.setDisable(false);
             commonName.setDisable(false);
         });
