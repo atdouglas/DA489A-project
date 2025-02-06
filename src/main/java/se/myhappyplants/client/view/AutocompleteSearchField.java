@@ -48,7 +48,7 @@ public class AutocompleteSearchField extends TextField {
         if (!file.exists()) {
             file.createNewFile();
         } else if (file.exists()) {
-            try (BufferedReader br = new BufferedReader(new FileReader("resources/searchHistory.txt"))) {
+            try (BufferedReader br = new BufferedReader(new FileReader("resources/searchHistory.txt"));) {
                 String line;
                 while ((line = br.readLine()) != null) {
                     searchHistory.add(line);
@@ -63,7 +63,7 @@ public class AutocompleteSearchField extends TextField {
      * Method to set a listener to the search history and sets it on the GUI
      */
     private void setListener() {
-        textProperty().addListener(_ -> {
+        textProperty().addListener((observable, oldValue, newValue) -> {
             String enteredText = getText();
             if (enteredText == null || enteredText.isEmpty()) {
                 historyPopup.hide();
@@ -82,7 +82,9 @@ public class AutocompleteSearchField extends TextField {
             }
         });
 
-        focusedProperty().addListener(_ -> historyPopup.hide());
+        focusedProperty().addListener((observableValue, oldValue, newValue) -> {
+            historyPopup.hide();
+        });
     }
 
     /**
@@ -102,7 +104,7 @@ public class AutocompleteSearchField extends TextField {
             entryLabel.setPrefHeight(10);
             CustomMenuItem item = new CustomMenuItem(entryLabel, true);
             menuItems.add(item);
-            item.setOnAction(_ -> {
+            item.setOnAction(actionEvent -> {
                 setText(result);
                 positionCaret(result.length());
                 historyPopup.hide();

@@ -43,7 +43,8 @@ public class PictureRandomizer {
      * @return String path to a picture
      */
     public static Image getRandomPicture() {
-        return new Image(getRandomPictureURL());
+        Image image = new Image(getRandomPictureURL());
+        return image;
     }
 
     /**
@@ -52,16 +53,25 @@ public class PictureRandomizer {
      */
     public static String getRandomPictureURL() {
         Random random = new Random();
-        return switch (1 + random.nextInt(8)) {
-            case 1 -> flower1.getUrl();
-            case 2 -> flower2.getUrl();
-            case 3 -> flower3.getUrl();
-            case 4 -> flower4.getUrl();
-            case 5 -> flower5.getUrl();
-            case 6 -> flower6.getUrl();
-            case 7 -> flower7.getUrl();
-            case 8 -> flower8.getUrl();
-            default -> flower9.getUrl();
-        };
+        switch (1 + random.nextInt(8)) {
+            case 1:
+                return flower1.getUrl();
+            case 2:
+                return flower2.getUrl();
+            case 3:
+                return flower3.getUrl();
+            case 4:
+                return flower4.getUrl();
+            case 5:
+                return flower5.getUrl();
+            case 6:
+                return flower6.getUrl();
+            case 7:
+                return flower7.getUrl();
+            case 8:
+                return flower8.getUrl();
+            default:
+                return flower9.getUrl();
+        }
     }
 }
