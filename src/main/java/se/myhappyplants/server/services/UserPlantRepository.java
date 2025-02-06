@@ -63,7 +63,7 @@ public class UserPlantRepository {
      */
     public ArrayList<Plant> getUserLibrary(User user) {
         ArrayList<Plant> plantList = new ArrayList<Plant>();
-        String query = "SELECT nickname, plant_id, last_watered, image_url FROM 'Plant' WHERE user_id =" + user.getUniqueId() + ";";
+        String query = "SELECT nickname, plant_id, last_watered, image_url FROM \"Plant\" WHERE user_id =" + user.getUniqueId() + ";";
         try {
             ResultSet resultSet = database.executeQuery(query);
             while (resultSet.next()) {
@@ -90,7 +90,7 @@ public class UserPlantRepository {
     public Plant getPlant(User user, String nickname) {
         Plant plant = null;
         String sqlSafeNickname = nickname.replace("'", "''");
-        String query = "SELECT nickname, plant_id, last_watered, image_url FROM 'Plant' WHERE user_id =" + user.getUniqueId() + "AND nickname = '" + sqlSafeNickname + "';";
+        String query = "SELECT nickname, plant_id, last_watered, image_url FROM \"Plant\" WHERE user_id =" + user.getUniqueId() + "AND nickname = '" + sqlSafeNickname + "';";
         try {
             ResultSet resultSet = database.executeQuery(query);
             String plantId = resultSet.getString("plant_id");
