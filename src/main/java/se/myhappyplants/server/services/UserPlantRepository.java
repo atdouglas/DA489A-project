@@ -17,7 +17,7 @@ import java.util.ArrayList;
 public class UserPlantRepository {
 
     private PlantRepository plantRepository;
-    private QueryExecutor database;
+    private IQueryExecutor database;
 
     /**
      * Constructor that creates a connection to the database.
@@ -25,7 +25,7 @@ public class UserPlantRepository {
      * @throws SQLException
      * @throws UnknownHostException
      */
-    public UserPlantRepository(PlantRepository plantRepository, QueryExecutor database) {
+    public UserPlantRepository(PlantRepository plantRepository, IQueryExecutor database) throws UnknownHostException, SQLException {
         this.plantRepository = plantRepository;
         this.database = database;
 
@@ -75,8 +75,8 @@ public class UserPlantRepository {
                 plantList.add(new Plant(nickname, plantId, lastWatered, waterFrequency, imageURL));
             }
         }
-        catch (SQLException sqlException) {
-            System.out.println(sqlException.getMessage());
+        catch (SQLException | IOException | InterruptedException exception) {
+            System.out.println(exception.fillInStackTrace());
         }
         return plantList;
     }
@@ -99,8 +99,8 @@ public class UserPlantRepository {
             long waterFrequency = plantRepository.getWaterFrequency(plantId);
             plant = new Plant(nickname, plantId, lastWatered, waterFrequency, imageURL);
         }
-        catch (SQLException sqlException) {
-            System.out.println(sqlException.getMessage());
+        catch (SQLException | IOException | InterruptedException sqlException) {
+            System.out.println(sqlException.fillInStackTrace());
         }
         return plant;
     }

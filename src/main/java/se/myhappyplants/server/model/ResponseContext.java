@@ -11,19 +11,27 @@ import java.util.HashMap;
 /**
  * Class that stores all the different handlers for database requests
  * Created by: Christopher O'Driscoll
+ * Updated by:
  */
 public class ResponseContext {
 
     private HashMap<MessageType, IResponseHandler> responders = new HashMap<>();
+    private UserRepository userRepository;
+    private UserPlantRepository userPlantRepository;
+    private PlantRepository plantRepository;
 
     public ResponseContext(UserRepository userRepository, UserPlantRepository userPlantRepository, PlantRepository plantRepository) {
-        createResponders(userRepository, userPlantRepository, plantRepository);
+
+        this.userRepository = userRepository;
+        this.userPlantRepository = userPlantRepository;
+        this.plantRepository = plantRepository;
+        createResponders();
     }
 
     /**
      * Links the relevant ResponseHandlers to each MessageType
      */
-    private void createResponders(UserRepository userRepository, UserPlantRepository userPlantRepository, PlantRepository plantRepository) {
+    private void createResponders() {
         responders.put(MessageType.changeAllToWatered, new ChangeAllToWatered(userPlantRepository));
         responders.put(MessageType.changeFunFacts, new ChangeFunFacts(userRepository));
         responders.put(MessageType.changeLastWatered, new ChangeLastWatered(userPlantRepository));
