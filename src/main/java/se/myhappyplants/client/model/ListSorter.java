@@ -48,12 +48,24 @@ public class ListSorter {
      */
     public static ObservableList<PlantPane> sort(SortingOption sortOption, ObservableList<PlantPane> plantList) {
         listToBeSorted = plantList;
-        return switch (sortOption) {
-            case nickname -> sortByNickname();
-            case commonName -> sortByCommonName();
-            case scientificName -> sortByScientificName();
-            case waterNeed -> sortByWaterNeed();
-        };
+        ObservableList<PlantPane> sortedList;
+        switch (sortOption) {
+            case nickname:
+                sortedList = sortByNickname();
+                break;
+            case commonName:
+                sortedList = sortByCommonName();
+                break;
+            case scientificName:
+                sortedList = sortByScientificName();
+                break;
+            case waterNeed:
+                sortedList = sortByWaterNeed();
+                break;
+            default:
+                sortedList = listToBeSorted;
+        }
+        return sortedList;
     }
 
     /**
