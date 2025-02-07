@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="6b0ffffb-45d5-4f35-b433-534813405091" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/../.idea/compiler.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../.idea/encodings.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../.idea/jarRepositories.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../LICENSE" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SQL/SQLCreateDatabases.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SQL/SQLCreatePlantUser.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../pom.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../resources/Lemon Friday.ttf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../resources/audio/music.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../resources/images/Blomma efter guide.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../resources/images/Blomma två.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../resources/images/Första Blomma.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../resources/images/Grn_vxt.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../resources/images/blomma.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../resources/images/blomma10.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../resources/images/blomma17.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../resources/images/blomma18.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../resources/images/blomma19.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../resources/images/blomma2.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../resources/images/blomma21.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../resources/images/blomma5.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../resources/images/blomma6.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../resources/images/blomma9.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../resources/images/image.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../resources/images/img.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../resources/images/plants/foldercannotbeempty.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../resources/images/sapling_in_pot.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../resources/images/user_avatars/foldercannotbeempty.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../resources/images/user_default_img.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../resources/images/user_default_img1 (3).jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../resources/images/user_default_img2 (4).jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../resources/images/vattendroppeUTAN.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../resources/lastLogin.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../resources/searchHistory.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/module-info.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/se/myhappyplants/client/controller/LoginPaneController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/se/myhappyplants/client/controller/MainPaneController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/se/myhappyplants/client/controller/MyPlantsTabPaneController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/se/myhappyplants/client/controller/RegisterPaneController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/se/myhappyplants/client/controller/SearchTabPaneController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/se/myhappyplants/client/controller/SettingsTabPaneController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/se/myhappyplants/client/controller/StartClient.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/se/myhappyplants/client/model/BoxTitle.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/se/myhappyplants/client/model/FunFacts.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/se/myhappyplants/client/model/ImageLibrary.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/se/myhappyplants/client/model/ListSorter.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/se/myhappyplants/client/model/LoggedInUser.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/se/myhappyplants/client/model/MessageText.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/se/myhappyplants/client/model/NotificationsCreator.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/se/myhappyplants/client/model/PictureRandomizer.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/se/myhappyplants/client/model/RootName.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/se/myhappyplants/client/model/SetAvatar.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/se/myhappyplants/client/model/SortingOption.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/se/myhappyplants/client/model/Verifier.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/se/myhappyplants/client/service/ServerConnection.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/se/myhappyplants/client/view/AutocompleteSearchField.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/se/myhappyplants/client/view/ButtonText.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/se/myhappyplants/client/view/ConfirmationBox.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/se/myhappyplants/client/view/LibraryPlantPane.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/se/myhappyplants/client/view/LightTextFormatter.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/se/myhappyplants/client/view/MessageBox.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/se/myhappyplants/client/view/PlantPane.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/se/myhappyplants/client/view/PopupBox.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/se/myhappyplants/client/view/SearchPlantPane.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/se/myhappyplants/client/view/WaterTextFormatter.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/se/myhappyplants/server/StartServer.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/se/myhappyplants/server/controller/ResponseController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/se/myhappyplants/server/model/IResponseHandler.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/se/myhappyplants/server/model/ResponseContext.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/se/myhappyplants/server/model/ResponseHandlers/ChangeAllToWatered.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/se/myhappyplants/server/model/ResponseHandlers/ChangeFunFacts.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/se/myhappyplants/server/model/ResponseHandlers/ChangeLastWatered.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/se/myhappyplants/server/model/ResponseHandlers/ChangeNickname.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/se/myhappyplants/server/model/ResponseHandlers/ChangeNotifications.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/se/myhappyplants/server/model/ResponseHandlers/ChangePlantPicture.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/se/myhappyplants/server/model/ResponseHandlers/DeleteAccount.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/se/myhappyplants/server/model/ResponseHandlers/DeletePlant.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/se/myhappyplants/server/model/ResponseHandlers/GetLibrary.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/se/myhappyplants/server/model/ResponseHandlers/GetPlantDetails.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/se/myhappyplants/server/model/ResponseHandlers/Login.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/se/myhappyplants/server/model/ResponseHandlers/Register.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/se/myhappyplants/server/model/ResponseHandlers/SavePlant.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/se/myhappyplants/server/model/ResponseHandlers/Search.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/se/myhappyplants/server/services/ClientHandlerTask.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/se/myhappyplants/server/services/DatabaseConnection.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/se/myhappyplants/server/services/PlantRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/se/myhappyplants/server/services/QueryExecutor.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/se/myhappyplants/server/services/Server.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/se/myhappyplants/server/services/UserPlantRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/se/myhappyplants/server/services/UserRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/se/myhappyplants/shared/Message.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/se/myhappyplants/shared/MessageType.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/se/myhappyplants/shared/Plant.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/se/myhappyplants/shared/PlantDetails.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/se/myhappyplants/shared/User.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/java/se/myhappyplants/shared/WaterCalculator.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/Blommor/Blomma efter guide1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/Blommor/Logotyp.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/Blommor/MHP-Logga.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/Blommor/bi.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/Blommor/biFlipped.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/Blommor/blomma11.1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/Blommor/blomma13.1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/Blommor/blomma15.1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/Blommor/blomma2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/Blommor/blomma21.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/Blommor/blomma3.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/Blommor/blomma4.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/Blommor/blomma5.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/Blommor/blomma6.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/Blommor/blomma8.1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/Blommor/blomma9.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/Blommor/blomma_med_piedistal.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/Blommor/funfacts.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/Blommor/login.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/Blommor/logo.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/Blommor/logopic.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/Blommor/messages.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/Blommor/notifications.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/Blommor/plant1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/Blommor/plant2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/Blommor/plant3.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/Blommor/plant4.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/Blommor/plant5.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/Blommor/plant6.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/Blommor/plusSign.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/Blommor/register.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/Blommor/results.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/Blommor/vattenkanna1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/Blommor/vattenproppe2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/Blommor/yourplants.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/facts.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/se/myhappyplants/client/controller/Stylesheet.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/se/myhappyplants/client/controller/loginPane.fxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/se/myhappyplants/client/controller/mainPane.fxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/se/myhappyplants/client/controller/myPlantsTabPane.fxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/se/myhappyplants/client/controller/registerPane.fxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/se/myhappyplants/client/controller/searchTabPane.fxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/main/resources/se/myhappyplants/client/controller/settingsTabPane.fxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../target/classes/Blommor/Blomma efter guide1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../target/classes/Blommor/Logotyp.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../target/classes/Blommor/MHP-Logga.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../target/classes/Blommor/bi.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../target/classes/Blommor/biFlipped.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../target/classes/Blommor/blomma11.1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../target/classes/Blommor/blomma13.1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../target/classes/Blommor/blomma15.1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../target/classes/Blommor/blomma2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../target/classes/Blommor/blomma21.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../target/classes/Blommor/blomma3.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../target/classes/Blommor/blomma4.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../target/classes/Blommor/blomma5.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../target/classes/Blommor/blomma6.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../target/classes/Blommor/blomma8.1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../target/classes/Blommor/blomma9.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../target/classes/Blommor/blomma_med_piedistal.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../target/classes/Blommor/funfacts.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../target/classes/Blommor/login.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../target/classes/Blommor/logo.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../target/classes/Blommor/logopic.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../target/classes/Blommor/messages.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../target/classes/Blommor/notifications.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../target/classes/Blommor/plant1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../target/classes/Blommor/plant2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../target/classes/Blommor/plant3.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../target/classes/Blommor/plant4.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../target/classes/Blommor/plant5.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../target/classes/Blommor/plant6.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../target/classes/Blommor/plusSign.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../target/classes/Blommor/register.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../target/classes/Blommor/results.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../target/classes/Blommor/vattenkanna1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../target/classes/Blommor/vattenproppe2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../target/classes/Blommor/yourplants.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../target/classes/facts.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../target/classes/se/myhappyplants/client/controller/Stylesheet.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../target/classes/se/myhappyplants/client/controller/loginPane.fxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../target/classes/se/myhappyplants/client/controller/mainPane.fxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../target/classes/se/myhappyplants/client/controller/myPlantsTabPane.fxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../target/classes/se/myhappyplants/client/controller/registerPane.fxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../target/classes/se/myhappyplants/client/controller/searchTabPane.fxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../target/classes/se/myhappyplants/client/controller/settingsTabPane.fxml" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;atdouglas&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/atdouglas/DA489A-project.git&quot;,
+    &quot;accountId&quot;: &quot;60396294-60be-4eee-b67f-95511d730699&quot;
+  }
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 1
+}</component>
+  <component name="ProjectId" id="2sLpJBPJCU60YRrji2a9gQS1sUc" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.StartClient.executor": "Run",
+    "Application.StartServer.executor": "Run",
+    "Maven.MyHappyPlants [javafx:compile].executor": "Run",
+    "Maven.MyHappyPlants [javafx:run].executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "main",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "F:/Code/school_projects/DA489A-project/server",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RunAnythingCache">
+    <option name="myCommands">
+      <command value="mvn javafx:run" />
+      <command value="mvn javafx:compile" />
+    </option>
+  </component>
+  <component name="RunManager">
+    <configuration default="true" type="JetRunConfigurationType">
+      <module name="DA489A-project" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9823dce3aa75-28b599e66164-intellij.indexing.shared.core-IU-242.23339.11" />
+        <option value="bundled-js-predefined-d6986cc7102b-5c90d61e3bab-JavaScript-IU-242.23339.11" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="6b0ffffb-45d5-4f35-b433-534813405091" name="Changes" comment="" />
+      <created>1738244636260</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1738244636260</updated>
+      <workItem from="1738244638881" duration="266000" />
+      <workItem from="1738282447263" duration="34000" />
+      <workItem from="1738314127106" duration="6197000" />
+      <workItem from="1738339405334" duration="625000" />
+      <workItem from="1738520181043" duration="24000" />
+      <workItem from="1738520971028" duration="222000" />
+      <workItem from="1738591365841" duration="125000" />
+      <workItem from="1738591506440" duration="112000" />
+      <workItem from="1738592470203" duration="805000" />
+      <workItem from="1738615264915" duration="234000" />
+      <workItem from="1738736389928" duration="187000" />
+      <workItem from="1738919776083" duration="3058000" />
+      <workItem from="1738927213883" duration="110000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>
