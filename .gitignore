@@ -201,20 +201,16 @@ $RECYCLE.BIN/
 # End of https://www.toptal.com/developers/gitignore/api/java,macos,windows,intellij,maven
 
 # File that stores all passwords and API keys
-PasswordsAndKeys.java
-PasswordsAndKeys.class
+server/PasswordsAndKeys.java
 
-lastLogin.txt
-searchHistory.txt
+server/lastLogin.txt
+server/searchHistory.txt
 
 # Ignores neccesary files to save user avatar
-resources/images/user_avatars/*.txt
-resources/images/user_avatars/*.jpg
-resources/images/user_avatars/*.jpeg
-resources/images/user_avatars/*.png
+server/resources/images/user_avatars/*.txt
+server/resources/images/user_avatars/*.jpg
+server/resources/images/user_avatars/*.jpeg
+server/resources/images/user_avatars/*.png
 
-# Antons usability test
-resources/Testdata
-UsabilityTestProgram.java
-UsabilityTestProgram.class
-/resources/searchHistory.txt
+server/resources/searchHistory.txt
+server/.idea/workspace.xml

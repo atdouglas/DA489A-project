@@ -20,9 +20,8 @@ public class GetLibrary implements IResponseHandler {
     @Override
     public Message getResponse(Message request) {
         Message response;
-        User user = request.getUser();
         try {
-            ArrayList<Plant> userLibrary = userPlantRepository.getUserLibrary(user);
+            ArrayList<Plant> userLibrary = userPlantRepository.getUserLibrary(request.getUser().getUniqueId());
             response = new Message(userLibrary, true);
         } catch (Exception e) {
             response = new Message(false);

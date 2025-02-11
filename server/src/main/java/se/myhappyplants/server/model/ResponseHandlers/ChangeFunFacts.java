@@ -21,9 +21,7 @@ public class ChangeFunFacts implements IResponseHandler {
     @Override
     public Message getResponse(Message request) {
         Message response;
-        User user = request.getUser();
-        Boolean funFactsActivated = request.getNotifications();
-        if (userRepository.changeFunFacts(user, funFactsActivated)) {
+        if (userRepository.changeFunFacts(request.getUser().getEmail(), request.getNotifications())) {
             response = new Message(true);
         } else {
             response = new Message(false);

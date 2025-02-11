@@ -237,7 +237,6 @@ public class LibraryPlantPane extends Pane implements PlantPane {
                 String lightText = LightTextFormatter.getLightTextString(plantDetails.getLight());
 
                 ObservableList<String> plantInfo = FXCollections.observableArrayList();
-                plantInfo.add("Genus: " + plantDetails.getGenus());
                 plantInfo.add("Scientific name: " + plantDetails.getScientificName());
                 plantInfo.add("Family: " + plantDetails.getFamily());
                 plantInfo.add("Light: " + lightText);
@@ -330,7 +329,6 @@ public class LibraryPlantPane extends Pane implements PlantPane {
         String waterText = WaterTextFormatter.getWaterString(waterInMilli);
         String lightText = LightTextFormatter.getLightTextString(plantDetails.getLight());
         ObservableList<String> plantInfo = FXCollections.observableArrayList();
-        plantInfo.add("Genus: " + plantDetails.getGenus());
         plantInfo.add("Scientific name: " + plantDetails.getScientificName());
         plantInfo.add("Family: " + plantDetails.getFamily());
         plantInfo.add("Light: " + lightText);

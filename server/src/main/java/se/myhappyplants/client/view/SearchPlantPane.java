@@ -138,7 +138,6 @@ public class SearchPlantPane extends Pane implements PlantPane {
                     long waterInMilli = WaterCalculator.calculateWaterFrequencyForWatering(plantDetails.getWaterFrequency());
                     String waterText = WaterTextFormatter.getWaterString(waterInMilli);
                     ObservableList<String> plantInfo = FXCollections.observableArrayList();
-                    plantInfo.add("Genus: " +plantDetails.getGenus());
                     plantInfo.add("Scientific name: "+plantDetails.getScientificName());
                     plantInfo.add("Family: "+plantDetails.getFamily());
                     plantInfo.add("Light: " +lightText);

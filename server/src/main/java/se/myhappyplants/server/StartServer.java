@@ -15,10 +15,9 @@ public class StartServer {
     // TODO clean this up
     public static void main(String[] args) {
         DatabaseConnection connectionMyHappyPlants = new DatabaseConnection();
-        QueryExecutor databaseMyHappyPlants = new QueryExecutor(connectionMyHappyPlants);
-        UserRepository userRepository = new UserRepository(databaseMyHappyPlants);
-        PlantRepository plantRepository = new PlantRepository(databaseMyHappyPlants);
-        UserPlantRepository userPlantRepository = new UserPlantRepository(plantRepository, databaseMyHappyPlants);
+        UserRepository userRepository = new UserRepository(connectionMyHappyPlants);
+        PlantRepository plantRepository = new PlantRepository(connectionMyHappyPlants);
+        UserPlantRepository userPlantRepository = new UserPlantRepository(plantRepository, connectionMyHappyPlants);
         ResponseController responseController = new ResponseController(userRepository, userPlantRepository, plantRepository);
         new Server(2555, responseController);
     }

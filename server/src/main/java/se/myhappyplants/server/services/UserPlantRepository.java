@@ -2,6 +2,7 @@ package se.myhappyplants.server.services;
 
 import se.myhappyplants.shared.Plant;
 import se.myhappyplants.shared.User;
+import se.myhappyplants.shared.WaterCalculator;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
@@ -14,10 +15,10 @@ import java.util.ArrayList;
  * Created by: Linn Borgström
  * Updated by: Frida Jacobsson 2021-05-21
  */
+// TODO: fix this whole thing...
 public class UserPlantRepository {
-
-    private PlantRepository plantRepository;
-    private QueryExecutor database;
+    
+    private DatabaseConnection connection;
 
     /**
      * Constructor that creates a connection to the database.
@@ -25,9 +26,8 @@ public class UserPlantRepository {
      * @throws SQLException
      * @throws UnknownHostException
      */
-    public UserPlantRepository(PlantRepository plantRepository, QueryExecutor database) {
-        this.plantRepository = plantRepository;
-        this.database = database;
+    public UserPlantRepository(DatabaseConnection connection) {
+        this.connection = connection;
 
     }
 
@@ -42,14 +42,19 @@ public class UserPlantRepository {
 
     public boolean savePlant(User user, Plant plant) {
         boolean success = false;
-        String sqlSafeNickname = plant.getNickname().replace("'", "''");
-        String query = "INSERT INTO Plant (user_id, nickname, plant_id, last_watered, image_url) values (" + user.getUniqueId() + ", '" + sqlSafeNickname + "', '" + plant.getPlantId() + "', '" + plant.getLastWatered() + "', '" + plant.getImageURL() + "');";
-        try {
-            database.executeUpdate(query);
+        String query = """
+        INSERT INTO user_plants (user_id, nickname, plant_id, last_watered, image_url) VALUES (?, ?, ?, ?, ?);
+        """;
+        try (PreparedStatement preparedStatement = connection.getConnection().prepareStatement(query)) {
+            preparedStatement.setInt(1, user.getUniqueId());
+            preparedStatement.setString(2, plant.getNickname());
+            preparedStatement.setInt(3, plant.getPlantId());
+            preparedStatement.setDate(4, plant.getLastWatered());
+            preparedStatement.setString(5, plant.getImageURL());
             success = true;
         }
-        catch (SQLException throwables) {
-            throwables.printStackTrace();
+        catch (SQLException sqlException) {
+            System.out.println(sqlException.getMessage());
         }
         return success;
     }
@@ -61,17 +66,20 @@ public class UserPlantRepository {
      *
      * @return an arraylist if plants stored in the database
      */
-    public ArrayList<Plant> getUserLibrary(User user) {
+    public ArrayList<Plant> getUserLibrary(int userId) {
         ArrayList<Plant> plantList = new ArrayList<Plant>();
-        String query = "SELECT nickname, plant_id, last_watered, image_url FROM \"Plant\" WHERE user_id =" + user.getUniqueId() + ";";
-        try {
-            ResultSet resultSet = database.executeQuery(query);
+        String query = """
+        SELECT nickname, plant_id, last_watered, image_url FROM user_plants WHERE user_id = ?
+        """;
+        try (PreparedStatement preparedStatement = connection.getConnection().prepareStatement(query)) {
+            preparedStatement.setInt(1, userId);
+            ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 String nickname = resultSet.getString("nickname");
-                String plantId = resultSet.getString("plant_id");
+                int plantId = resultSet.getInt("plant_id");
                 Date lastWatered = resultSet.getDate("last_watered");
                 String imageURL = resultSet.getString("image_url");
-                long waterFrequency = plantRepository.getWaterFrequency(plantId);
+                long waterFrequency = getWaterFrequency(plantId);
                 plantList.add(new Plant(nickname, plantId, lastWatered, waterFrequency, imageURL));
             }
         }
@@ -190,5 +198,28 @@ public class UserPlantRepository {
             sqlException.printStackTrace();
         }
         return pictureChanged;
+    }
+
+    // TODO: adjust to new implementation
+    public long getWaterFrequency(int plantId) {
+        long waterFrequency = -1;
+        String query = """
+        SELECT water_frequency FROM species WHERE id = ?;
+        """;
+        try (PreparedStatement preparedStatement = connection.getConnection().prepareStatement(query)) {
+            preparedStatement.setInt(1, plantId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                long waterLong = resultSet.getLong("water_frequency");
+                int water = (int) waterLong;
+                waterFrequency = WaterCalculator.calculateWaterFrequencyForWatering(water);
+            }
+        }
+        catch (SQLException sqlException) {
+            System.out.println(sqlException.getMessage());
+        } finally {
+            connection.closeConnection();
+        }
+        return waterFrequency;
     }
 }

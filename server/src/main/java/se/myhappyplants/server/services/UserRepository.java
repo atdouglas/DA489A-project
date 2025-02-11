@@ -3,7 +3,6 @@ package se.myhappyplants.server.services;
 import org.mindrot.jbcrypt.BCrypt;
 import se.myhappyplants.shared.User;
 
-import java.net.UnknownHostException;
 import java.sql.*;
 
 /**
@@ -13,12 +12,11 @@ import java.sql.*;
  */
 public class UserRepository {
 
-    private QueryExecutor database;
+    private DatabaseConnection connection;
 
-    public UserRepository(QueryExecutor database) {
-        this.database = database;
+    public UserRepository(DatabaseConnection connection) {
+        this.connection = connection;
     }
-
     /**
      * Method to save a new user using BCrypt.
      *
@@ -28,13 +26,18 @@ public class UserRepository {
     public boolean saveUser(User user) {
         boolean success = false;
         String hashedPassword = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt());
-        String sqlSafeUsername = user.getUsername().replace("'", "''");
-        String query = "INSERT INTO \"User\"(username, email, password) VALUES ('" + sqlSafeUsername + "', '" + user.getEmail() + "', '" + hashedPassword + "');";
-        try {
-            database.executeUpdate(query);
+        String query = """
+        INSERT INTO registered_users (email, password) VALUES (?, ?);
+        """;
+        try (PreparedStatement preparedStatement = connection.getConnection().prepareStatement(query)) {
+            preparedStatement.setString(1, user.getEmail());
+            preparedStatement.setString(2, hashedPassword);
+            preparedStatement.executeUpdate();
             success = true;
         } catch (SQLException sqlException) {
-            sqlException.printStackTrace();
+            System.out.println(sqlException.getMessage());
+        } finally {
+            connection.closeConnection();
         }
         return success;
     }
@@ -49,15 +52,21 @@ public class UserRepository {
      */
     public boolean checkLogin(String email, String password) {
         boolean isVerified = false;
-        String query = "SELECT password FROM \"User\" WHERE email = '" + email + "';";
-        try {
-            ResultSet resultSet = database.executeQuery(query);
+        String query = """
+        SELECT ? FROM registered_users WHERE email = ?;
+        """;
+        try (PreparedStatement preparedStatement = connection.getConnection().prepareStatement(query)) {
+            preparedStatement.setString(1, password);
+            preparedStatement.setString(2, email);
+            ResultSet resultSet = preparedStatement.executeQuery(query);
             if (resultSet.next()) {
                 String hashedPassword = resultSet.getString(1);
                 isVerified = BCrypt.checkpw(password, hashedPassword);
             }
         } catch (SQLException sqlException) {
-            sqlException.printStackTrace();
+            System.out.println(sqlException.getMessage());
+        } finally {
+            connection.closeConnection();
         }
         return isVerified;
     }
@@ -70,22 +79,23 @@ public class UserRepository {
      */
     public User getUserDetails(String email) {
         User user = null;
-        int uniqueID = 0;
-        String username = null;
-        boolean notificationActivated = false;
-        boolean funFactsActivated = false;
-        String query = "SELECT id, username, notification_activated, fun_facts_activated FROM \"User\" WHERE email = '" + email + "';";
-        try {
-            ResultSet resultSet = database.executeQuery(query);
+        String query = """
+        SELECT id, notification_activated, fun_facts_activated FROM registered_users WHERE email = ?;
+        """;
+        try (PreparedStatement preparedStatement = connection.getConnection().prepareStatement(query)) {
+            preparedStatement.setString(1, email);
+            ResultSet resultSet = preparedStatement.executeQuery(query);
             while (resultSet.next()) {
-                uniqueID = resultSet.getInt(1);
-                username = resultSet.getString(2);
-                notificationActivated = resultSet.getBoolean(3);
-                funFactsActivated = resultSet.getBoolean(4);
+                int uniqueID = resultSet.getInt(1);
+                String username = resultSet.getString(2);
+                boolean notificationActivated = resultSet.getBoolean(3);
+                boolean funFactsActivated = resultSet.getBoolean(4);
+                user = new User(uniqueID, email, username, notificationActivated, funFactsActivated);
             }
-            user = new User(uniqueID, email, username, notificationActivated, funFactsActivated);
         } catch (SQLException sqlException) {
-            sqlException.printStackTrace();
+            System.out.println(sqlException.getMessage());
+        } finally {
+            connection.closeConnection();
         }
         return user;
     }
@@ -97,56 +107,83 @@ public class UserRepository {
      * @param email
      * @param password
      * @return boolean value, false if transaction is rolled back
-     * @throws SQLException
      */
     public boolean deleteAccount(String email, String password) {
         boolean accountDeleted = false;
         if (checkLogin(email, password)) {
-            String querySelect = "SELECT \"User\".id from \"User\" WHERE \"User\".email = '" + email + "';";
+            String query = """
+            SELECT id FROM registered_users WHERE email = ?;
+            """;
             try {
-                Statement statement = database.beginTransaction();
-                ResultSet resultSet = statement.executeQuery(querySelect);
-                if (!resultSet.next()) {
-                    throw new SQLException();
+                java.sql.Connection sqlConn = connection.getConnection();
+                sqlConn.setAutoCommit(false);
+                try (PreparedStatement preparedStatement = sqlConn.prepareStatement(query)) {
+                    ResultSet resultSet = preparedStatement.executeQuery();
+                    if (!resultSet.next()) {
+                        throw new SQLException();
+                    }
+                    int id = resultSet.getInt(1);
+                    String queryDeletePlants = """
+                    DELETE FROM user_plants WHERE user_id = ?;
+                    """;
+                    try (PreparedStatement deletePlantsStatement = sqlConn.prepareStatement(queryDeletePlants)) {
+                        deletePlantsStatement.setInt(1, id);
+                        deletePlantsStatement.executeUpdate();
+                    }
+                    String queryDeleteUser = """
+                    DELETE FROM registered_users WHERE id = ?;
+                    """;
+                    try (PreparedStatement deleteUserStatement = sqlConn.prepareStatement(queryDeleteUser)) {
+                        deleteUserStatement.setInt(1, id);
+                        deleteUserStatement.executeUpdate();
+                    }
+                    accountDeleted = true;
+                } catch (SQLException sqlException) {
+                    sqlConn.rollback();
+                    System.out.println("Transaction rolled back");
+                    System.out.println("Account was not deleted");
+                    System.out.println(sqlException.getMessage());
+                } finally {
+                    sqlConn.setAutoCommit(true);
+                    connection.closeConnection();
                 }
-                int id = resultSet.getInt(1);
-                String queryDeletePlants = "DELETE FROM plant WHERE user_id = " + id + ";";
-                statement.executeUpdate(queryDeletePlants);
-                String queryDeleteUser = "DELETE FROM \"User\" WHERE id = " + id + ";";
-                statement.executeUpdate(queryDeleteUser);
-                database.endTransaction();
-                accountDeleted = true;
             } catch (SQLException sqlException) {
-                try {
-                    database.rollbackTransaction();
-                } catch (SQLException throwables) {
-                    System.out.println(throwables.getMessage());
-                }
+                System.out.println(sqlException.getMessage());
             }
         }
         return accountDeleted;
     }
 
-    public boolean changeNotifications(User user, boolean notifications) {
+    public boolean changeNotifications(String email, boolean notifications) {
         boolean notificationsChanged = false;
-        String query = "UPDATE \"User\" SET notification_activated = " + notifications + " WHERE email = '" + user.getEmail() + "';";
-        try {
-            database.executeUpdate(query);
+        String query = """
+        UPDATE registered_users SET notification_activated = ? WHERE email = ?;
+        """;
+        try (PreparedStatement preparedStatement = connection.getConnection().prepareStatement(query)) {
+            preparedStatement.setBoolean(1, notifications);
+            preparedStatement.setString(2, email);
             notificationsChanged = true;
         } catch (SQLException sqlException) {
-            sqlException.printStackTrace();
+            System.out.println(sqlException.getMessage());
+        } finally {
+            connection.closeConnection();
         }
         return notificationsChanged;
     }
 
-    public boolean changeFunFacts(User user, boolean funFactsActivated) {
+    public boolean changeFunFacts(String email, boolean funFactsActivated) {
         boolean funFactsChanged = false;
-        String query = "UPDATE \"User\" SET fun_facts_activated = " + funFactsActivated + " WHERE email = '" + user.getEmail() + "';";
-        try {
-            database.executeUpdate(query);
+        String query = """
+        UPDATE registered_users SET fun_facts_activated = ? WHERE email = ?;
+        """;
+        try (PreparedStatement preparedStatement = connection.getConnection().prepareStatement(query)) {
+            preparedStatement.setBoolean(1, funFactsActivated);
+            preparedStatement.setString(2, email);
             funFactsChanged = true;
         } catch (SQLException sqlException) {
-            sqlException.printStackTrace();
+            System.out.println(sqlException.getMessage());
+        } finally {
+            connection.closeConnection();
         }
         return funFactsChanged;
     }

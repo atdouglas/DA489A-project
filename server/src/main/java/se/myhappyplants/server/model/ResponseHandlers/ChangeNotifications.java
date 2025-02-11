@@ -18,9 +18,7 @@ public class ChangeNotifications implements IResponseHandler {
     @Override
     public Message getResponse(Message request) {
         Message response;
-        User user = request.getUser();
-        boolean notifications = request.getNotifications();
-        if (userRepository.changeNotifications(user, notifications)) {
+        if (userRepository.changeNotifications(request.getUser().getEmail(), request.getNotifications())) {
             response = new Message(true);
         } else {
             response = new Message(false);

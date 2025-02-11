@@ -5,12 +5,8 @@ import se.myhappyplants.server.PasswordsAndKeys;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-/**
- * Class for handling connection with a specific database
- * Created by: Frida Jacobsson 2021-05-21
- */
-public class DatabaseConnection {
-    private java.sql.Connection conn;
+public final class DatabaseConnection {
+    private static java.sql.Connection conn;
 
     public DatabaseConnection() {
         try {
@@ -20,7 +16,7 @@ public class DatabaseConnection {
         }
     }
 
-    public java.sql.Connection getConnection() {
+    public synchronized java.sql.Connection getConnection() {
         if(conn==null) {
             try {
                 conn = DriverManager.getConnection(PasswordsAndKeys.dbServerAddress, PasswordsAndKeys.dbUsername, PasswordsAndKeys.dbPassword);
@@ -31,7 +27,7 @@ public class DatabaseConnection {
         return conn;
     }
 
-    public void closeConnection() {
+    public synchronized void closeConnection() {
         try {
             conn.close();
         }

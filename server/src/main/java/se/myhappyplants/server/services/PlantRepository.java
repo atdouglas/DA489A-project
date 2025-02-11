@@ -5,6 +5,7 @@ import se.myhappyplants.shared.Plant;
 import se.myhappyplants.shared.PlantDetails;
 
 import java.io.IOException;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -16,53 +17,71 @@ import java.util.ArrayList;
  */
 public class PlantRepository {
 
-    private QueryExecutor database;
+    private DatabaseConnection connection;
 
-    public PlantRepository(QueryExecutor database) {
-        this.database = database;
+    public PlantRepository(DatabaseConnection connection) {
+        this.connection = connection;
     }
 
+    // TODO: adjust to new implementation
     public ArrayList<Plant> getResult(String plantSearch) {
         ArrayList<Plant> plantList = new ArrayList<>();
-        String query = "SELECT id, common_name, scientific_name, family, image_url FROM species WHERE scientific_name LIKE ('%" + plantSearch + "%') OR common_name LIKE ('%" + plantSearch + "%');";
-        try {
-            ResultSet resultSet = database.executeQuery(query);
+        String query = """
+        SELECT id, common_name, scientific_name, family, image_url FROM plants WHERE scientific_name LIKE ? OR common_name LIKE ? OR family LIKE ?;
+        """;
+        try (PreparedStatement preparedStatement = connection.getConnection().prepareStatement(query)) {
+            preparedStatement.setString(1, plantSearch);
+            preparedStatement.setString(2, plantSearch);
+            preparedStatement.setString(3, plantSearch);
+            ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                String plantId = resultSet.getString("id");
+                int plantId = resultSet.getInt("id");
                 String commonName = resultSet.getString("common_name");
                 String scientificName = resultSet.getString("scientific_name");
                 String familyName = resultSet.getString("family");
                 String imageURL = resultSet.getString("image_url");
-                plantList.add(new Plant(plantId, commonName, scientificName, familyName, imageURL));
+                String maintenance = resultSet.getString("maintenance");
+                long wateringFrequency = resultSet.getLong("watering_frequency");
+                String poisonousToPets = resultSet.getString("poisonous_to_pets");
+                String light = resultSet.getString("light");
+                plantList.add(new Plant(plantId, commonName, scientificName, familyName, imageURL,
+                        maintenance, light, wateringFrequency, poisonousToPets));
             }
         }
         catch (SQLException sqlException) {
             System.out.println(sqlException.getMessage());
             plantList = null;
+        } finally {
+            connection.closeConnection();
         }
         return plantList;
     }
 
+    // TODO: adjust to new implementation. likely remove
     public PlantDetails getPlantDetails(Plant plant) {
         PlantDetails plantDetails = null;
-        String query = "SELECT genus, scientific_name, light, water_frequency, family FROM species WHERE id = '" + plant.getPlantId() + "';";
-        try {
-            ResultSet resultSet = database.executeQuery(query);
+        String query = """
+        SELECT scientific_name, light, water_frequency, family FROM species WHERE id = ?; 
+        """;
+        try (PreparedStatement preparedStatement = connection.getConnection().prepareStatement(query)) {
+            preparedStatement.setInt(1, plant.getPlantId());
+            ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                String genus = resultSet.getString("genus");
                 String scientificName = resultSet.getString("scientific_name");
                 String lightText = resultSet.getString("light");
-                String waterText = resultSet.getString("water_frequency");
+                long waterLong = resultSet.getLong("watering_frequency");
                 String family = resultSet.getString("family");
 
                 int light = (isNumeric(lightText)) ? Integer.parseInt(lightText) : -1;
-                int water = (isNumeric(waterText)) ? Integer.parseInt(waterText) : -1;
+                int water = (int) waterLong;
 
-                plantDetails = new PlantDetails(genus, scientificName, light, water, family);
+                plantDetails = new PlantDetails(scientificName, light, water, family);
             }
         }
         catch (SQLException sqlException) {
             System.out.println(sqlException.getMessage());
+        } finally {
+            connection.closeConnection();
         }
         return plantDetails;
     }
@@ -75,22 +94,5 @@ public class PlantRepository {
         catch (NumberFormatException e) {
             return false;
         }
-    }
-
-    public long getWaterFrequency(String plantId) {
-        long waterFrequency = -1;
-        String query = "SELECT water_frequency FROM species WHERE id = '" + plantId + "';";
-        try {
-            ResultSet resultSet = database.executeQuery(query);
-            while (resultSet.next()) {
-                String waterText = resultSet.getString("water_frequency");
-                int water = (isNumeric(waterText)) ? Integer.parseInt(waterText) : -1;
-                waterFrequency = WaterCalculator.calculateWaterFrequencyForWatering(water);
-            }
-        }
-        catch (SQLException sqlException) {
-            System.out.println(sqlException.getMessage());
-        }
-        return waterFrequency;
     }
 }
