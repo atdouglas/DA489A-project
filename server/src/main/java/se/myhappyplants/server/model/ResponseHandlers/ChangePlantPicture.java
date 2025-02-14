@@ -1,3 +1,4 @@
+/*
 package se.myhappyplants.server.model.ResponseHandlers;
 
 import se.myhappyplants.server.model.IResponseHandler;
@@ -27,3 +28,4 @@ public class ChangePlantPicture implements IResponseHandler {
         return response;
     }
 }
+*/

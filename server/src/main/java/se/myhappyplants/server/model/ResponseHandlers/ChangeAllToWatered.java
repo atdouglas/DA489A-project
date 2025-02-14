@@ -1,3 +1,4 @@
+/*
 package se.myhappyplants.server.model.ResponseHandlers;
 
 import se.myhappyplants.server.model.IResponseHandler;
@@ -5,9 +6,11 @@ import se.myhappyplants.server.services.UserPlantRepository;
 import se.myhappyplants.shared.Message;
 import se.myhappyplants.shared.User;
 
-    /**
+    */
+/**
      * Class that handles to change all plants to watered
-     */
+     *//*
+
     public class ChangeAllToWatered implements IResponseHandler {
         private UserPlantRepository userPlantRepository;
 
@@ -27,3 +30,4 @@ import se.myhappyplants.shared.User;
             return response;
         }
     }
+*/

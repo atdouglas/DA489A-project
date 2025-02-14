@@ -1,3 +1,4 @@
+/*
 package se.myhappyplants.client.controller;
 
 import java.io.*;
@@ -23,11 +24,13 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 
+*/
 /**
  * Controls the inputs from a user that hasn't logged in
  * Created by: Eric Simonsson, Christopher O'Driscoll
  * Updated by: Linn Borgström, 2021-05-13
- */
+ *//*
+
 public class LoginPaneController {
 
     @FXML
@@ -38,11 +41,13 @@ public class LoginPaneController {
     private PasswordField passFldPassword;
 
 
-    /**
+    */
+/**
      * Switches to 'logged in' scene
      *
      * @throws IOException
-     */
+     *//*
+
     @FXML
     public void initialize() throws IOException {
         String lastLoggedInUser;
@@ -63,11 +68,13 @@ public class LoginPaneController {
         }
     }
 
-    /**
+    */
+/**
      * Method which tries to log in user. If it's successful, it changes scene
      *
      * @throws IOException
-     */
+     *//*
+
     @FXML
     private void loginButtonPressed() {
         Thread loginThread = new Thread(() -> {
@@ -98,21 +105,25 @@ public class LoginPaneController {
         loginThread.start();
     }
 
-    /**
+    */
+/**
      * Method to switch to the mainPane FXML
      *
      * @throws IOException
-     */
+     *//*
+
     @FXML
     private void switchToMainPane() throws IOException {
         StartClient.setRoot(String.valueOf(RootName.mainPane));
     }
 
-    /**
+    */
+/**
      * Method to switch to the registerPane
      *
      * @param actionEvent
-     */
+     *//*
+
     public void swapToRegister(ActionEvent actionEvent) {
         try {
             StartClient.setRoot(RootName.registerPane.toString());
@@ -124,3 +135,4 @@ public class LoginPaneController {
 
 
 }
+*/

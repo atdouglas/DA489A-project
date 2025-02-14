@@ -10,7 +10,7 @@ module se.myhappyplants {
     requires java.sql;
     requires jbcrypt;
 
-    exports se.myhappyplants.client.controller;
+    //exports se.myhappyplants.client.controller;
     exports se.myhappyplants.client.model;
     exports se.myhappyplants.client.view;
     exports se.myhappyplants.server;

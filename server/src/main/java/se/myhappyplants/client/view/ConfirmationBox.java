@@ -1,3 +1,4 @@
+/*
 package se.myhappyplants.client.view;
 
 import javafx.geometry.Pos;
@@ -8,23 +9,27 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-import static se.myhappyplants.client.controller.StartClient.getCssResource;
+//import static se.myhappyplants.client.controller.StartClient.getCssResource;
 
+*/
 /**
  * Simple yes/no confirmation box
  * Created by: Christopher O'Driscoll
  * Updated by:
- */
+ *//*
+
 public class ConfirmationBox {
 
     private static boolean answer;
 
-    /**
+    */
+/**
      * Static method to display a pop up box
      * @param title the title of the box
      * @param message the message in the box
      * @return boolean if it's successful
-     */
+     *//*
+
     public static boolean display(String title, String message) {
         Stage window = new Stage();
 
@@ -62,3 +67,4 @@ public class ConfirmationBox {
     }
 }
 
+*/

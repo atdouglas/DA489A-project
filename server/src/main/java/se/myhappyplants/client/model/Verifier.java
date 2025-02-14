@@ -1,3 +1,4 @@
+/*
 package se.myhappyplants.client.model;
 
 import javafx.application.Platform;
@@ -5,16 +6,20 @@ import se.myhappyplants.client.view.MessageBox;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+*/
 /**
  * Class to validate the registration
- */
+ *//*
+
 public class Verifier {
 
 
-    /**
+    */
+/**
      * Static method to validate the registration when a user register a new account
      * @return boolean if successful
-     */
+     *//*
+
     public boolean validateRegistration(String[] loginInfoToCompare) {
 
             if (!validateEmail(loginInfoToCompare[0])) {
@@ -42,12 +47,14 @@ public class Verifier {
 
     }
 
-    /**
+    */
+/**
      * Method for validating an email by checking that it contains @
      *
      * @param email input email from user in application
      * @return true if the email contains @, false if it is not valid
-     */
+     *//*
+
     private boolean validateEmail(String email) {
         final String regex = "^(.+)@(.+)$";
         Pattern pattern = Pattern.compile(regex);
@@ -55,3 +62,4 @@ public class Verifier {
         return matcher.matches();
     }
 }
+*/

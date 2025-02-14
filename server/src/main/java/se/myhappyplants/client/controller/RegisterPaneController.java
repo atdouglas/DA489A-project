@@ -1,3 +1,4 @@
+/*
 package se.myhappyplants.client.controller;
 
 import javafx.application.Platform;
@@ -18,9 +19,11 @@ import se.myhappyplants.shared.User;
 
 import java.io.IOException;
 
+*/
 /**
  * Created by Anton Holm
- */
+ *//*
+
 public class RegisterPaneController {
     @FXML public TextField txtFldNewEmail;
     @FXML public TextField txtFldNewEmail1;
@@ -96,3 +99,4 @@ public class RegisterPaneController {
         return loginInfoToCompare;
     }
 }
+*/

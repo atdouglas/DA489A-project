@@ -17,7 +17,8 @@ import java.util.ArrayList;
  */
 // TODO: fix this whole thing...
 public class UserPlantRepository {
-    
+
+
     private DatabaseConnection connection;
 
     /**
@@ -25,7 +26,7 @@ public class UserPlantRepository {
      *
      * @throws SQLException
      * @throws UnknownHostException
-     */
+     **/
     public UserPlantRepository(DatabaseConnection connection) {
         this.connection = connection;
 
@@ -38,7 +39,7 @@ public class UserPlantRepository {
      *
      * @param plant an instance of a newly created plant by user
      * @return a boolean value, true if the plant was stored successfully
-     */
+     **//*
 
     public boolean savePlant(User user, Plant plant) {
         boolean success = false;
@@ -59,13 +60,13 @@ public class UserPlantRepository {
         return success;
     }
 
-    /**
+    *//**
      * Method that returns all the plants connected to the logged in user.
      * Author: Linn Borgström,
      * Updated by: Frida Jacobsson
      *
      * @return an arraylist if plants stored in the database
-     */
+     **//*
     public ArrayList<Plant> getUserLibrary(int userId) {
         ArrayList<Plant> plantList = new ArrayList<Plant>();
         String query = """
@@ -89,12 +90,12 @@ public class UserPlantRepository {
         return plantList;
     }
 
-    /**
+    *//**
      * Method that returns one specific plant based on nickname.
      *
      * @param nickname
      * @return an instance of a specific plant from the database, null if no plant with the specific nickname exists
-     */
+     **//*
     public Plant getPlant(User user, String nickname) {
         Plant plant = null;
         String sqlSafeNickname = nickname.replace("'", "''");
@@ -113,13 +114,13 @@ public class UserPlantRepository {
         return plant;
     }
 
-    /**
+    *//**
      * Method that makes a query to delete a specific plant from table Plant
      *
      * @param user     the user that owns the plant
      * @param nickname nickname of the plant
      * @return boolean result depending on the result, false if exception
-     */
+     **//*
     public boolean deletePlant(User user, String nickname) {
         boolean plantDeleted = false;
         String sqlSafeNickname = nickname.replace("'", "''");
@@ -134,14 +135,14 @@ public class UserPlantRepository {
         return plantDeleted;
     }
 
-    /**
+    *//**
      * Method that makes a query to change the last watered date of a specific plant in table Plant
      *
      * @param user     the user that owns the plant
      * @param nickname nickname of the plant
      * @param date     new data to change to
      * @return boolean result depending on the result, false if exception
-     */
+     **//*
     public boolean changeLastWatered(User user, String nickname, LocalDate date) {
         boolean dateChanged = false;
         String sqlSafeNickname = nickname.replace("'", "''");
@@ -221,5 +222,5 @@ public class UserPlantRepository {
             connection.closeConnection();
         }
         return waterFrequency;
-    }
+    }*/
 }

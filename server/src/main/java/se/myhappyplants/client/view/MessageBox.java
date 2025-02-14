@@ -1,3 +1,4 @@
+/*
 package se.myhappyplants.client.view;
 
 import javafx.animation.FadeTransition;
@@ -16,22 +17,26 @@ import se.myhappyplants.client.model.BoxTitle;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
-import static se.myhappyplants.client.controller.StartClient.getCssResource;
+//import static se.myhappyplants.client.controller.StartClient.getCssResource;
 
+*/
 /**
  * Simple message box
  * Created by: Christopher O'Driscoll
- */
+ *//*
+
 public class MessageBox {
 
     private static Stage window;
     private static VBox vBox;
 
-    /**
+    */
+/**
      * Method to initialize and display the pop up message box
      * @param boxTitle the title of the box
      * @param message the message of the box
-     */
+     *//*
+
     public static void display(BoxTitle boxTitle, String message) {
         window = new Stage();
 
@@ -63,14 +68,16 @@ public class MessageBox {
     }
 
 
-    /**
+    */
+/**
      * Displays a yes/no input box
      * Created by: Anton Holm
      *
      * @param boxTitle    The title of the message box stage/window
      * @param question The question which the user should answer yes or no
      * @return 1 if yes, 0 if no and -1 if no answer chosen
-     */
+     *//*
+
     public static int askYesNo(BoxTitle boxTitle, String question) {
         Stage window = new Stage();
         AtomicInteger answer = new AtomicInteger(-1);
@@ -115,14 +122,16 @@ public class MessageBox {
         return answer.get();
     }
 
-    /**
+    */
+/**
      * Displays a input box with a text field
      * Created by: Anton Holm
      *
      * @param title    The title of the message box stage/window
      * @param question The question that the user should answer with their input
      * @return String entered by user
-     */
+     *//*
+
     public static String askForStringInput(String title, String question) {
         Stage window = new Stage();
         AtomicReference<String> input = new AtomicReference<>("");
@@ -166,3 +175,4 @@ public class MessageBox {
         return input.get();
     }
 }
+*/

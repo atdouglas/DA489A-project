@@ -1,3 +1,4 @@
+/*
 package se.myhappyplants.client.view;
 
 import javafx.animation.KeyFrame;
@@ -10,7 +11,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.util.Duration;
-import se.myhappyplants.client.controller.MyPlantsTabPaneController;
+//import se.myhappyplants.client.controller.MyPlantsTabPaneController;
 import se.myhappyplants.client.model.BoxTitle;
 import se.myhappyplants.client.model.PictureRandomizer;
 import se.myhappyplants.shared.WaterCalculator;
@@ -22,14 +23,16 @@ import java.time.LocalDate;
 import java.util.Date;
 import java.util.concurrent.atomic.AtomicReference;
 
+*/
 /**
  * Simple pane that displays a DBPlant's information
  * Created by: Christopher O'Driscoll
  * Updated by: Frida Jacobsson
- */
+ *//*
+
 public class LibraryPlantPane extends Pane implements PlantPane {
 
-    private MyPlantsTabPaneController myPlantsTabPaneController;
+    //private MyPlantsTabPaneController myPlantsTabPaneController;
     private Plant plant;
     private ImageView image;
     private Label nickname;
@@ -48,10 +51,12 @@ public class LibraryPlantPane extends Pane implements PlantPane {
     public boolean extended;
     private boolean gotInfoOnPlant;
 
-    /**
+    */
+/**
      * Creates a simple pane with loading image
      * while waiting for response from database
-     */
+     *//*
+
     public LibraryPlantPane() {
         File fileImg = new File("resources/images/img.png");
         Image img = new Image(fileImg.toURI().toString());
@@ -70,13 +75,15 @@ public class LibraryPlantPane extends Pane implements PlantPane {
         this.getChildren().addAll(image, nickname);
     }
 
-    /**
+    */
+/**
      * Creates a pane using information from a user's
      * plant library
      *
      * @param myPlantsTabPaneController MyPlantsTabController which contains logic for elements to use
      * @param plant                     plant object from user's library
-     */
+     *//*
+
     public LibraryPlantPane(MyPlantsTabPaneController myPlantsTabPaneController, Plant plant) {
         this.myPlantsTabPaneController = myPlantsTabPaneController;
         this.plant = plant;
@@ -96,19 +103,23 @@ public class LibraryPlantPane extends Pane implements PlantPane {
         initListView();
     }
 
-    /**
+    */
+/**
      * Constructor to initialize some variables and initiate library
      * @param myPlantsTabPaneController
-     */
+     *//*
+
     public LibraryPlantPane(MyPlantsTabPaneController myPlantsTabPaneController) {
         this.myPlantsTabPaneController = myPlantsTabPaneController;
         initEmptyLibraryLabel();
 
     }
 
-    /**
+    */
+/**
      * Method to show the user a message that the library is empty
-     */
+     *//*
+
     private void initEmptyLibraryLabel () {
 
         this.image = new ImageView();
@@ -130,10 +141,12 @@ public class LibraryPlantPane extends Pane implements PlantPane {
         image.setImage(img);
     }
 
-    /**
+    */
+/**
      * Method to initiate the image View
      * @param img
-     */
+     *//*
+
     private void initImages(Image img) {
 
         image.setFitHeight(70.0);
@@ -145,10 +158,12 @@ public class LibraryPlantPane extends Pane implements PlantPane {
         image.setImage(img);
     }
 
-    /**
+    */
+/**
      * Method to initiate the nickname label
      * @param plant
-     */
+     *//*
+
     private void initNicknameLabel(Plant plant) {
         nickname = new Label(plant.getNickname());
         nickname.setLayoutX(0);
@@ -157,10 +172,12 @@ public class LibraryPlantPane extends Pane implements PlantPane {
         nickname.setAlignment(Pos.CENTER);
     }
 
-    /**
+    */
+/**
      * Method to initiate the last watered label
      * @param plant
-     */
+     *//*
+
     private void initLastWateredLabel(Plant plant) {
         this.lastWateredLabel = new Label();
         lastWateredLabel.setLayoutY(226);
@@ -169,10 +186,12 @@ public class LibraryPlantPane extends Pane implements PlantPane {
         lastWateredLabel.setText("Last watered: " + lastWateredDate.toString());
     }
 
-    /**
+    */
+/**
      * Method to initiate the progressbar
      * @param plant
-     */
+     *//*
+
     private void initProgressBar(Plant plant) {
         daysUntilWaterlbl = new Label();
         String daysUntilWaterText = plant.getDaysUntilWater();
@@ -188,17 +207,21 @@ public class LibraryPlantPane extends Pane implements PlantPane {
         progressBar.setPrefWidth(575.0);
     }
 
-    /**
+    */
+/**
      * Mehtosd to get the progressbar
      * @return
-     */
+     *//*
+
     public ProgressBar getProgressBar() {
         return progressBar;
     }
-    /**
+    */
+/**
      * Method to initiate the water button
      * @param plant
-     */
+     *//*
+
     private void initWaterButton(Plant plant) {
         this.waterButton = new Button("Water");
         waterButton.setLayoutX(400.0);
@@ -211,9 +234,11 @@ public class LibraryPlantPane extends Pane implements PlantPane {
             setColorProgressBar(100);
         });
     }
-    /**
+    */
+/**
      * Method to initiate the info button
-     */
+     *//*
+
     private void initInfoButton() {
         this.infoButton = new Button("Show info");
         infoButton.setLayoutX(150.0);
@@ -224,9 +249,11 @@ public class LibraryPlantPane extends Pane implements PlantPane {
         });
     }
 
-    /**
+    */
+/**
      * Method to set off what happens when a user presses the info button
-     */
+     *//*
+
     public void pressInfoButton() {
         infoButton.setDisable(true);
         if (!extended) {
@@ -250,10 +277,12 @@ public class LibraryPlantPane extends Pane implements PlantPane {
             collapse();
         }
     }
-    /**
+    */
+/**
      * Method to initiate the change nickname-button
      * @param plant to change the nickname on
-     */
+     *//*
+
     private void initChangeNicknameButton(Plant plant) {
         this.changeNicknameButton = new Button("Change nickname");
         changeNicknameButton.setLayoutX(333.0);
@@ -263,10 +292,12 @@ public class LibraryPlantPane extends Pane implements PlantPane {
             changeNickname(plant);
         });
     }
-    /**
+    */
+/**
      * Method to initiate the change last watered-button
      * @param plant to change the nickname on
-     */
+     *//*
+
     private void initChangeWaterOKButton(Plant plant) {
         this.changeOKWaterButton = new Button("Change");
         changeOKWaterButton.setLayoutX(215.0);
@@ -277,9 +308,11 @@ public class LibraryPlantPane extends Pane implements PlantPane {
             datePicker.setPromptText("Change last watered");
         });
     }
-    /**
+    */
+/**
      * Method to initiate the change picture-button
-     */
+     *//*
+
     private void initChangePictureButton() {
         this.changePictureButton = new Button("Change picture");
         changePictureButton.setLayoutX(488.0);
@@ -289,9 +322,11 @@ public class LibraryPlantPane extends Pane implements PlantPane {
                 myPlantsTabPaneController.setNewPlantPicture(this));
     }
 
-    /**
+    */
+/**
      * Method to initiate the "date picker"
-     */
+     *//*
+
     private void initDatePicker() {
         this.datePicker = new DatePicker();
         datePicker.setLayoutX(10.0);
@@ -301,10 +336,12 @@ public class LibraryPlantPane extends Pane implements PlantPane {
         datePicker.setPromptText("Change last watered");
     }
 
-    /**
+    */
+/**
      * Method to initialize the delete button
      * @param plant he plant to delete
-     */
+     *//*
+
     private void initDeleteButton(Plant plant) {
         this.deleteButton = new Button("Delete plant");
         deleteButton.setLayoutX(625.0);
@@ -315,9 +352,11 @@ public class LibraryPlantPane extends Pane implements PlantPane {
         });
     }
 
-    /**
+    */
+/**
      * Method to initialize and set the listView with the extended information about the plants
-     */
+     *//*
+
     private void initListView() {
         listViewMoreInfo = new ListView();
         listViewMoreInfo.setLayoutX(this.getWidth() + 10.0);
@@ -341,9 +380,11 @@ public class LibraryPlantPane extends Pane implements PlantPane {
     }
 
 
-    /**
+    */
+/**
      * Method for expanding tab with "more information"-buttons.
-     */
+     *//*
+
     public void expand() {
         AtomicReference<Double> height = new AtomicReference<>(this.getHeight());
         Timeline timeline = new Timeline(
@@ -359,9 +400,11 @@ public class LibraryPlantPane extends Pane implements PlantPane {
         extended = true;
     }
 
-    /**
+    */
+/**
      * Method for hiding tab with "more information"-buttons.
-     */
+     *//*
+
     public void collapse() {
         AtomicReference<Double> height = new AtomicReference<>(this.getHeight());
         Timeline timeline = new Timeline(
@@ -377,11 +420,13 @@ public class LibraryPlantPane extends Pane implements PlantPane {
         extended = false;
     }
 
-    /**
+    */
+/**
      * Changes the colour of the progress bar
      *
      * @param progress How full the progress bar is(0-1.0)
-     */
+     *//*
+
     public void setColorProgressBar(double progress) {
         if (progress < 0.15) {
             progressBar.setStyle("-fx-accent: #BE4052");
@@ -391,13 +436,15 @@ public class LibraryPlantPane extends Pane implements PlantPane {
         }
     }
 
-    /**
+    */
+/**
      * Shows a confirmation box when called,
      * to double check the user really
      * wants to remove the plant
      *
      * @param plant selected plant
-     */
+     *//*
+
     private void removePlant(Plant plant) {
         int answer = MessageBox.askYesNo(BoxTitle.Delete, "The deleted plant can't be restored. Are you sure?");
         if (answer == 1) {
@@ -405,10 +452,12 @@ public class LibraryPlantPane extends Pane implements PlantPane {
         }
     }
 
-    /**
+    */
+/**
      * Method to change the nickname of a plant
      * @param plant the selected plant
-     */
+     *//*
+
     private void changeNickname(Plant plant) {
         boolean changeSuccess;
         String newNickname = MessageBox.askForStringInput("Change nickname", "New nickname:");
@@ -421,10 +470,12 @@ public class LibraryPlantPane extends Pane implements PlantPane {
         }
     }
 
-    /**
+    */
+/**
      * Method to change the date of the last watered date
      * @param plant the selected plant
-     */
+     *//*
+
     private void changeDate(Plant plant) {
         LocalDate date = datePicker.getValue();
         plant.setLastWatered(date);
@@ -433,12 +484,15 @@ public class LibraryPlantPane extends Pane implements PlantPane {
         myPlantsTabPaneController.changeLastWateredInDB(plant, date);
     }
 
-    /**
+    */
+/**
      * Getter method to get the plant
      * @return
-     */
+     *//*
+
     @Override
     public Plant getPlant() {
         return plant;
     }
 }
+*/

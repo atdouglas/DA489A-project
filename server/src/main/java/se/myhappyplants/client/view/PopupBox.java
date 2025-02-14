@@ -1,3 +1,4 @@
+/*
 package se.myhappyplants.client.view;
 
 import javafx.animation.KeyFrame;
@@ -14,26 +15,30 @@ import javafx.stage.Popup;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
-import se.myhappyplants.client.controller.StartClient;
+//import se.myhappyplants.client.controller.StartClient;
 
 import java.util.concurrent.atomic.AtomicReference;
 
-import static se.myhappyplants.client.controller.StartClient.getCssResource;
+//import static se.myhappyplants.client.controller.StartClient.getCssResource;
 
+*/
 /**
  * Creates a message box that disappears by itself
  * created by: Christopher O'Driscoll
  * updated by:
- */
+ *//*
+
 public class PopupBox extends Popup {
 
     private static Stage window;
     private static ToggleButton toggleButton;
 
-    /**
+    */
+/**
      * Method to initialize and isplay the pop up box
      * @param message the message to show
-     */
+     *//*
+
     public static void display(String message) {
 
         window = new Stage();
@@ -64,9 +69,11 @@ public class PopupBox extends Popup {
         showAndFade();
     }
 
-    /**
+    */
+/**
      * Method to get the pop up box to pop up and then fade
-     */
+     *//*
+
     private static void showAndFade() {
         window.show();
         AtomicReference<Double> opacity = new AtomicReference<>(1.0);
@@ -84,13 +91,16 @@ public class PopupBox extends Popup {
 
     }
 
-    /**
+    */
+/**
      * Method to display the message
      * @param message
      * @param toggleButton
-     */
+     *//*
+
     public static void display(String message, ToggleButton toggleButton) {
         PopupBox.toggleButton = toggleButton;
         display(message);
     }
 }
+*/

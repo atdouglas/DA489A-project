@@ -1,3 +1,4 @@
+/*
 package se.myhappyplants.server.model.ResponseHandlers;
 
 import se.myhappyplants.server.model.IResponseHandler;
@@ -5,9 +6,11 @@ import se.myhappyplants.server.services.UserPlantRepository;
 import se.myhappyplants.shared.Message;
 import se.myhappyplants.shared.Plant;
 import se.myhappyplants.shared.User;
+*/
 /**
  * Class that saved a users plant
- */
+ *//*
+
 public class SavePlant implements IResponseHandler {
     private UserPlantRepository userPlantRepository;
 
@@ -29,3 +32,4 @@ public class SavePlant implements IResponseHandler {
         return response;
     }
 }
+*/

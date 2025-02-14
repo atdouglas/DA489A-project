@@ -1,3 +1,4 @@
+/*
 package se.myhappyplants.server.model.ResponseHandlers;
 
 import se.myhappyplants.server.model.IResponseHandler;
@@ -7,9 +8,11 @@ import se.myhappyplants.shared.Plant;
 import se.myhappyplants.shared.User;
 
 import java.util.ArrayList;
+*/
 /**
  * Class that gets the users library
- */
+ *//*
+
 public class GetLibrary implements IResponseHandler {
     private UserPlantRepository userPlantRepository;
 
@@ -30,3 +33,4 @@ public class GetLibrary implements IResponseHandler {
         return response;
     }
 }
+*/

@@ -1,3 +1,4 @@
+/*
 package se.myhappyplants.server.model.ResponseHandlers;
 
 import se.myhappyplants.server.model.IResponseHandler;
@@ -7,9 +8,11 @@ import se.myhappyplants.shared.Plant;
 
 import java.time.LocalDate;
 
+*/
 /**
  * Class that handles the change of the last watered date
- */
+ *//*
+
 
 public class ChangeLastWatered implements IResponseHandler {
     private UserPlantRepository userPlantRepository;
@@ -32,3 +35,4 @@ public class ChangeLastWatered implements IResponseHandler {
         return response;
     }
 }
+*/

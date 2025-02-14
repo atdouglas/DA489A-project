@@ -1,3 +1,4 @@
+/*
 package se.myhappyplants.client.controller;
 
 import javafx.application.Platform;
@@ -40,11 +41,13 @@ import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
+*/
 /**
  * Controller with logic used by the "My Plants" tab
  * Created by: Christopher O'Driscoll
  * Updated by: Christopher O'Driscoll, 2021-05-14
- */
+ *//*
+
 public class MyPlantsTabPaneController {
 
     @FXML
@@ -79,9 +82,11 @@ public class MyPlantsTabPaneController {
     @FXML
     public Button btnCollapseAll;
 
-    /**
+    */
+/**
      * Method to initilize the variables
-     */
+     *//*
+
 
     @FXML
     public void initialize() {
@@ -94,25 +99,31 @@ public class MyPlantsTabPaneController {
     }
 
 
-    /**
+    */
+/**
      * Method to set the mainPaneController
      * @param mainPaneController to set
-     */
+     *//*
+
     public void setMainController(MainPaneController mainPaneController) {
         this.mainPaneController = mainPaneController;
     }
 
-    /**
+    */
+/**
      * Getter-method to get the mainPaneController
      * @return MainPaneController
-     */
+     *//*
+
     public MainPaneController getMainPaneController() {
         return mainPaneController;
     }
 
-    /**
+    */
+/**
      * Method to add a users plants to myPlantsTab
-     */
+     *//*
+
     @FXML
     public void addCurrentUserLibraryToHomeScreen() {
         ObservableList<LibraryPlantPane> obsListLibraryPlantPane = FXCollections.observableArrayList();
@@ -136,35 +147,43 @@ public class MyPlantsTabPaneController {
         });
     }
 
-    /**
+    */
+/**
      * Method to disable the buttons
-     */
+     *//*
+
     private void disableButtons () {
         btnWaterAll.setDisable(true);
         btnExpandAll.setDisable(true);
         btnCollapseAll.setDisable(true);
     }
 
-    /**
+    */
+/**
      * Mehtod to enable the buttons
-     */
+     *//*
+
     private void enableButtons () {
         btnWaterAll.setDisable(false);
         btnExpandAll.setDisable(false);
         btnCollapseAll.setDisable(false);
     }
 
-    /**
+    */
+/**
      * Method to show the notification
-     */
+     *//*
+
     public void showNotifications() {
         ObservableList<String> notificationStrings = NotificationsCreator.getNotificationsStrings(currentUserLibrary, imgNotifications);
         Platform.runLater(() -> lstViewNotifications.setItems(notificationStrings));
     }
 
-    /**
+    */
+/**
      * Method to create the logged in users library from the database
-     */
+     *//*
+
     @FXML
     public void createCurrentUserLibraryFromDB() {
         Thread getLibraryThread = new Thread(() -> {
@@ -183,10 +202,12 @@ public class MyPlantsTabPaneController {
         getLibraryThread.start();
     }
 
-    /**
+    */
+/**
      * Method to remove a selected plant from the database
      * @param plant
-     */
+     *//*
+
     @FXML
     public void removePlantFromDB(Plant plant) {
         Platform.runLater(() ->PopupBox.display(MessageText.removePlant.toString()));
@@ -205,11 +226,13 @@ public class MyPlantsTabPaneController {
         removePlantThread.start();
     }
 
-    /**
+    */
+/**
      * Method to add a plant to the logged in users library with a nickname.
      * @param selectedPlant the plant that the user selects
      * @param plantNickname the nickname of the plant that the user chooses
-     */
+     *//*
+
     @FXML
     public void addPlantToCurrentUserLibrary(Plant selectedPlant, String plantNickname) {
         int plantsWithThisNickname = 1;
@@ -228,10 +251,12 @@ public class MyPlantsTabPaneController {
         addPlantToDB(plantToAdd);
     }
 
-    /**
+    */
+/**
      * Method to save the plant to the database
      * @param plant the selected plant that the user has chosen
-     */
+     *//*
+
     @FXML
     public void addPlantToDB(Plant plant) {
         Thread addPlantThread = new Thread(() -> {
@@ -247,21 +272,25 @@ public class MyPlantsTabPaneController {
         addPlantThread.start();
     }
 
-    /**
+    */
+/**
      * Method to message the right controller-class that the log out-button has been pressed
      * @throws IOException
-     */
+     *//*
+
     @FXML
     private void logoutButtonPressed() throws IOException {
         mainPaneController.logoutButtonPressed();
     }
 
-    /**
+    */
+/**
      * Method to change last watered date in database, send a request to server and get a boolean respons depending on the result
      *
      * @param plant instance of the plant which to change last watered date
      * @param date  new date to change to
-     */
+     *//*
+
     public void changeLastWateredInDB(Plant plant, LocalDate date) {
         Message changeLastWatered = new Message(MessageType.changeLastWatered, LoggedInUser.getInstance().getUser(), plant, date);
         ServerConnection connection = ServerConnection.getClientConnection();
@@ -274,12 +303,14 @@ public class MyPlantsTabPaneController {
         showNotifications();
     }
 
-    /**
+    */
+/**
      * Method to send to the server to change the nickname of a selected plant in the database.
      * @param plant the selected plant
      * @param newNickname the new nickname of the plant
      * @return if it's successful. true or false
-     */
+     *//*
+
     public boolean changeNicknameInDB(Plant plant, String newNickname) {
         Message changeNicknameInDB = new Message(MessageType.changeNickname, LoggedInUser.getInstance().getUser(), plant, newNickname);
         ServerConnection connection = ServerConnection.getClientConnection();
@@ -295,9 +326,11 @@ public class MyPlantsTabPaneController {
         }
     }
 
-    /**
+    */
+/**
      * rearranges the library based on selected sorting option
-     */
+     *//*
+
     public void sortLibrary() {
         SortingOption selectedOption;
         selectedOption = cmbSortOption.getValue();
@@ -306,19 +339,23 @@ public class MyPlantsTabPaneController {
         lstViewUserPlantLibrary.setItems(ListSorter.sort(selectedOption, lstViewUserPlantLibrary.getItems()));
     }
 
-    /**
+    */
+/**
      * Method to update the users avatar picture
-     */
+     *//*
+
 
     public void updateAvatar() {
         imgUserAvatar.setFill(new ImagePattern(new Image(LoggedInUser.getInstance().getUser().getAvatarURL())));
     }
 
-    /**
+    */
+/**
      * Method to send to the server to get extended information about the plant
      * @param plant the selected plant
      * @return an instance of the class PlantDetails
-     */
+     *//*
+
     public PlantDetails getPlantDetails(Plant plant) {
         PlantDetails plantDetails = null;
         Message getInfoSearchedPlant = new Message(MessageType.getMorePlantInfo, plant);
@@ -330,9 +367,11 @@ public class MyPlantsTabPaneController {
         return plantDetails;
     }
 
-    /**
+    */
+/**
      * Method to water all the plant at once
-     */
+     *//*
+
     @FXML
     public void waterAll() {
         btnWaterAll.setDisable(true);
@@ -344,9 +383,11 @@ public class MyPlantsTabPaneController {
         }
     }
 
-    /**
+    */
+/**
      * Method to expand all the plants "flaps" at the same time
-     */
+     *//*
+
     @FXML
     public void expandAll() {
         btnExpandAll.setDisable(true);
@@ -358,9 +399,11 @@ public class MyPlantsTabPaneController {
         btnExpandAll.setDisable(false);
     }
 
-    /**
+    */
+/**
      * Method to collaps att the plants "flaps" at the same time
-     */
+     *//*
+
     @FXML
     public void collapseAll() {
         btnCollapseAll.setDisable(true);
@@ -372,9 +415,11 @@ public class MyPlantsTabPaneController {
         btnCollapseAll.setDisable(false);
     }
 
-    /**
+    */
+/**
      * Method to send a message to the server to change the date of the last watered in the database
-     */
+     *//*
+
     private void changeAllToWateredInDB() {
         Thread waterAllThread = new Thread(() -> {
             Message changeAllToWatered = new Message(MessageType.changeAllToWatered, LoggedInUser.getInstance().getUser());
@@ -424,3 +469,4 @@ public class MyPlantsTabPaneController {
         }
     }
 }
+*/

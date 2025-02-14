@@ -1,3 +1,4 @@
+/*
 package se.myhappyplants.client.controller;
 
 import javafx.application.Application;
@@ -12,6 +13,7 @@ import se.myhappyplants.client.view.ConfirmationBox;
 import java.io.IOException;
 import java.net.URL;
 
+*/
 /**
  * JavaFX Application Main class
  * If javaFX not installed, execute maven goals:
@@ -19,7 +21,8 @@ import java.net.URL;
  * 2.  mvn javafx:run
  * Created by: Christopher O'Driscoll, Eric Simonsson
  * Updated by: Linn Borgström, 2021-05-13
- */
+ *//*
+
 public class StartClient extends Application {
 
     private static Scene scene;
@@ -29,12 +32,14 @@ public class StartClient extends Application {
         return window;
     }
 
-    /**
+    */
+/**
      * Starts the application by opening window. Method handles close on request.
      *
      * @param stage instance of Stage to start
      * @throws IOException
-     */
+     *//*
+
     @Override
     public void start(Stage stage) throws IOException {
         window = stage;
@@ -51,11 +56,13 @@ public class StartClient extends Application {
         window.show();
     }
 
-    /**
+    */
+/**
      * Lods the css resource file.
      * @param fileName The name of the css file.
      * @return The css resource
-     */
+     *//*
+
     public static String getCssResource(String fileName) {
         URL resource = StartClient.class.getResource(fileName);
         if (resource == null) {
@@ -64,40 +71,48 @@ public class StartClient extends Application {
         return resource.toExternalForm();
 
     }
-        /**
+        */
+/**
          * Method handles close on request.
-         */
+         *//*
+
     private void close() {
         if (ConfirmationBox.display("Exit", "Are you sure?")) {
             window.close();
         }
     }
 
-    /**
+    */
+/**
      * Method to set the root
      * @param fxml to set
      * @throws IOException
-     */
+     *//*
+
     public static void setRoot(String fxml) throws IOException {
         scene.setRoot(loadFXML(fxml));
     }
 
-    /**
+    */
+/**
      * Method to load the right fxml-file
      * @param fxml to load
      * @return
      * @throws IOException
-     */
+     *//*
+
     private static Parent loadFXML(String fxml) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(StartClient.class.getResource(fxml + ".fxml"));
         return fxmlLoader.load();
     }
 
-    /**
+    */
+/**
      * Alternative run method (not needed)
      * @param args
-     **/
+     **//*
+
     public static void main(String[] args) {
         launch();
     }
-}
+}*/

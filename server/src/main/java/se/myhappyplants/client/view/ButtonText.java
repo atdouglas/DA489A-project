@@ -1,7 +1,7 @@
 package se.myhappyplants.client.view;
 
 import javafx.scene.control.ToggleButton;
-import se.myhappyplants.client.controller.SettingsTabPaneController;
+//import se.myhappyplants.client.controller.SettingsTabPaneController;
 
 /**
  * Class to set the text on the button
