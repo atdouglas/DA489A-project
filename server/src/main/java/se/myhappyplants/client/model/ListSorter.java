@@ -1,22 +1,27 @@
+/*
 package se.myhappyplants.client.model;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import se.myhappyplants.client.view.PlantPane;
 
+*/
 /**
  * Class that sorts lists of plant panes according to different options
  * Created by: Christopher O'Driscoll
  * Updated by: Christopher O'Driscoll
- */
+ *//*
+
 public class ListSorter {
 
     private static ObservableList<PlantPane> listToBeSorted;
 
-    /**
+    */
+/**
      * Creates a list of sorting options for search results
      * @return ObservableList<SortingOption>
-     */
+     *//*
+
     public static ObservableList<SortingOption> sortOptionsSearch() {
         ObservableList<SortingOption> sortOptions = FXCollections.observableArrayList();
         for (SortingOption option : SortingOption.values()) {
@@ -26,10 +31,12 @@ public class ListSorter {
         return sortOptions;
     }
 
-    /**
+    */
+/**
      * Creates a list of sorting options for a user's library
      * @return ObservableList<SortingOption>
-     */
+     *//*
+
     public static ObservableList<SortingOption> sortOptionsLibrary() {
         ObservableList<SortingOption> sortOptions = FXCollections.observableArrayList();
         for (SortingOption option : SortingOption.values()) {
@@ -39,13 +46,15 @@ public class ListSorter {
         return sortOptions;
     }
 
-    /**
+    */
+/**
      * calls a different sorting technique based on sorting option selected
      *
      * @param sortOption
      * @param plantList
      * @return ObservableList<PlantPane>
-     */
+     *//*
+
     public static ObservableList<PlantPane> sort(SortingOption sortOption, ObservableList<PlantPane> plantList) {
         listToBeSorted = plantList;
         return switch (sortOption) {
@@ -56,10 +65,12 @@ public class ListSorter {
         };
     }
 
-    /**
+    */
+/**
      * Method to sort the list of plants by nickname
      * @return ObservableList<PlantPane> to put on the ListView in the GUI
-     */
+     *//*
+
     private static ObservableList<PlantPane> sortByNickname() {
 
         listToBeSorted.sort((pane1, pane2) -> {
@@ -70,10 +81,12 @@ public class ListSorter {
         return listToBeSorted;
     }
 
-    /**
+    */
+/**
      * Method to sort the list of plants by common name
      * @return ObservableList<PlantPane> to put on the ListView in the GUI
-     */
+     *//*
+
     private static ObservableList<PlantPane> sortByCommonName() {
 
         listToBeSorted.sort((pane1, pane2) -> {
@@ -83,10 +96,12 @@ public class ListSorter {
         });
         return listToBeSorted;
     }
-    /**
+    */
+/**
      * Method to sort the list of plants by scientific name
      * @return ObservableList<PlantPane> to put on the ListView in the GUI
-     */
+     *//*
+
     private static ObservableList<PlantPane> sortByScientificName() {
 
         listToBeSorted.sort((pane1, pane2) -> {
@@ -96,10 +111,12 @@ public class ListSorter {
         });
         return listToBeSorted;
     }
-    /**
+    */
+/**
      * Method to sort the list of plants by the need of water
      * @return ObservableList<PlantPane> to put on the ListView in the GUI
-     */
+     *//*
+
     private static ObservableList<PlantPane> sortByWaterNeed() {
 
         listToBeSorted.sort((pane1, pane2) -> {
@@ -110,3 +127,4 @@ public class ListSorter {
         return listToBeSorted;
     }
 }
+*/

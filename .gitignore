@@ -214,5 +214,4 @@ server/resources/images/user_avatars/*.png
 
 server/resources/searchHistory.txt
 server/.idea/workspace.xml
-/server/.idea
 server/src/main/java/se/myhappyplants/server/PasswordsAndKeys.java

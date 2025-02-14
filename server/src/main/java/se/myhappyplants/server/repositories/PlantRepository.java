@@ -56,7 +56,7 @@ public class PlantRepository extends Repository {
                 """;
         try (java.sql.Connection connection = startConnection()) {
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-                preparedStatement.setInt(1, plant.getPlantId());
+                preparedStatement.setInt(1, plant.getId());
                 ResultSet resultSet = preparedStatement.executeQuery();
                 while (resultSet.next()) {
                     String scientificName = resultSet.getString("scientific_name");

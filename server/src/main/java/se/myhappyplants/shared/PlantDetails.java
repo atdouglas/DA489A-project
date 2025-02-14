@@ -2,11 +2,7 @@ package se.myhappyplants.shared;
 
 import java.io.Serializable;
 
-/**
- * Container class for more detailed information about a plant
- * Created by: Frida Jacobsson
- * Updated by:
- **/
+// TODO: delete this
 public class PlantDetails implements Serializable {
 
     private String scientificName;
