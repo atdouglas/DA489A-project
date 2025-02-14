@@ -5,6 +5,7 @@ import java.time.LocalDate;
 
 public class UserPlant extends Plant {
     private Date lastWatered;
+    private String nickname;
 
     public UserPlant(int id, String commonName, String scientificName, String familyName, String imageURL, String maintenance, String light, long waterFrequency, String poisonousToPets) {
         super(id, commonName, scientificName, familyName, imageURL, maintenance, light, waterFrequency, poisonousToPets);
@@ -55,5 +56,13 @@ public class UserPlant extends Plant {
     public void setLastWatered(LocalDate localDate) {
         Date date = java.sql.Date.valueOf(localDate);
         this.lastWatered = date;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 }

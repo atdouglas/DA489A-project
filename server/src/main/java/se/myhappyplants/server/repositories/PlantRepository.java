@@ -1,7 +1,6 @@
 package se.myhappyplants.server.repositories;
 
 import se.myhappyplants.shared.Plant;
-import se.myhappyplants.shared.PlantDetails;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -49,7 +48,7 @@ public class PlantRepository extends Repository {
     }
 
     // TODO: adjust to new implementation. likely remove
-    public PlantDetails getPlantDetails(Plant plant) {
+    /*public PlantDetails getPlantDetails(Plant plant) {
         PlantDetails plantDetails = null;
         String query = """
                 SELECT scientific_name, light, water_frequency, family FROM species WHERE id = ?; 
@@ -74,7 +73,7 @@ public class PlantRepository extends Repository {
             System.out.println(sqlException.getMessage());
         }
         return plantDetails;
-    }
+    }*/
 
     public static boolean isNumeric(String str) {
         try {

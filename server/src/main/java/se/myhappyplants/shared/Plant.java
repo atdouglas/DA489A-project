@@ -18,9 +18,8 @@ public class Plant implements Serializable {
     private int id;
     private String commonName;
     private String scientificName;
-    private String familyName;
+    private String family;
     private String imageURL;
-    private String nickname;
     private String maintenance;
     private String light;
     // time in millisecond form
@@ -29,15 +28,15 @@ public class Plant implements Serializable {
     // to show relevant information, instead of defaulting to false, it's used as a String in Java
     private String poisonousToPets;
 
-    public Plant(int id, String commonName, String scientificName, String familyName,
+    public Plant(int id, String commonName, String scientificName, String family,
                  String imageURL, String maintenance, String light, long waterFrequency, String poisonousToPets) {
         this.id = id;
-        this.commonName = commonName;
         this.scientificName = scientificName;
-        this.familyName = familyName;
+        this.family = family;
+        this.commonName = commonName;
         this.imageURL = imageURL;
-        this.maintenance = maintenance;
         this.light = light;
+        this.maintenance = maintenance;
         this.waterFrequency = waterFrequency;
         this.poisonousToPets = poisonousToPets;
     }
@@ -45,15 +44,7 @@ public class Plant implements Serializable {
 
     @Override
     public String toString() {
-        return String.format("Scientific name: %s \tCommon name: %s \tFamily name: %s ", scientificName, commonName, familyName);
-    }
-
-    public String getNickname() {
-        return nickname;
-    }
-
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
+        return String.format("Scientific name: %s \tCommon name: %s \tFamily name: %s ", scientificName, commonName, family);
     }
 
     public String getCommonName() {

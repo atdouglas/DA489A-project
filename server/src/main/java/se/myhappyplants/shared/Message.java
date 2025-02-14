@@ -21,7 +21,6 @@ public class Message implements Serializable {
     private ArrayList<Plant> plantArray;
     private Plant plant;
     private String newNickname;
-    private PlantDetails plantDetails;
 
 
     /**
@@ -148,17 +147,6 @@ public class Message implements Serializable {
         this.success = success;
     }
 
-    /**
-     * Creates a message that can be used to send
-     * further information about a plant
-     * @param plantDetails
-     * @param success
-     */
-    public Message(PlantDetails plantDetails, boolean success) {
-        this.plantDetails = plantDetails;
-        this.success = success;
-    }
-
     public String getNewNickname() {
         return newNickname;
     }
@@ -195,7 +183,4 @@ public class Message implements Serializable {
         return notifications;
     }
 
-    public PlantDetails getPlantDetails() {
-        return plantDetails;
-    }
 }
