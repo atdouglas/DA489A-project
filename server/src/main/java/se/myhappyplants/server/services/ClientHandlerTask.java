@@ -8,10 +8,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
-/**
- * Runnable task class containing a task that needs to executed from client
- * Created by: Frida Jacobsson 2021-05-21
- */
 public class ClientHandlerTask implements Runnable {
 
     private ObjectInputStream ois;

@@ -1,14 +1,7 @@
 package se.myhappyplants.server.services;
 
-import se.myhappyplants.shared.Plant;
-import se.myhappyplants.shared.User;
-import se.myhappyplants.shared.WaterCalculator;
-
-import java.io.IOException;
 import java.net.UnknownHostException;
 import java.sql.*;
-import java.time.LocalDate;
-import java.util.ArrayList;
 
 /**
  * Class responsible for calling the database about a users library.
@@ -16,21 +9,7 @@ import java.util.ArrayList;
  * Updated by: Frida Jacobsson 2021-05-21
  */
 // TODO: fix this whole thing...
-public class UserPlantRepository {
-
-
-    private DatabaseConnection connection;
-
-    /**
-     * Constructor that creates a connection to the database.
-     *
-     * @throws SQLException
-     * @throws UnknownHostException
-     **/
-    public UserPlantRepository(DatabaseConnection connection) {
-        this.connection = connection;
-
-    }
+public class UserPlantRepository extends Repository {
 
     /**
      * Method to save a new plant in database
