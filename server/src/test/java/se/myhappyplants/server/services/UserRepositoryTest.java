@@ -17,6 +17,7 @@ class UserRepositoryTest {
     private PreparedStatement mockStatement;
     private UserRepository userRepository;
 
+    //TODO Change mock to actual DB
     @BeforeEach
     void setUp() throws SQLException{
         mockDBConnection = mock(DatabaseConnection.class);

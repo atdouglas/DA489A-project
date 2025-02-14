@@ -4,9 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6b0ffffb-45d5-4f35-b433-534813405091" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-    </list>
+    <list default="true" id="6b0ffffb-45d5-4f35-b433-534813405091" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -47,6 +45,7 @@
   "keyToString": {
     "Application.StartClient.executor": "Run",
     "Application.StartServer.executor": "Run",
+    "JUnit.UserRepositoryTest.saveUserSuccess.executor": "Run",
     "JUnit.WaterCalculatorTest.lowerBound.executor": "Coverage",
     "Maven.MyHappyPlants [javafx:compile].executor": "Run",
     "Maven.MyHappyPlants [javafx:run].executor": "Run",
@@ -61,7 +60,10 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.0",
+    "settings.editor.selected.configurable": "reference.projectsettings.compiler.excludes",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -70,6 +72,7 @@
       <recent name="" />
     </key>
     <key name="CreateTestDialog.RecentsKey">
+      <recent name="se.myhappyplants.server.services" />
       <recent name="se.myhappyplants.shared" />
       <recent name="se.myhappyplants.server.controller" />
     </key>
@@ -80,7 +83,23 @@
       <command value="mvn javafx:compile" />
     </option>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="JUnit.WaterCalculatorTest.lowerBound">
+    <configuration name="UserRepositoryTest.saveUserSuccess" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="MyHappyPlants" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="se.myhappyplants.server.services.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="se.myhappyplants.server.services" />
+      <option name="MAIN_CLASS_NAME" value="se.myhappyplants.server.services.UserRepositoryTest" />
+      <option name="METHOD_NAME" value="saveUserSuccess" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="WaterCalculatorTest.lowerBound" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="MyHappyPlants" />
       <extension name="coverage">
@@ -106,6 +125,7 @@
     <recent_temporary>
       <list>
         <item itemvalue="JUnit.WaterCalculatorTest.lowerBound" />
+        <item itemvalue="JUnit.UserRepositoryTest.saveUserSuccess" />
       </list>
     </recent_temporary>
   </component>
