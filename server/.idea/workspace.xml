@@ -5,11 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6b0ffffb-45d5-4f35-b433-534813405091" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/test/java/se/myhappyplants/server/controller/ResponseControllerTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/se/myhappyplants/shared/WaterCalculatorTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -51,7 +47,7 @@
   "keyToString": {
     "Application.StartClient.executor": "Run",
     "Application.StartServer.executor": "Run",
-    "JUnit.WaterCalculatorTest.lowerBound.executor": "Run",
+    "JUnit.WaterCalculatorTest.lowerBound.executor": "Coverage",
     "Maven.MyHappyPlants [javafx:compile].executor": "Run",
     "Maven.MyHappyPlants [javafx:run].executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
