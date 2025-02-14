@@ -9,6 +9,13 @@
         <maven.compiler.target>15</maven.compiler.target>
     </properties>
     <dependencies>
+        <!-- JUnit 5 (JUnit Jupiter) -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>5.11.4</version>
+            <scope>test</scope>
+        </dependency>
         <!--
          https://mvnrepository.com/artifact/com.google.code.gson/gson
         -->
