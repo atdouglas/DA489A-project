@@ -1,9 +1,8 @@
-package se.myhappyplants.server.model.ResponseHandlers;
+package se.myhappyplants.server.responses;
 
-import se.myhappyplants.server.model.IResponseHandler;
-import se.myhappyplants.server.services.UserRepository;
+import se.myhappyplants.server.repositories.UserRepository;
 import se.myhappyplants.shared.Message;
-import se.myhappyplants.shared.User;
+
 /**
  * Class that handles to change the fun facts
  */

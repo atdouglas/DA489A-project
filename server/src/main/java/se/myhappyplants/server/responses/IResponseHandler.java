@@ -1,4 +1,4 @@
-package se.myhappyplants.server.model;
+package se.myhappyplants.server.responses;
 
 import se.myhappyplants.shared.Message;
 

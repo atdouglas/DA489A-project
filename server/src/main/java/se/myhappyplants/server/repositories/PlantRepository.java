@@ -1,4 +1,4 @@
-package se.myhappyplants.server.services;
+package se.myhappyplants.server.repositories;
 
 import se.myhappyplants.shared.Plant;
 import se.myhappyplants.shared.PlantDetails;

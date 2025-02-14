@@ -1,10 +1,8 @@
-package se.myhappyplants.server.controller;
+package se.myhappyplants.server.responses;
 
-import se.myhappyplants.server.model.IResponseHandler;
-import se.myhappyplants.server.model.ResponseContext;
-import se.myhappyplants.server.services.PlantRepository;
-import se.myhappyplants.server.services.UserPlantRepository;
-import se.myhappyplants.server.services.UserRepository;
+import se.myhappyplants.server.repositories.PlantRepository;
+import se.myhappyplants.server.repositories.UserPlantRepository;
+import se.myhappyplants.server.repositories.UserRepository;
 import se.myhappyplants.shared.Message;
 import se.myhappyplants.shared.MessageType;
 

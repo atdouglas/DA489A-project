@@ -1,34 +1,35 @@
 /*
 package se.myhappyplants.server.model.ResponseHandlers;
 
-import se.myhappyplants.server.model.IResponseHandler;
+import se.myhappyplants.server.model.ResponseHandlers.IResponseHandler;
 import se.myhappyplants.server.services.UserPlantRepository;
 import se.myhappyplants.shared.Message;
 import se.myhappyplants.shared.Plant;
 import se.myhappyplants.shared.User;
-
-import java.util.ArrayList;
 */
 /**
- * Class that gets the users library
+ * Class that handles the change when the user wants to delete a plant
  *//*
 
-public class GetLibrary implements IResponseHandler {
+public class DeletePlant implements IResponseHandler {
+
     private UserPlantRepository userPlantRepository;
 
-    public GetLibrary(UserPlantRepository userPlantRepository) {
+    public DeletePlant(UserPlantRepository userPlantRepository) {
         this.userPlantRepository = userPlantRepository;
     }
+
 
     @Override
     public Message getResponse(Message request) {
         Message response;
-        try {
-            ArrayList<Plant> userLibrary = userPlantRepository.getUserLibrary(request.getUser().getUniqueId());
-            response = new Message(userLibrary, true);
-        } catch (Exception e) {
+        User user = request.getUser();
+        Plant plant = request.getPlant();
+        String nickname = plant.getNickname();
+        if (userPlantRepository.deletePlant(user, nickname)) {
+            response = new Message(true);
+        } else {
             response = new Message(false);
-            e.printStackTrace();
         }
         return response;
     }

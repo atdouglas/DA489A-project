@@ -1,7 +1,9 @@
 package se.myhappyplants.server;
 
-import se.myhappyplants.server.controller.ResponseController;
-import se.myhappyplants.server.services.*;
+import se.myhappyplants.server.responses.ResponseController;
+import se.myhappyplants.server.repositories.PlantRepository;
+import se.myhappyplants.server.repositories.UserPlantRepository;
+import se.myhappyplants.server.repositories.UserRepository;
 
 import java.sql.DriverManager;
 import java.sql.SQLException;

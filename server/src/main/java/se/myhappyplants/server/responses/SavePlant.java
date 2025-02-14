@@ -1,34 +1,31 @@
 /*
 package se.myhappyplants.server.model.ResponseHandlers;
 
-import se.myhappyplants.server.model.IResponseHandler;
+import se.myhappyplants.server.model.ResponseHandlers.IResponseHandler;
 import se.myhappyplants.server.services.UserPlantRepository;
 import se.myhappyplants.shared.Message;
 import se.myhappyplants.shared.Plant;
-
-import java.time.LocalDate;
-
+import se.myhappyplants.shared.User;
 */
 /**
- * Class that handles the change of the last watered date
+ * Class that saved a users plant
  *//*
 
-
-public class ChangeLastWatered implements IResponseHandler {
+public class SavePlant implements IResponseHandler {
     private UserPlantRepository userPlantRepository;
 
-    public ChangeLastWatered(UserPlantRepository userPlantRepository) {
+    public SavePlant(UserPlantRepository userPlantRepository) {
         this.userPlantRepository = userPlantRepository;
     }
 
     @Override
     public Message getResponse(Message request) {
         Message response;
+        User user = request.getUser();
         Plant plant = request.getPlant();
-        String nickname = plant.getNickname();
-        LocalDate lastWatered = request.getDate();
-        if (userPlantRepository.changeLastWatered(request.getUser(), nickname, lastWatered)) {
+        if (userPlantRepository.savePlant(user, plant)) {
             response = new Message(true);
+
         } else {
             response = new Message(false);
         }

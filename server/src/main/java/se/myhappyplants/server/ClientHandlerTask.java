@@ -1,6 +1,6 @@
-package se.myhappyplants.server.services;
+package se.myhappyplants.server;
 
-import se.myhappyplants.server.controller.ResponseController;
+import se.myhappyplants.server.responses.ResponseController;
 import se.myhappyplants.shared.Message;
 
 import java.io.IOException;

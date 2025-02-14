@@ -1,33 +1,34 @@
 /*
 package se.myhappyplants.server.model.ResponseHandlers;
 
-import se.myhappyplants.server.model.IResponseHandler;
+import se.myhappyplants.server.model.ResponseHandlers.IResponseHandler;
 import se.myhappyplants.server.services.UserPlantRepository;
 import se.myhappyplants.shared.Message;
 import se.myhappyplants.shared.Plant;
 import se.myhappyplants.shared.User;
+
+import java.util.ArrayList;
 */
 /**
- * Class that saved a users plant
+ * Class that gets the users library
  *//*
 
-public class SavePlant implements IResponseHandler {
+public class GetLibrary implements IResponseHandler {
     private UserPlantRepository userPlantRepository;
 
-    public SavePlant(UserPlantRepository userPlantRepository) {
+    public GetLibrary(UserPlantRepository userPlantRepository) {
         this.userPlantRepository = userPlantRepository;
     }
 
     @Override
     public Message getResponse(Message request) {
         Message response;
-        User user = request.getUser();
-        Plant plant = request.getPlant();
-        if (userPlantRepository.savePlant(user, plant)) {
-            response = new Message(true);
-
-        } else {
+        try {
+            ArrayList<Plant> userLibrary = userPlantRepository.getUserLibrary(request.getUser().getUniqueId());
+            response = new Message(userLibrary, true);
+        } catch (Exception e) {
             response = new Message(false);
+            e.printStackTrace();
         }
         return response;
     }

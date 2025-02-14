@@ -1,7 +1,4 @@
-package se.myhappyplants.server.services;
-
-import java.net.UnknownHostException;
-import java.sql.*;
+package se.myhappyplants.server.repositories;
 
 /**
  * Class responsible for calling the database about a users library.
