@@ -26,7 +26,7 @@ public class ResponseController {
      * @param request request object received from client
      * @return response to be sent back to client
      */
-    public Message getResponse(Message request) throws IOException, InterruptedException {
+    public Message getResponse(Message request) {
 
         Message response;
         MessageType messageType = request.getMessageType();

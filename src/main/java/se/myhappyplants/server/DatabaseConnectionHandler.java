@@ -19,17 +19,14 @@ public class DatabaseConnectionHandler {
         executor = Executors.newFixedThreadPool(5);
     }
 
-    // TODO: change to completablefuture (?)
     public Message databaseRequest(Message request) {
-        Message response;
         Future<Message> futureTask = executor.submit(() -> responseController.getResponse(request));
-
         try {
-            response = futureTask.get();
+            return futureTask.get();
         } catch (InterruptedException | ExecutionException e) {
-            throw new RuntimeException(e);
+            System.out.println(e.getMessage());
+            return new Message(false);
         }
-        return response;
     }
 
 }
