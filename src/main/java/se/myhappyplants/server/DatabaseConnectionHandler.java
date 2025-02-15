@@ -19,6 +19,7 @@ public class DatabaseConnectionHandler {
         executor = Executors.newFixedThreadPool(5);
     }
 
+    // TODO: change to completablefuture (?)
     public Message databaseRequest(Message request) {
         Message response;
         Future<Message> futureTask = executor.submit(() -> responseController.getResponse(request));
