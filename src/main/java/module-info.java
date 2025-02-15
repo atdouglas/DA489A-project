@@ -5,10 +5,11 @@ module se.myhappyplants {
     requires javafx.media;
     requires javafx.swing;
     requires javafx.web;
-    requires com.google.gson;
     requires org.postgresql.jdbc;
-    requires java.sql;
     requires jbcrypt;
+    requires io.javalin;
+    requires com.google.gson;
+    requires java.sql;
 
     //exports se.myhappyplants.client.controller;
     exports se.myhappyplants.client.model;

@@ -25,6 +25,6 @@ public class StartServer {
         PlantRepository plantRepository = new PlantRepository();
         UserPlantRepository userPlantRepository = new UserPlantRepository();
         ResponseController responseController = new ResponseController(userRepository, userPlantRepository, plantRepository);
-        new Server(2555, responseController);
+        new DatabaseConnectionHandler(responseController);
     }
 }

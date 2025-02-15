@@ -18,7 +18,7 @@ public class PlantRepository extends Repository {
     public ArrayList<Plant> getResult(String plantSearch) {
         ArrayList<Plant> plantList = new ArrayList<>();
         String query = """
-                SELECT id, common_name, scientific_name, family, image_url FROM plants WHERE scientific_name LIKE ? OR common_name LIKE ? OR family LIKE ?;
+                SELECT * FROM plants WHERE scientific_name LIKE ? OR common_name LIKE ? OR family LIKE ?;
                 """;
         try (java.sql.Connection connection = startConnection()) {
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -34,10 +34,10 @@ public class PlantRepository extends Repository {
                     String imageURL = resultSet.getString("image_url");
                     String maintenance = resultSet.getString("maintenance");
                     long wateringFrequency = resultSet.getLong("watering_frequency");
-                    String poisonousToPets = resultSet.getString("poisonous_to_pets");
+                    boolean poisonousToPets = resultSet.getBoolean("poisonous_to_pets");
                     String light = resultSet.getString("light");
-                    plantList.add(new Plant(plantId, commonName, scientificName, familyName, imageURL,
-                            maintenance, light, wateringFrequency, poisonousToPets));
+                    plantList.add(new Plant(plantId, scientificName, commonName, familyName, imageURL,
+                            light, maintenance, poisonousToPets, wateringFrequency));
                 }
             }
         } catch (SQLException sqlException) {

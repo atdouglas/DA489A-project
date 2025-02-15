@@ -6,18 +6,18 @@ package se.myhappyplants.shared;
  * Updated by: Linn Borgström, 2021-05-13
  */
 public enum MessageType {
-    changeAllToWatered,
+    //changeAllToWatered,
     changeFunFacts,
-    changeLastWatered,
+    //changeLastWatered,
     changeNickname,
     changeNotifications,
-    changePlantPicture,
+    //changePlantPicture,
     deleteAccount,
-    deletePlant,
-    getLibrary,
-    getMorePlantInfo,
+    //deletePlant,
+    //getLibrary,
+    //getMorePlantInfo,
     login,
     register,
-    savePlant,
+    //savePlant,
     search
 }
