@@ -7,7 +7,7 @@ import java.io.*;
  * Created by: Linn Borgström
  * Updated by: Linn Borgström, 2021-05-17
  */
-public class User implements Serializable {
+public class User {
 
     private int uniqueId;
     private String email;
@@ -19,11 +19,6 @@ public class User implements Serializable {
 
     /**
      * Constructor used when registering a new user account
-     *
-     * @param email
-     * @param username
-     * @param password
-     * @param isNotificationsActivated
      */
     public User(String email, String username, String password, boolean isNotificationsActivated) {
         this.email = email;
@@ -34,9 +29,6 @@ public class User implements Serializable {
 
     /**
      * Simple constructor for login requests
-     *
-     * @param email
-     * @param password
      */
     public User(String email, String password) {
         this.email = email;
@@ -52,12 +44,6 @@ public class User implements Serializable {
     }
     /**
      * Constructor used to return a users details from the database
-     *
-     * @param uniqueId               A user's unique id in the database
-     * @param email                  Email address
-     * @param username               Username
-     * @param isNotificationsActivated True if notifications wanted
-     * @param funFactsActivated      True if fun facts wanted
      */
     public User(int uniqueId, String email, String username, boolean isNotificationsActivated, boolean funFactsActivated) {
 

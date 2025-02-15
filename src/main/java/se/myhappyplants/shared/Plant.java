@@ -58,12 +58,13 @@ public class Plant {
 
     public String getImage_url() {
         if(image_url == null) {
+            // TODO: replace with non-random default picture
             image_url = PictureRandomizer.getRandomPictureURL();
         }
         return image_url.replace("https", "http");
     }
 
-    public String getIsPoisonoutToPets() {
+    public boolean getIsPoisonoutToPets() {
         return poisonous_to_pets;
     }
 

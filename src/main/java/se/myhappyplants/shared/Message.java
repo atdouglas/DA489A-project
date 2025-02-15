@@ -1,11 +1,10 @@
 package se.myhappyplants.shared;
 
-import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
 // TODO: streamline this class
-public class Message implements Serializable {
+public class Message {
 
     private MessageType messageType;
     private boolean notifications;

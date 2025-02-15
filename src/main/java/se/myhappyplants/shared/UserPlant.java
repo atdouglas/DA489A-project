@@ -4,17 +4,18 @@ import java.sql.Date;
 import java.time.LocalDate;
 
 public class UserPlant extends Plant {
-    private Date lastWatered;
     private String nickname;
+    private Date last_watered;
 
-    public UserPlant(int id, String commonName, String scientificName, String familyName, String imageURL, String maintenance, String light, long waterFrequency, String poisonousToPets) {
-        super(id, commonName, scientificName, familyName, imageURL, maintenance, light, waterFrequency, poisonousToPets);
-        lastWatered = new Date(System.currentTimeMillis());
+    public UserPlant(int id, String scientific_name, String family, String common_name, String image_url, String light, String maintenance, boolean poisonous_to_pets, long water_frequency, String nickname) {
+        super(id, common_name, scientific_name, family, image_url, maintenance, light, poisonous_to_pets, water_frequency);
+        this.nickname = nickname;
+        last_watered = new Date(System.currentTimeMillis());
     }
 
     // TODO: FIX
     public double getProgress() {
-        long difference = System.currentTimeMillis() - lastWatered.getTime();
+        long difference = System.currentTimeMillis() - last_watered.getTime();
         difference -= 43000000l;
         double progress = 1.0 - ((double) difference / (double) getWaterFrequency());
         if (progress <= 0.02) {
@@ -28,7 +29,7 @@ public class UserPlant extends Plant {
 
     // TODO: FIX
     public String getDaysUntilWater() {
-        long millisSinceLastWatered = System.currentTimeMillis() - lastWatered.getTime();
+        long millisSinceLastWatered = System.currentTimeMillis() - last_watered.getTime();
         long millisUntilNextWatering = getWaterFrequency() - millisSinceLastWatered;
         long millisInADay = 86400000;
 
@@ -50,12 +51,13 @@ public class UserPlant extends Plant {
     }
 
     public Date getLastWatered() {
-        return lastWatered;
+        return last_watered;
     }
 
+    // TODO: fix?
     public void setLastWatered(LocalDate localDate) {
         Date date = java.sql.Date.valueOf(localDate);
-        this.lastWatered = date;
+        this.last_watered = date;
     }
 
     public String getNickname() {
