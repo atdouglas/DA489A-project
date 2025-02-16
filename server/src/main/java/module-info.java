@@ -1,4 +1,4 @@
-module java {
+module se.myhappyplants {
     requires javafx.controls;
     requires javafx.fxml;
     requires javafx.graphics;
