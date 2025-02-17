@@ -71,6 +71,10 @@ public class Plant {
         return poisonous_to_pets;
     }
 
+    public String getFamily() {
+        return family;
+    }
+
     public String getLight() {
         return light;
     }
