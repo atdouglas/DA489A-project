@@ -37,12 +37,27 @@ public class AddAllPlantsUtility {
             if (plantToAdd != null) {
                 if (plantToAdd.scientific_name == null) {
                     plantToAdd.scientific_name = "Unknown";
+                } else {
+                    // fix for entries having mixed use of uppercase and lowercase
+                    char[] chars = plantToAdd.light.toCharArray();
+                    chars[0] = Character.toUpperCase(chars[0]);
+                    plantToAdd.light = new String(chars);
                 }
                 if (plantToAdd.family == null) {
                     plantToAdd.family = "Unknown";
+                } else {
+                    // fix for entries having mixed use of uppercase and lowercase
+                    char[] chars = plantToAdd.light.toCharArray();
+                    chars[0] = Character.toUpperCase(chars[0]);
+                    plantToAdd.light = new String(chars);
                 }
                 if (plantToAdd.common_name == null) {
                     plantToAdd.common_name = "Unknown";
+                } else {
+                    // fix for entries having mixed use of uppercase and lowercase
+                    char[] chars = plantToAdd.light.toCharArray();
+                    chars[0] = Character.toUpperCase(chars[0]);
+                    plantToAdd.light = new String(chars);
                 }
                 if (plantToAdd.light == null) {
                     plantToAdd.light = "Unknown";

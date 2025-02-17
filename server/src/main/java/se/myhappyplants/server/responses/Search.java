@@ -4,7 +4,8 @@ import se.myhappyplants.server.repositories.PlantRepository;
 import se.myhappyplants.shared.Message;
 import se.myhappyplants.shared.Plant;
 
-import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Class that handles the request of a search
  */
@@ -20,8 +21,7 @@ public class Search implements IResponseHandler {
         Message response;
         String searchText = request.getMessageText();
         try {
-            ArrayList<Plant> plantList = plantRepository.getResult(searchText);
-            response = new Message(plantList, true);
+            response = new Message(plantRepository.getResult(searchText), true);
         } catch (Exception e) {
             response = new Message(false);
             e.printStackTrace();

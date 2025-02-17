@@ -2,6 +2,7 @@ package se.myhappyplants.shared;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
 // TODO: streamline this class
 public class Message {
@@ -12,7 +13,7 @@ public class Message {
     private User user;
     private boolean success;
     private LocalDate date;
-    private ArrayList<Plant> plantArray;
+    private List<Plant> plantArray;
     private Plant plant;
     private String newNickname;
 
@@ -52,7 +53,7 @@ public class Message {
         this.newNickname = newNickname;
     }
 
-    public Message(ArrayList<Plant> plantArray, boolean success) {
+    public Message(List<Plant> plantArray, boolean success) {
         this.plantArray = plantArray;
         this.success = success;
     }
@@ -87,7 +88,7 @@ public class Message {
         return success;
     }
 
-    public ArrayList<Plant> getPlantArray() {
+    public List<Plant> getPlantArray() {
         return plantArray;
     }
 

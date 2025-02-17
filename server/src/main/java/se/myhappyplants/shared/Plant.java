@@ -10,6 +10,7 @@ import se.myhappyplants.client.model.PictureRandomizer;
 // TODO: cleanup class
 public class Plant {
 
+    // naming convention consistent with database
     private int id;
     private String common_name;
     private String scientific_name;
@@ -35,9 +36,11 @@ public class Plant {
     }
 
 
+    // TODO: fix better Json conversion
     @Override
     public String toString() {
-        return String.format("Scientific name: %s \tCommon name: %s \tFamily name: %s ", scientific_name, common_name, family);
+        return String.format("{\nid: %d,\nscientific_name: %s,\nfamily: %s,\ncommon_name: %s,\nimage_url: %s,\nlight: %s,\nmaintenance: %s,\npoisonous_to_pets: %b,\nwatering_frequency: %d\n},\n",
+                id, scientific_name, family, common_name, image_url, light, maintenance, poisonous_to_pets, watering_frequency);
     }
 
     public String getCommon_name() {

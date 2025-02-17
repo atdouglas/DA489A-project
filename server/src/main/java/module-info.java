@@ -9,7 +9,10 @@ module se.myhappyplants {
     requires jbcrypt;
     requires io.javalin;
     requires com.google.gson;
+    requires annotations;
+    requires com.fasterxml.jackson.databind;
     requires java.sql;
+    requires org.json;
 
     //exports se.myhappyplants.client.controller;
     exports se.myhappyplants.client.model;

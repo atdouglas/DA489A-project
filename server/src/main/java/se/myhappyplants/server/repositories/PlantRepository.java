@@ -6,17 +6,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
-/**
- * Class responsible for calling the database about plants.
- * Created by: Frida Jacobsson 2021-03-30
- * Updated by: Christopher O'Driscoll
- */
 public class PlantRepository extends Repository {
 
     // TODO: adjust to new implementation
-    public ArrayList<Plant> getResult(String plantSearch) {
-        ArrayList<Plant> plantList = new ArrayList<>();
+    public List<Plant> getResult(String plantSearch) {
+        List<Plant> plantList = new ArrayList<>();
         String query = """
                 SELECT * FROM plants WHERE scientific_name LIKE ? OR common_name LIKE ? OR family LIKE ?;
                 """;
@@ -42,8 +38,9 @@ public class PlantRepository extends Repository {
             }
         } catch (SQLException sqlException) {
             System.out.println(sqlException.getMessage());
-            plantList = null;
+            return null;
         }
+
         return plantList;
     }
 
