@@ -13,7 +13,8 @@ public class UserPlant extends Plant {
         last_watered = new Date(System.currentTimeMillis());
     }
 
-    // TODO: FIX
+    // TODO: FIX Shall return in milliseconds how long it has been since the plant has been watered.
+    // TODO Use the water_frequency variable to calculate this.
     public double getProgress() {
         long difference = System.currentTimeMillis() - last_watered.getTime();
         difference -= 43000000l;
@@ -27,8 +28,9 @@ public class UserPlant extends Plant {
         return progress;
     }
 
-    // TODO: FIX
-    public String getDaysUntilWater() {
+    // TODO: FIX Shall return a string to indicate how long it has been since the plant has been watered.
+    // TODO: Under one day in this format (12h). If it's over one day then use this format (1d 2h)
+    public String getFormattedDaysSinceWatered() {
         long millisSinceLastWatered = System.currentTimeMillis() - last_watered.getTime();
         long millisUntilNextWatering = getWaterFrequency() - millisSinceLastWatered;
         long millisInADay = 86400000;
@@ -54,7 +56,7 @@ public class UserPlant extends Plant {
         return last_watered;
     }
 
-    // TODO: fix?
+    // TODO: Maybe remove this?
     public void setLastWatered(LocalDate localDate) {
         Date date = java.sql.Date.valueOf(localDate);
         this.last_watered = date;

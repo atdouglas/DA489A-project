@@ -8,6 +8,11 @@ package se.myhappyplants.server.repositories;
 // TODO: fix this whole thing...
 public class UserPlantRepository extends Repository {
 
+
+
+
+    //TODO Update this class to work on the new implementation.
+
     /**
      * Method to save a new plant in database
      * Author: Frida Jacobsson
@@ -15,7 +20,9 @@ public class UserPlantRepository extends Repository {
      *
      * @param plant an instance of a newly created plant by user
      * @return a boolean value, true if the plant was stored successfully
-     **//*
+     **/
+
+    /*
 
     public boolean savePlant(User user, Plant plant) {
         boolean success = false;
@@ -35,14 +42,18 @@ public class UserPlantRepository extends Repository {
         }
         return success;
     }
+    */
 
-    *//**
+
+    //TODO Update this method to work on the new implementation
+    /**
      * Method that returns all the plants connected to the logged in user.
      * Author: Linn Borgström,
      * Updated by: Frida Jacobsson
      *
      * @return an arraylist if plants stored in the database
-     **//*
+     **/
+    /*
     public ArrayList<Plant> getUserLibrary(int userId) {
         ArrayList<Plant> plantList = new ArrayList<Plant>();
         String query = """
@@ -66,7 +77,10 @@ public class UserPlantRepository extends Repository {
         return plantList;
     }
 
-    *//**
+    */
+
+    //TODO Update this method to work on the new implementation
+    /**
      * Method that returns one specific plant based on nickname.
      *
      * @param nickname
@@ -90,13 +104,18 @@ public class UserPlantRepository extends Repository {
         return plant;
     }
 
-    *//**
+    */
+
+    //TODO Update this method to work on the new implementation
+    /**
      * Method that makes a query to delete a specific plant from table Plant
      *
      * @param user     the user that owns the plant
      * @param nickname nickname of the plant
      * @return boolean result depending on the result, false if exception
-     **//*
+     **/
+
+    /*
     public boolean deletePlant(User user, String nickname) {
         boolean plantDeleted = false;
         String sqlSafeNickname = nickname.replace("'", "''");
@@ -111,14 +130,19 @@ public class UserPlantRepository extends Repository {
         return plantDeleted;
     }
 
-    *//**
+    */
+
+    //TODO Update this method to work on the new implementation
+    /**
      * Method that makes a query to change the last watered date of a specific plant in table Plant
      *
      * @param user     the user that owns the plant
      * @param nickname nickname of the plant
      * @param date     new data to change to
      * @return boolean result depending on the result, false if exception
-     **//*
+     **/
+
+    /*
     public boolean changeLastWatered(User user, String nickname, LocalDate date) {
         boolean dateChanged = false;
         String sqlSafeNickname = nickname.replace("'", "''");
@@ -133,6 +157,10 @@ public class UserPlantRepository extends Repository {
         return dateChanged;
     }
 
+     */
+
+    //TODO Update this method to work on the new implementation
+    /*
     public boolean changeNickname(User user, String nickname, String newNickname) {
         boolean nicknameChanged = false;
         String sqlSafeNickname = nickname.replace("'", "''");
@@ -148,36 +176,11 @@ public class UserPlantRepository extends Repository {
         return nicknameChanged;
     }
 
-    public boolean changeAllToWatered(User user) {
-        boolean dateChanged = false;
-        LocalDate date = java.time.LocalDate.now();
-        String query = "UPDATE plant SET last_watered = '" + date + "' WHERE user_id = " + user.getUniqueId() + ";";
-        try {
-            database.executeUpdate(query);
-            dateChanged = true;
-        }
-        catch (SQLException sqlException) {
-            sqlException.printStackTrace();
-        }
-        return dateChanged;
-    }
+        // TODO: adjust to new implementation
+    */
 
-    public boolean changePlantPicture(User user, Plant plant) {
-        boolean pictureChanged = false;
-        String nickname = plant.getNickname();
-        String sqlSafeNickname = nickname.replace("'", "''");
-        String query = "UPDATE plant SET image_url = '" + plant.getImageURL() + "' WHERE user_id = " + user.getUniqueId() + " AND nickname = '" + sqlSafeNickname + "';";
-        try {
-            database.executeUpdate(query);
-            pictureChanged = true;
-        }
-        catch (SQLException sqlException) {
-            sqlException.printStackTrace();
-        }
-        return pictureChanged;
-    }
+    /*
 
-    // TODO: adjust to new implementation
     public long getWaterFrequency(int plantId) {
         long waterFrequency = -1;
         String query = """
@@ -198,5 +201,47 @@ public class UserPlantRepository extends Repository {
             connection.closeConnection();
         }
         return waterFrequency;
-    }*/
+
+    }
+     */
+
+
+
+    //TODO The remaining methods under here will probably get deleted but let the code stay at the moment.
+
+    /*
+
+    public boolean changeAllToWatered(User user) {
+        boolean dateChanged = false;
+        LocalDate date = java.time.LocalDate.now();
+        String query = "UPDATE plant SET last_watered = '" + date + "' WHERE user_id = " + user.getUniqueId() + ";";
+        try {
+            database.executeUpdate(query);
+            dateChanged = true;
+        }
+        catch (SQLException sqlException) {
+            sqlException.printStackTrace();
+        }
+        return dateChanged;
+    }
+
+    /*
+    public boolean changePlantPicture(User user, Plant plant) {
+        boolean pictureChanged = false;
+        String nickname = plant.getNickname();
+        String sqlSafeNickname = nickname.replace("'", "''");
+        String query = "UPDATE plant SET image_url = '" + plant.getImageURL() + "' WHERE user_id = " + user.getUniqueId() + " AND nickname = '" + sqlSafeNickname + "';";
+        try {
+            database.executeUpdate(query);
+            pictureChanged = true;
+        }
+        catch (SQLException sqlException) {
+            sqlException.printStackTrace();
+        }
+        return pictureChanged;
+    }
+
+     */
+
+
 }
