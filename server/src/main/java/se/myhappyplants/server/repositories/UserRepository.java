@@ -8,6 +8,10 @@ import java.sql.*;
 public class UserRepository extends Repository {
 
     public boolean saveUser(User user) {
+        if(user.getPassword() == null || user.getPassword().isEmpty()){
+            return false;
+        }
+
         boolean success = false;
         String hashedPassword = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt());
         String query = """
@@ -29,13 +33,12 @@ public class UserRepository extends Repository {
     public boolean checkLogin(String email, String password) {
         boolean isVerified = false;
         String query = """
-                SELECT ? FROM registered_users WHERE email = ?;
+                SELECT password FROM registered_users WHERE email = ?;
                 """;
         try (java.sql.Connection connection = startConnection()) {
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-                preparedStatement.setString(1, password);
-                preparedStatement.setString(2, email);
-                ResultSet resultSet = preparedStatement.executeQuery(query);
+                preparedStatement.setString(1, email);
+                ResultSet resultSet = preparedStatement.executeQuery();
                 if (resultSet.next()) {
                     String hashedPassword = resultSet.getString(1);
                     isVerified = BCrypt.checkpw(password, hashedPassword);
@@ -78,6 +81,7 @@ public class UserRepository extends Repository {
             try (Connection connection = startConnection()) {
                 connection.setAutoCommit(false);
                 try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                    preparedStatement.setString(1, email);
                     ResultSet resultSet = preparedStatement.executeQuery();
                     if (!resultSet.next()) {
                         throw new SQLException();
