@@ -55,13 +55,12 @@ public class UserRepository extends Repository {
         try (java.sql.Connection connection = startConnection()) {
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                 preparedStatement.setString(1, email);
-                ResultSet resultSet = preparedStatement.executeQuery(query);
+                ResultSet resultSet = preparedStatement.executeQuery();
                 while (resultSet.next()) {
                     int uniqueID = resultSet.getInt(1);
-                    String username = resultSet.getString(2);
-                    boolean notificationActivated = resultSet.getBoolean(3);
-                    boolean funFactsActivated = resultSet.getBoolean(4);
-                    user = new User(uniqueID, email, username, notificationActivated, funFactsActivated);
+                    boolean notificationActivated = resultSet.getBoolean(2);
+                    boolean funFactsActivated = resultSet.getBoolean(3);
+                    user = new User(uniqueID, email, notificationActivated, funFactsActivated);
                 }
             }
         } catch (SQLException sqlException) {

@@ -11,7 +11,6 @@ public class User {
 
     private int uniqueId;
     private String email;
-    private String username;
     private String password;
     private String avatarURL;
     private boolean isNotificationsActivated = true;
@@ -20,11 +19,21 @@ public class User {
     /**
      * Constructor used when registering a new user account
      */
-    public User(String email, String username, String password, boolean isNotificationsActivated) {
+    public User(String email, String password, boolean isNotificationsActivated) {
         this.email = email;
-        this.username = username;
         this.password = password;
         this.isNotificationsActivated = isNotificationsActivated;
+    }
+
+    /**
+     * Constructor used for testing purposes.
+     * @author Douglas Almö Thorsell
+     */
+    public User(String email, String password, boolean isNotificationsActivated, boolean funFactsActivated) {
+        this.email = email;
+        this.password = password;
+        this.isNotificationsActivated = isNotificationsActivated;
+        this.funFactsActivated = funFactsActivated;
     }
 
     /**
@@ -35,21 +44,19 @@ public class User {
         this.password = password;
     }
 
-    public User(int uniqueID, String email, String username, boolean notificationsActivated) {
+    public User(int uniqueID, String email, boolean notificationsActivated) {
         this.uniqueId = uniqueID;
         this.email = email;
-        this.username = username;
         this.isNotificationsActivated = notificationsActivated;
 
     }
     /**
      * Constructor used to return a users details from the database
      */
-    public User(int uniqueId, String email, String username, boolean isNotificationsActivated, boolean funFactsActivated) {
+    public User(int uniqueId, String email, boolean isNotificationsActivated, boolean funFactsActivated) {
 
         this.uniqueId = uniqueId;
         this.email = email;
-        this.username = username;
         this.isNotificationsActivated = isNotificationsActivated;
         this.funFactsActivated = funFactsActivated;
     }
@@ -57,15 +64,6 @@ public class User {
     public int getUniqueId() {
         return uniqueId;
     }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
 
     public String getEmail() {
         return email;
