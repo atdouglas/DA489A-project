@@ -8,7 +8,7 @@ import java.sql.*;
 public class UserRepository extends Repository {
 
     public boolean saveUser(User user) {
-        if(user.getPassword() == null || user.getPassword().isEmpty()){
+        if(!checkEmailAndPasswordLegal(user.getEmail(), user.getPassword())){
             return false;
         }
 
@@ -149,6 +149,27 @@ public class UserRepository extends Repository {
             System.out.println(sqlException.getMessage());
         }
         return funFactsChanged;
+    }
+
+
+    /**
+     * Checks if the email and password of a user is a legal input.
+     * @author Douglas Almö Thorsell
+     */
+    public boolean checkEmailAndPasswordLegal(String email, String password){
+        if(password == null || password.length() > 72 || password.length() < 6){
+            return false;
+        }
+
+        if(email == null || email.isEmpty()){
+            return false;
+        }
+
+        if(!email.contains("@") || !email.contains(".")){
+            return false;
+        }
+
+        return true;
     }
 }
 

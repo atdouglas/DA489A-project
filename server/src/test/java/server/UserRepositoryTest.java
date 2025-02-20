@@ -7,7 +7,7 @@ import se.myhappyplants.server.repositories.UserRepository;
 import se.myhappyplants.shared.User;
 
 /**
- * Test class for unit tests in the UserRepository clas.
+ * Test class for unit tests in the UserRepository class.
  *
  * @see UserRepository
  * @author Douglas Almö Thorsell
@@ -37,9 +37,51 @@ public class UserRepositoryTest {
             assertTrue(result, "The method should return true because a valid user was submitted.");
         }
 
-
         @Test
         @Order(2)
+        void saveUserCorrectInputEmailLimit(){
+            User newTestUser = new User(
+                    "testteestesttestestestestestestestest@testmail.com",
+                    "test123",
+                    true,
+                    true);
+
+            boolean result = userRepository.saveUser(newTestUser);
+            userRepository.deleteAccount(newTestUser.getEmail(), newTestUser.getPassword());
+            assertTrue(result, "The method should return true because a valid user was submitted.");
+        }
+
+        @Test
+        @Order(3)
+        void saveUserCorrectInputPassLowLimit(){
+            User newTestUser = new User(
+                    "test@testmail1.com",
+                    "test12",
+                    true,
+                    true);
+
+            boolean result = userRepository.saveUser(newTestUser);
+            userRepository.deleteAccount(newTestUser.getEmail(), newTestUser.getPassword());
+            assertTrue(result, "The method should return true because a valid user was submitted.");
+        }
+
+        @Test
+        @Order(4)
+        void saveUserCorrectInputPassUpperLimit(){
+            User newTestUser = new User(
+                    "test@testmail2.com",
+                    "test12312312312312312312312312312312312312312312312312312312312312312312",
+                    true,
+                    true);
+
+            boolean result = userRepository.saveUser(newTestUser);
+            userRepository.deleteAccount(newTestUser.getEmail(), newTestUser.getPassword());
+            assertTrue(result, "The method should return true because a valid user was submitted.");
+        }
+
+
+        @Test
+        @Order(5)
         void getUserDetailsCorrectInput(){
             User result = userRepository.getUserDetails(testUser.getEmail());
 
@@ -55,7 +97,7 @@ public class UserRepositoryTest {
         }
 
         @Test
-        @Order(3)
+        @Order(6)
         void checkLoginCorrectInput(){
             boolean result = userRepository.checkLogin(testUser.getEmail(), testUser.getPassword());
 
@@ -63,7 +105,7 @@ public class UserRepositoryTest {
         }
 
         @Test
-        @Order(4)
+        @Order(7)
         void changeNotificationsCorrectInput(){
             boolean result = userRepository.changeNotifications(testUser.getEmail(), false);
 
@@ -72,7 +114,7 @@ public class UserRepositoryTest {
         }
 
         @Test
-        @Order(5)
+        @Order(8)
         void changeFunFactsCorrectInput(){
             boolean result = userRepository.changeFunFacts(testUser.getEmail(), false);
 
@@ -81,11 +123,13 @@ public class UserRepositoryTest {
         }
 
         @Test
-        @Order(6)
+        @Order(9)
         void deleteAccountCorrectInput(){
-            boolean result = userRepository.deleteAccount(testUser.getEmail(), testUser.getPassword());
+            boolean result1 = userRepository.deleteAccount(testUser.getEmail(), testUser.getPassword());
 
-            assertTrue(result, "The user was not deleted from the database.");
+            assertTrue(result1, "The user was not deleted from the database.");
+
+
         }
 
     }
@@ -94,9 +138,57 @@ public class UserRepositoryTest {
     @Order(2)
     class TestIncorrectInputSaveUser{
         @Test
-        void saveUserIncorrectEmailInput(){
+        void saveUserIncorrectEmailInputTooLong(){
             User incorrectUser = new User(
                     "test@testmail.commmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm",
+                    "test123",
+                    true,
+                    true);
+
+            boolean result = userRepository.saveUser(incorrectUser);
+            assertFalse(result, "The method should return false because a too long email was submitted.");
+        }
+
+        @Test
+        void saveUserIncorrectEmailInputTooLong51Char(){
+            User incorrectUser = new User(
+                    "test@testmail.commmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm",
+                    "test123",
+                    true,
+                    true);
+
+            boolean result = userRepository.saveUser(incorrectUser);
+            assertFalse(result, "The method should return false because a too long email was submitted.");
+        }
+
+        @Test
+        void saveUserIncorrectEmailInputNull(){
+            User incorrectUser = new User(
+                    null,
+                    "test123",
+                    true,
+                    true);
+
+            boolean result = userRepository.saveUser(incorrectUser);
+            assertFalse(result, "The method should return false because a null email was submitted.");
+        }
+
+        @Test
+        void saveUserIncorrectEmailInputEmpty(){
+            User incorrectUser = new User(
+                    "",
+                    "test123",
+                    true,
+                    true);
+
+            boolean result = userRepository.saveUser(incorrectUser);
+            assertFalse(result, "The method should return false because an empty email was submitted.");
+        }
+
+        @Test
+        void saveUserIncorrectEmailInputNotAValidAddress(){
+            User incorrectUser = new User(
+                    "testmail",
                     "test123",
                     true,
                     true);
@@ -114,7 +206,7 @@ public class UserRepositoryTest {
                     true);
 
             boolean result = userRepository.saveUser(incorrectUser);
-            assertFalse(result, "The method should return false because an invalid password was submitted.");
+            assertFalse(result, "The method should return false because a null password was submitted.");
         }
 
         @Test
@@ -126,14 +218,58 @@ public class UserRepositoryTest {
                     true);
 
             boolean result = userRepository.saveUser(incorrectUser);
-            assertFalse(result, "The method should return false because an invalid password was submitted.");
+            assertFalse(result, "The method should return false because a empty password was submitted.");
+        }
+
+        @Test
+        void saveUserIncorrectPasswordInputTooLong(){
+            User incorrectUser = new User(
+                    "test@testmail.com",
+                    "abcdefghijklmnopqrstuvwxyz123456790abcdefghijklmnopqrstuvwxyz123456790abcdefghijklmnopq",
+                    true,
+                    true);
+
+            boolean result = userRepository.saveUser(incorrectUser);
+            assertFalse(result, "The method should return false because a password with too long of a length was submitted.");
+        }
+
+        @Test
+        void saveUserIncorrectPasswordInputTooShort(){
+            User incorrectUser = new User(
+                    "test@testmail.com",
+                    "abcde",
+                    true,
+                    true);
+
+            boolean result = userRepository.saveUser(incorrectUser);
+            assertFalse(result, "The method should return false because an password with too short of a length was submitted.");
         }
     }
 
     @Nested
     @Order(3)
-    class TestIncorrectInputCheckLogin{
+    class TestIncorrectInputDetails{
 
+        @Test
+        void getUserDetailsWrongInput(){
+            User result = userRepository.getUserDetails("asd");
+
+            assertNull(result, "No such user exist so null should've been returned.");
+        }
+
+        @Test
+        void getUserDetailsWrongInputNull(){
+            User result = userRepository.getUserDetails(null);
+
+            assertNull(result, "No such user exist so null should've been returned.");
+        }
+
+        @Test
+        void getUserDetailsWrongInputEmpty(){
+            User result = userRepository.getUserDetails("");
+
+            assertNull(result, "No such user exist so null should've been returned.");
+        }
     }
 }
 
