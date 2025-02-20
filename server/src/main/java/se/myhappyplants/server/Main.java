@@ -11,7 +11,7 @@ public class Main {
     private static final DatabaseConnectionHandler dbch = new DatabaseConnectionHandler();
 
     public static void main(String[] args) {
-        Javalin app = Javalin.create().start(7000);
+        Javalin app = Javalin.create().start(7888);
 
         app.get("/", ctx -> ctx.result("Hello World"));
 
