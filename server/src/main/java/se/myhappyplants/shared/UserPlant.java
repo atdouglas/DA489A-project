@@ -17,7 +17,7 @@ public class UserPlant extends Plant {
     // TODO Use the water_frequency variable to calculate this.
     public double getProgress() {
         long difference = System.currentTimeMillis() - last_watered.getTime();
-        difference -= 43000000l;
+        difference -= 43000000;
         double progress = 1.0 - ((double) difference / (double) getWaterFrequency());
         if (progress <= 0.02) {
             progress = 0.02;
