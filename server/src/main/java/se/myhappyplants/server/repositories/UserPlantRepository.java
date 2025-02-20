@@ -9,8 +9,6 @@ package se.myhappyplants.server.repositories;
 public class UserPlantRepository extends Repository {
 
 
-
-
     //TODO Update this class to work on the new implementation.
 
     /**
@@ -178,10 +176,27 @@ public class UserPlantRepository extends Repository {
 
         // TODO: adjust to new implementation
     */
+    /*
+    public boolean changeAllToWatered(User user) {
+        boolean dateChanged = false;
+        LocalDate date = java.time.LocalDate.now();
+        String query = "UPDATE plant SET last_watered = '" + date + "' WHERE user_id = " + user.getUniqueId() + ";";
+        try {
+            database.executeUpdate(query);
+            dateChanged = true;
+        }
+        catch (SQLException sqlException) {
+            sqlException.printStackTrace();
+        }
+        return dateChanged;
+    }
+    /*
+
+    //TODO The remaining methods under here will probably get deleted but let the code stay at the moment.
 
     /*
 
-    public long getWaterFrequency(int plantId) {
+        public long getWaterFrequency(int plantId) {
         long waterFrequency = -1;
         String query = """
         SELECT water_frequency FROM species WHERE id = ?;
@@ -205,26 +220,6 @@ public class UserPlantRepository extends Repository {
     }
      */
 
-
-
-    //TODO The remaining methods under here will probably get deleted but let the code stay at the moment.
-
-    /*
-
-    public boolean changeAllToWatered(User user) {
-        boolean dateChanged = false;
-        LocalDate date = java.time.LocalDate.now();
-        String query = "UPDATE plant SET last_watered = '" + date + "' WHERE user_id = " + user.getUniqueId() + ";";
-        try {
-            database.executeUpdate(query);
-            dateChanged = true;
-        }
-        catch (SQLException sqlException) {
-            sqlException.printStackTrace();
-        }
-        return dateChanged;
-    }
-
     /*
     public boolean changePlantPicture(User user, Plant plant) {
         boolean pictureChanged = false;
@@ -240,8 +235,5 @@ public class UserPlantRepository extends Repository {
         }
         return pictureChanged;
     }
-
      */
-
-
 }
