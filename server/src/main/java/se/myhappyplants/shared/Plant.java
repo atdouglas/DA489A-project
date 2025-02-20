@@ -21,6 +21,8 @@ public class Plant {
     // time in millisecond form
     private long watering_frequency;
     private boolean poisonous_to_pets;
+    public Plant() {
+    };
 
     public Plant(int id, String scientific_name, String family, String common_name,
                  String image_url, String light, String maintenance, boolean poisonous_to_pets, long watering_frequency) {
