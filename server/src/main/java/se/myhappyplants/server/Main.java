@@ -38,7 +38,7 @@ public class Main {
                 public InputStream toJsonStream(@NotNull Object obj, @NotNull Type type) {
                     return new ByteArrayInputStream(gson.toJson(obj, type).getBytes(StandardCharsets.UTF_8));
                 }
-
+/*
                 @NotNull
                 @Override
                 public <T> T fromJsonString(@NotNull String json, @NotNull Type targetType) {
@@ -49,7 +49,7 @@ public class Main {
                 @Override
                 public <T> T fromJsonStream(@NotNull InputStream json, @NotNull Type targetType) {
                     return gson.fromJson(new InputStreamReader(json, StandardCharsets.UTF_8), targetType);
-                }
+                }*/
             });
 
         }).start(7888);
