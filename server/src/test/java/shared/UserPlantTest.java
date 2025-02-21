@@ -3,6 +3,9 @@ package shared;
 import org.junit.jupiter.api.Test;
 import se.myhappyplants.shared.UserPlant;
 
+import java.time.LocalDate;
+
+
 /**
  * Test class for the UserPlant class.
  * @see se.myhappyplants.shared.UserPlant
@@ -10,6 +13,9 @@ import se.myhappyplants.shared.UserPlant;
  */
 
 public class UserPlantTest {
+    /*
+
+
     private UserPlant testPlant = new UserPlant(
             527,
             "Actaea racemosa",
@@ -24,7 +30,10 @@ public class UserPlantTest {
     );
 
     @Test
-    void getWaterProgress(){
-
+    void getWaterProgressCorrectInput(){
+        long currentTime = System.currentTimeMillis();
+        testPlant.setLastWatered(new LocalDate(currentTime));
     }
+         */
+     
 }
