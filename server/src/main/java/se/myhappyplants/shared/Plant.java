@@ -35,7 +35,6 @@ public class Plant {
         this.watering_frequency = watering_frequency;
     }
 
-
     // TODO: fix better Json conversion
     @Override
     public String toString() {
@@ -86,5 +85,4 @@ public class Plant {
     public long getWaterFrequency() {
         return watering_frequency;
     }
-
 }

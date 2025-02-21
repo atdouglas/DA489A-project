@@ -1,5 +1,17 @@
 package se.myhappyplants.server.repositories;
 
+import org.mindrot.jbcrypt.BCrypt;
+import se.myhappyplants.shared.Plant;
+import se.myhappyplants.shared.User;
+import se.myhappyplants.shared.UserPlant;
+
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.time.LocalDate;
+import java.util.ArrayList;
+
 /**
  * Class responsible for calling the database about a users library.
  * Created by: Linn Borgström
@@ -11,107 +23,96 @@ public class UserPlantRepository extends Repository {
 
     //TODO Update this class to work on the new implementation.
 
-    /**
-     * Method to save a new plant in database
-     * Author: Frida Jacobsson
-     * Updated Frida Jacobsson 2021-04-29
-     *
-     * @param plant an instance of a newly created plant by user
-     * @return a boolean value, true if the plant was stored successfully
-     **/
 
-    /*
-
-    public boolean savePlant(User user, Plant plant) {
+    public boolean savePlant(User user, UserPlant userPlant) {
         boolean success = false;
         String query = """
-        INSERT INTO user_plants (user_id, nickname, plant_id, last_watered, image_url) VALUES (?, ?, ?, ?, ?);
-        """;
-        try (PreparedStatement preparedStatement = connection.getConnection().prepareStatement(query)) {
-            preparedStatement.setInt(1, user.getUniqueId());
-            preparedStatement.setString(2, plant.getNickname());
-            preparedStatement.setInt(3, plant.getPlantId());
-            preparedStatement.setDate(4, plant.getLastWatered());
-            preparedStatement.setString(5, plant.getImageURL());
-            success = true;
-        }
-        catch (SQLException sqlException) {
+                INSERT INTO user_plants (user_id, nickname,last_watered, plant_id, image_url) VALUES (?, ?, ?, ?, ?);
+                """;
+        try (java.sql.Connection connection = startConnection()) {
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                preparedStatement.setInt(1, user.getUniqueId());
+                preparedStatement.setString(2, userPlant.getNickname());
+                preparedStatement.setLong(3, userPlant.getLastWatered());
+                preparedStatement.setInt(4, userPlant.getId());
+                preparedStatement.setString(5, userPlant.getImage_url());
+                preparedStatement.executeUpdate();
+                success = true;
+            }
+        } catch (SQLException sqlException) {
             System.out.println(sqlException.getMessage());
         }
         return success;
     }
-    */
 
 
     //TODO Update this method to work on the new implementation
-    /**
-     * Method that returns all the plants connected to the logged in user.
-     * Author: Linn Borgström,
-     * Updated by: Frida Jacobsson
-     *
-     * @return an arraylist if plants stored in the database
-     **/
-    /*
-    public ArrayList<Plant> getUserLibrary(int userId) {
-        ArrayList<Plant> plantList = new ArrayList<Plant>();
+
+
+    public ArrayList<UserPlant> getUserLibrary(int userId) {
+        ArrayList<UserPlant> plantList = new ArrayList<UserPlant>();
         String query = """
-        SELECT nickname, plant_id, last_watered, image_url FROM user_plants WHERE user_id = ?
-        """;
-        try (PreparedStatement preparedStatement = connection.getConnection().prepareStatement(query)) {
-            preparedStatement.setInt(1, userId);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()) {
-                String nickname = resultSet.getString("nickname");
-                int plantId = resultSet.getInt("plant_id");
-                Date lastWatered = resultSet.getDate("last_watered");
-                String imageURL = resultSet.getString("image_url");
-                long waterFrequency = getWaterFrequency(plantId);
-                plantList.add(new Plant(nickname, plantId, lastWatered, waterFrequency, imageURL));
+                SELECT p.*, up.nickname, up.last_watered FROM plants p JOIN user_plants up ON p.id = up.plant_id WHERE up.user_id = ?
+                """;
+        try (java.sql.Connection connection = startConnection()) {
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                preparedStatement.setInt(1, userId);
+                ResultSet resultSet = preparedStatement.executeQuery();
+                while (resultSet.next()) {
+                    int plantId = resultSet.getInt("id");
+                    String scientificName = resultSet.getString("scientific_name");
+                    String family = resultSet.getString("family");
+                    String commonName = resultSet.getString("common_name");
+                    String imageURL = resultSet.getString("image_url");
+                    String light = resultSet.getString("light");
+                    String maintenance = resultSet.getString("maintenance");
+                    boolean poisonousToPets = resultSet.getBoolean("poisonous_to_pets");
+                    long waterFrequency = resultSet.getLong("water_frequency");
+                    String nickname = resultSet.getString("nickname");
+                    long lastWatered = resultSet.getLong("last_watered");
+                    plantList.add(new UserPlant(plantId, scientificName, family, commonName, imageURL, light, maintenance, poisonousToPets, waterFrequency, nickname, lastWatered));
+                }
             }
-        }
-        catch (SQLException sqlException) {
+        } catch (SQLException sqlException) {
             System.out.println(sqlException.getMessage());
         }
         return plantList;
     }
 
-    */
-
     //TODO Update this method to work on the new implementation
-    /**
-     * Method that returns one specific plant based on nickname.
-     *
-     * @param nickname
-     * @return an instance of a specific plant from the database, null if no plant with the specific nickname exists
-     **//*
-    public Plant getPlant(User user, String nickname) {
-        Plant plant = null;
-        String sqlSafeNickname = nickname.replace("'", "''");
-        String query = "SELECT nickname, plant_id, last_watered, image_url FROM \"Plant\" WHERE user_id =" + user.getUniqueId() + "AND nickname = '" + sqlSafeNickname + "';";
-        try {
-            ResultSet resultSet = database.executeQuery(query);
-            String plantId = resultSet.getString("plant_id");
-            Date lastWatered = resultSet.getDate("last_watered");
-            String imageURL = resultSet.getString("image_url");
-            long waterFrequency = plantRepository.getWaterFrequency(plantId);
-            plant = new Plant(nickname, plantId, lastWatered, waterFrequency, imageURL);
-        }
-        catch (SQLException sqlException) {
+
+    public UserPlant getUserPlant(int userId, int UniquePlantId) {
+        UserPlant userPlant = null;
+        String query = """
+                        SELECT p.*, up.nickname, up.last_watered FROM plants p JOIN user_plants up ON p.id = up.plant_id WHERE up.id = ? AND up.user_id = ?;
+                """;
+        try (java.sql.Connection connection = startConnection()) {
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                preparedStatement.setInt(1, UniquePlantId);
+                preparedStatement.setInt(2, userId);
+                ResultSet resultSet = preparedStatement.executeQuery();
+                while (resultSet.next()) {
+                    int plantId = resultSet.getInt("id");
+                    String scientificName = resultSet.getString("scientific_name");
+                    String family = resultSet.getString("family");
+                    String commonName = resultSet.getString("common_name");
+                    String imageURL = resultSet.getString("image_url");
+                    String light = resultSet.getString("light");
+                    String maintenance = resultSet.getString("maintenance");
+                    boolean poisonousToPets = resultSet.getBoolean("poisonous_to_pets");
+                    long waterFrequency = resultSet.getLong("water_frequency");
+                    String nickname = resultSet.getString("nickname");
+                    long lastWatered = resultSet.getLong("last_watered");
+                    userPlant = new UserPlant(plantId, scientificName, family, commonName, imageURL, light, maintenance, poisonousToPets, waterFrequency, nickname, lastWatered);
+                }
+            }
+        } catch (SQLException sqlException) {
             System.out.println(sqlException.getMessage());
         }
-        return plant;
+        return userPlant;
     }
 
-    */
-
     //TODO Update this method to work on the new implementation
-    /**
-     * Method that makes a query to delete a specific plant from table Plant
-     *
-     * @param user     the user that owns the plant
-     * @param nickname nickname of the plant
-     * @return boolean result depending on the result, false if exception
-     **/
 
     /*
     public boolean deletePlant(User user, String nickname) {
@@ -131,14 +132,7 @@ public class UserPlantRepository extends Repository {
     */
 
     //TODO Update this method to work on the new implementation
-    /**
-     * Method that makes a query to change the last watered date of a specific plant in table Plant
-     *
-     * @param user     the user that owns the plant
-     * @param nickname nickname of the plant
-     * @param date     new data to change to
-     * @return boolean result depending on the result, false if exception
-     **/
+
 
     /*
     public boolean changeLastWatered(User user, String nickname, LocalDate date) {
