@@ -81,10 +81,11 @@ body {
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     width: 300px;
     text-align: center;
+    margin: 0 auto;
 }
 
 .loginbox h2 {
-    margin-bottom: 30px;
+    margin-bottom: 20px;
     color: #350;
 }
 
@@ -95,6 +96,7 @@ body {
     border: 1px solid #ccc;
     border-radius: 8px;
     background-color: #f0f7f4;
+    box-sizing: border-box;
 }
 
 .loginbox button {
@@ -107,6 +109,7 @@ body {
     color: #350;
     font-size: 16px;
     cursor: pointer;
+    box-sizing: border-box;
 }
 
 .loginbox button:hover {
