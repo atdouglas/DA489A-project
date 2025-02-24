@@ -14,13 +14,11 @@ public class PlantRepository extends Repository {
     public List<Plant> getResult(String plantSearch) {
         List<Plant> plantList = new ArrayList<>();
         String query = """
-                SELECT * FROM plants WHERE scientific_name LIKE ? OR common_name LIKE ? OR family LIKE ?;
+                SELECT * FROM plants WHERE to_tsvector(scientific_name || ' ' || common_name || ' ' || family) @@ to_tsquery(?);
                 """;
         try (java.sql.Connection connection = startConnection()) {
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-                preparedStatement.setString(1, plantSearch);
-                preparedStatement.setString(2, plantSearch);
-                preparedStatement.setString(3, plantSearch);
+                preparedStatement.setString(1, plantSearch + ":*");
                 ResultSet resultSet = preparedStatement.executeQuery();
                 while (resultSet.next()) {
                     int plantId = resultSet.getInt("id");
