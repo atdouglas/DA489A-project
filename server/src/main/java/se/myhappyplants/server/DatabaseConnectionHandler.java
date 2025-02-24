@@ -6,7 +6,6 @@ import se.myhappyplants.server.repositories.UserRepository;
 import se.myhappyplants.server.responses.*;
 import se.myhappyplants.shared.Message;
 import se.myhappyplants.shared.MessageType;
-import se.myhappyplants.shared.Plant;
 
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -48,6 +47,7 @@ public class DatabaseConnectionHandler {
         responders.put(MessageType.register, new Register(userRepository));
         //responders.put(MessageType.savePlant, new SavePlant(userPlantRepository));
         responders.put(MessageType.search, new Search(plantRepository));
+        responders.put(MessageType.getPlant, new GetPlant(plantRepository));
     }
 
     private Message getResponse(Message request) {

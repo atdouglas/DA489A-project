@@ -18,14 +18,49 @@ import java.util.List;
 public class Main {
 
     private static final DatabaseConnectionHandler dbch = new DatabaseConnectionHandler();
+    private static final Gson gson = new Gson();
+    private static Javalin app;
+
 
     public static void main(String[] args) {
+        app = getApp();
 
-        // Create a Gson instance
-        Gson gson = new Gson();
+        app.start(7888);
 
-        // Create Javalin and configure a custom JsonMapper
-        Javalin app = Javalin.create(config -> {
+        app.get("/", ctx -> ctx.result("Plantopedia API"));
+
+        setUpGetPlant();
+        setUpSearch();
+    }
+
+    private static void setUpGetPlant(){
+        app.get("/plants/{id}", ctx ->{
+            Plant plant = dbch.databaseRequest(new Message(MessageType.getPlant, ctx.pathParam("id"))).getPlant();
+
+            if(plant == null){
+                ctx.status(404).result("No plant with this id was found.");
+            }else {
+                ctx.json(plant);
+            }
+        });
+    }
+
+    private static void setUpSearch(){
+        app.get("/search/{search_term}", ctx -> {
+            List<Plant> plantList = dbch.databaseRequest(
+                    new Message(MessageType.search, ctx.pathParam("search_term"))
+            ).getPlantArray();
+
+            if (plantList.isEmpty()) {
+                ctx.status(404).result("No plants found");
+            } else {
+                ctx.json(plantList);
+            }
+        });
+    }
+
+    private static Javalin getApp(){
+        return Javalin.create(config -> {
             config.jsonMapper(new JsonMapper() {
                 @NotNull
                 @Override
@@ -52,22 +87,6 @@ public class Main {
                 }
             });
 
-        }).start(7888);
-
-        // Simple test endpoint
-        app.get("/", ctx -> ctx.result("Hello World"));
-
-        // Example of an endpoint that returns a list of Plants
-        app.get("/search/{search_term}", ctx -> {
-            List<Plant> plantList = dbch.databaseRequest(
-                    new Message(MessageType.search, ctx.pathParam("search_term"))
-            ).getPlantArray();
-
-            if (plantList.isEmpty()) {
-                ctx.status(404).result("No plants found");
-            } else {
-                ctx.json(plantList);
-            }
         });
     }
 }

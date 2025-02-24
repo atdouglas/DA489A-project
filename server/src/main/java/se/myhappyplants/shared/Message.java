@@ -12,6 +12,7 @@ public class Message {
     private String messageText;
     private User user;
     private boolean success;
+    private int plantID;
     private LocalDate date;
     private List<Plant> plantArray;
     private Plant plant;
@@ -58,6 +59,11 @@ public class Message {
         this.success = success;
     }
 
+    public Message(Plant plant, boolean success){
+        this.plant = plant;
+        this.success = success;
+    }
+
     public Message(MessageType messageType, String messageText) {
         this.messageType = messageType;
         this.messageText = messageText;
@@ -94,6 +100,10 @@ public class Message {
 
     public Plant getPlant() {
         return plant;
+    }
+
+    public int getPlantID() {
+        return plantID;
     }
 
     public LocalDate getDate() {
