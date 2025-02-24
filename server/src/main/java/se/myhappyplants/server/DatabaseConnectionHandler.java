@@ -16,8 +16,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 public class DatabaseConnectionHandler {
-    // the database manager offered by the university likely only accepts at most 5 active connections (?)
-    private final ExecutorService executor = Executors.newFixedThreadPool(5);
     private HashMap<MessageType, IResponseHandler> responders = new HashMap<>();
 
     public DatabaseConnectionHandler() {
@@ -61,14 +59,6 @@ public class DatabaseConnectionHandler {
     }
 
     public Message databaseRequest(Message request) {
-        Future<Message> futureTask = executor.submit(() -> getResponse(request));
-        try {
-            return futureTask.get();
-        } catch (InterruptedException | ExecutionException e) {
-            System.out.println(e.getMessage());
-            // return Message even if exception
-            return new Message(false);
-        }
+        return getResponse(request);
     }
-
 }
