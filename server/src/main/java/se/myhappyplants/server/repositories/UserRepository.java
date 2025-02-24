@@ -3,7 +3,9 @@ package se.myhappyplants.server.repositories;
 import org.mindrot.jbcrypt.BCrypt;
 import se.myhappyplants.shared.User;
 
+import java.security.SecureRandom;
 import java.sql.*;
+import java.util.Base64;
 
 public class UserRepository extends Repository {
 
@@ -151,6 +153,15 @@ public class UserRepository extends Repository {
         return funFactsChanged;
     }
 
+    public String getAccessToken(String email, String password){
+        if(!checkLogin(email, password)){
+            return null;
+        }
+
+        return "";
+        
+    }
+
 
     /**
      * Checks if the email and password of a user is a legal input.
@@ -170,6 +181,20 @@ public class UserRepository extends Repository {
         }
 
         return true;
+    }
+
+    /**
+     * Generates an access token for a user.
+     * @author Douglas Almö Thorsell
+     */
+    public String generateToken(){
+        SecureRandom secureRandom = new SecureRandom();
+        Base64.Encoder base64Encoder = Base64.getUrlEncoder();
+
+        byte[] randomBytes = new byte[24];
+        secureRandom.nextBytes(randomBytes);
+
+        return base64Encoder.encodeToString(randomBytes);
     }
 }
 
