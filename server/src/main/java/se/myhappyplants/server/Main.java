@@ -7,6 +7,7 @@ import org.jetbrains.annotations.NotNull;
 import se.myhappyplants.shared.Message;
 import se.myhappyplants.shared.MessageType;
 import se.myhappyplants.shared.Plant;
+import se.myhappyplants.shared.User;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -31,6 +32,7 @@ public class Main {
 
         setUpGetPlant();
         setUpSearch();
+        setupRegister();
     }
 
     private static void setUpGetPlant(){
@@ -40,7 +42,7 @@ public class Main {
             if(plant == null){
                 ctx.status(404).result("No plant with this id was found.");
             }else {
-                ctx.json(plant);
+                ctx.status(200).json(plant);
             }
         });
     }
@@ -54,7 +56,20 @@ public class Main {
             if (plantList.isEmpty()) {
                 ctx.status(404).result("No plants found");
             } else {
-                ctx.json(plantList);
+                ctx.status(200).json(plantList);
+            }
+        });
+    }
+
+    private static void setupRegister(){
+        app.post("/register", ctx -> {
+            User newUser = ctx.bodyAsClass(User.class);
+            boolean success = dbch.databaseRequest(new Message(MessageType.register, newUser)).isSuccess();
+
+            if(!success){
+                ctx.status(404).result("There was an error adding the user.");
+            }else{
+                ctx.status(200).result("User registered.");
             }
         });
     }
@@ -90,3 +105,5 @@ public class Main {
         });
     }
 }
+
+
