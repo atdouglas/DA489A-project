@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="../css/style-home-page.css" rel="stylesheet"/>
+  <title>Plantopedia</title>
+</head>
+<body>
+<!-- Navbar -->
+<div class="navbar">
+  <div class="menu-icon">&#9776;</div>
+  <div class="searchbar">
+    <input type="text" placeholder="Search..">
+    <span class="search-icon">&#128269;</span>
+  </div>
+  <div class="logo">Plantopedia</div>
+</div>
+
+<!-- Main Container -->
+<div class="main-container">
+  <div class="plants-container">
+    <div class="plant-card add-plant-card">
+      <div class="add-plant-plus">+</div>
+      <p class="add-plant-text">Add another plant</p>
+    </div>
+  </div>
+</div>
+
+<!-- Conferm or deny elimination plant -->
+<div id="confirmModal" class="confirm-modal">
+  <div class="confirm-modal-content">
+    <p>Are you sure you want to delete it?</p>
+    <button class="yes-button">Yes</button>
+    <button class="no-button">No</button>
+  </div>
+</div>
+
+<!-- Script javascript -->
+<script src="../ts/home-page.js"></script>
+</body>
+</html>
