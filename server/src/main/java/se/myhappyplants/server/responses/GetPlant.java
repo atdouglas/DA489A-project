@@ -1,29 +1,26 @@
-/*
-package se.myhappyplants.server.model.ResponseHandlers;
+package se.myhappyplants.server.responses;
 
-import se.myhappyplants.server.model.ResponseHandlers.IResponseHandler;
-import se.myhappyplants.server.services.PlantRepository;
+import se.myhappyplants.server.repositories.PlantRepository;
 import se.myhappyplants.shared.Message;
 import se.myhappyplants.shared.Plant;
-import se.myhappyplants.shared.PlantDetails;
-*/
+
 /**
  * Class that gets the plant details
- *//*
+ */
 
-public class GetPlantDetails implements IResponseHandler {
+public class GetPlant implements IResponseHandler {
     private PlantRepository plantRepository;
 
-    public GetPlantDetails(PlantRepository plantRepository) {
+    public GetPlant(PlantRepository plantRepository) {
         this.plantRepository = plantRepository;
     }
 
     @Override
     public Message getResponse(Message request) {
         Message response;
-        Plant plant = request.getPlant();
         try {
-            PlantDetails plantDetails = plantRepository.getPlantDetails(plant);
+            int id = Integer.parseInt(request.getMessageText());
+            Plant plantDetails = plantRepository.getPlantDetails(id);
             response = new Message(plantDetails, true);
         } catch (Exception e) {
             response = new Message(false);
@@ -32,4 +29,3 @@ public class GetPlantDetails implements IResponseHandler {
         return response;
     }
 }
-*/

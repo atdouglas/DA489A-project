@@ -13,54 +13,45 @@ public class UserPlant extends Plant {
         this.last_watered = last_watered;
     }
 
-    // TODO: FIX Shall return in milliseconds how long it has been since the plant has been watered.
-    // TODO Use the water_frequency variable to calculate this.
-    public double getProgress(long currentTime) {
-        long difference = currentTime - last_watered;
-        difference -= 43000000;
-        double progress = 1.0 - ((double) difference / (double) getWaterFrequency());
-        if (progress <= 0.02) {
-            progress = 0.02;
+    public long getProgress(long currentTime) {
+        if(currentTime < last_watered || currentTime < 1735732800000.0){
+            return -1;
         }
-        else if (progress >= 0.95) {
-            progress = 1.0;
-        }
-        return progress;
+        return currentTime - last_watered;
     }
 
-    // TODO: FIX Shall return a string to indicate how long it has been since the plant has been watered.
-    // TODO: Under one day in this format (12h). If it's over one day then use this format (1d 2h)
-    /*
+    public String getProgressFormatted(long currentTime) {
+        long progress = getProgress(currentTime);
+        long hours = ((progress/1000)/60)/60;
+        int roundedHours = (int) Math.ceil(hours);
 
+        if(roundedHours < 24){
+            return String.format("%dh", roundedHours);
+        } else if (roundedHours == 24) {
+            return String.format("%dd", 1);
+        }else {
+            int totalDays = roundedHours/24;
+            int totalHours = roundedHours - (totalDays*24);
 
-    public String getFormattedDaysSinceWatered(long currentTime) {
-        //long millisSinceLastWatered = System.currentTimeMillis() - last_watered.getTime();
-        //long millisUntilNextWatering = getWaterFrequency() - millisSinceLastWatered;
-        long millisInADay = 86400000;
+            if(totalHours == 0){
+                return String.format("%dd", totalDays);
+            }
 
-       // double daysExactlyUntilWatering = (double) millisUntilNextWatering / (double) millisInADay;
-
-        int daysUntilWatering = (int) daysExactlyUntilWatering;
-        double decimals = daysExactlyUntilWatering - (int) daysExactlyUntilWatering;
-
-        if (decimals > 0.5) {
-            daysUntilWatering = (int) daysExactlyUntilWatering + 1;
+            return String.format("%dd %hh", totalDays, totalHours);
         }
-
-        String strToReturn = String.format("Needs water in %d days", daysUntilWatering);
-
-        return strToReturn;
     }
-     */
+
 
 
     public long getLastWatered() {
         return last_watered;
     }
 
-    // TODO: Maybe remove this?
-    public void setLastWatered(LocalDate localDate) {
-
+    /**
+     * This method is only used for testing purposes.
+     */
+    public void setLastWatered(long last_watered) {
+        this.last_watered = last_watered;
     }
 
     public String getNickname() {

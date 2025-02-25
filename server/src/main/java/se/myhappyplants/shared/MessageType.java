@@ -19,5 +19,6 @@ public enum MessageType {
     login,
     register,
     //savePlant,
-    search
+    search,
+    getPlant
 }
