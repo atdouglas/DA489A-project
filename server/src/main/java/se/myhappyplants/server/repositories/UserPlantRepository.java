@@ -5,10 +5,7 @@ import se.myhappyplants.shared.Plant;
 import se.myhappyplants.shared.User;
 import se.myhappyplants.shared.UserPlant;
 
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
@@ -114,77 +111,94 @@ public class UserPlantRepository extends Repository {
 
     //TODO Update this method to work on the new implementation
 
-    /*
-    public boolean deletePlant(User user, String nickname) {
+
+    public boolean deletePlant(int userId, int plantId) {
         boolean plantDeleted = false;
-        String sqlSafeNickname = nickname.replace("'", "''");
-        String query = "DELETE FROM plant WHERE user_id =" + user.getUniqueId() + "AND nickname = '" + sqlSafeNickname + "';";
-        try {
-            database.executeUpdate(query);
-            plantDeleted = true;
-        }
-        catch (SQLException sqlException) {
-            System.out.println(sqlException);
+
+        String query = """
+                        DELETE FROM user_plants WHERE plant_id = ? AND user_id = ?;
+                """;
+        try (java.sql.Connection connection = startConnection()) {
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                preparedStatement.setInt(1, plantId);
+                preparedStatement.setInt(2, userId);
+                preparedStatement.executeUpdate();
+                plantDeleted = true;
+            }
+        } catch (SQLException sqlException) {
+            System.out.println(sqlException.getMessage());
         }
         return plantDeleted;
     }
 
-    */
-
     //TODO Update this method to work on the new implementation
 
 
-    /*
-    public boolean changeLastWatered(User user, String nickname, LocalDate date) {
+
+    public boolean changeLastWatered(int userId, int plant_id) {
         boolean dateChanged = false;
-        String sqlSafeNickname = nickname.replace("'", "''");
-        String query = "UPDATE plant SET last_watered = '" + date + "' WHERE user_id = " + user.getUniqueId() + " AND nickname = '" + sqlSafeNickname + "';";
-        try {
-            database.executeUpdate(query);
-            dateChanged = true;
-        }
-        catch (SQLException sqlException) {
-            sqlException.printStackTrace();
+        String query = """ 
+                    UPDATE user_plants SET last_watered = ? WHERE plant_id = ? AND user_id = ?;
+                    """;
+        try (java.sql.Connection connection = startConnection()) {
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                preparedStatement.setLong(1, System.currentTimeMillis());
+                preparedStatement.setInt(2, plant_id);
+                preparedStatement.setInt(3, userId);
+                preparedStatement.executeUpdate();
+                dateChanged = true;
+            }
+        } catch (SQLException sqlException) {
+            System.out.println(sqlException.getMessage());
         }
         return dateChanged;
     }
 
-     */
-
     //TODO Update this method to work on the new implementation
-    /*
-    public boolean changeNickname(User user, String nickname, String newNickname) {
+
+    public boolean changeNickname(int userId, int plantId, String newNickname) {
         boolean nicknameChanged = false;
-        String sqlSafeNickname = nickname.replace("'", "''");
-        String sqlSafeNewNickname = newNickname.replace("'", "''");
-        String query = "UPDATE plant SET nickname = '" + sqlSafeNewNickname + "' WHERE user_id = " + user.getUniqueId() + " AND nickname = '" + sqlSafeNickname + "';";
-        try {
-            database.executeUpdate(query);
-            nicknameChanged = true;
-        }
-        catch (SQLException sqlException) {
-            sqlException.printStackTrace();
+        String query = """
+                    UPDATE user_plants 
+                    SET nickname = ? 
+                    WHERE plant_id = ? AND user_id = ?;
+                   """;
+        try (Connection connection = startConnection()) {
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                preparedStatement.setString(1, newNickname);
+                preparedStatement.setInt(2, plantId);
+                preparedStatement.setInt(3, userId);
+
+                nicknameChanged = true;
+            }
+        } catch (SQLException sqlException) {
+            System.out.println(sqlException.getMessage());
         }
         return nicknameChanged;
     }
 
         // TODO: adjust to new implementation
-    */
-    /*
-    public boolean changeAllToWatered(User user) {
+
+
+    public boolean changeAllToWatered(int userId) {
         boolean dateChanged = false;
-        LocalDate date = java.time.LocalDate.now();
-        String query = "UPDATE plant SET last_watered = '" + date + "' WHERE user_id = " + user.getUniqueId() + ";";
-        try {
-            database.executeUpdate(query);
-            dateChanged = true;
-        }
-        catch (SQLException sqlException) {
-            sqlException.printStackTrace();
+        String query = """
+                    UPDATE user_plants 
+                    SET last_watered = ? 
+                    WHERE user_id = ?;
+                   """;
+        try (Connection connection = startConnection()) {
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                preparedStatement.setLong(1, System.currentTimeMillis());
+                preparedStatement.setInt(2, userId);
+                dateChanged = true;
+            }
+        } catch (SQLException sqlException) {
+            System.out.println(sqlException.getMessage());
         }
         return dateChanged;
     }
-    /*
+
 
     //TODO The remaining methods under here will probably get deleted but let the code stay at the moment.
 
@@ -214,20 +228,4 @@ public class UserPlantRepository extends Repository {
     }
      */
 
-    /*
-    public boolean changePlantPicture(User user, Plant plant) {
-        boolean pictureChanged = false;
-        String nickname = plant.getNickname();
-        String sqlSafeNickname = nickname.replace("'", "''");
-        String query = "UPDATE plant SET image_url = '" + plant.getImageURL() + "' WHERE user_id = " + user.getUniqueId() + " AND nickname = '" + sqlSafeNickname + "';";
-        try {
-            database.executeUpdate(query);
-            pictureChanged = true;
-        }
-        catch (SQLException sqlException) {
-            sqlException.printStackTrace();
-        }
-        return pictureChanged;
-    }
-     */
 }
