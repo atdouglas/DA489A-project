@@ -42,6 +42,9 @@
     font-size: 16px;
     outline: none;
 }
+.navbar .searchbar input:focus {
+    outline: 2px solid #a0cfa6;
+}
 
 .navbar .searchbar .search-icon{
     position: absolute;
@@ -50,3 +53,30 @@
     color: #350;
     cursor: pointer;
 }
+@media (max-width: 950px) {
+    .navbar {
+        flex-wrap: wrap;
+        justify-content: center;
+        padding: 10px;
+    }
+
+    .navbar .logo {
+        position: static;
+        margin: 5px auto;
+        font-size: 20px;
+        order: 1;
+    }
+
+    .navbar .menu-icon {
+        position: static;
+        margin: 5px;
+    }
+
+    .navbar .searchbar {
+        order: 3;
+        width: 100%;
+        max-width: none;
+        flex: none;
+    }
+}
+

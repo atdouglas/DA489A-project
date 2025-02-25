@@ -1,15 +1,4 @@
-body {
-    margin : 0;
-    font-family: Arial, sans-serif;
-    background-color: #f0f7f4;
-    color: #350;
-    background-image: url('../../background-login-page.png');
-    background-repeat: no-repeat;
-    background-position: center center;
-    background-size: cover;
-    background-attachment: fixed;
-}
-
+@import url('default-body.css');
 /* Purpose container */
 .purpose-container {
     display: flex;
