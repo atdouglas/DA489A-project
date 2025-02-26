@@ -89,13 +89,13 @@ public class AddAllPlantsUtility {
                 return;
             }
             String query = """
-                    INSERT INTO plants (id, scientific_name, family, common_name, image_url, light, maintenance, poisonous_to_pets, watering_frequency) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);
+                    INSERT INTO plants (id, common_name, family, scientific_name, image_url, light, maintenance, poisonous_to_pets, watering_frequency) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);
                     """;
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                 preparedStatement.setInt(1, plant.id);
-                preparedStatement.setString(2, plant.scientific_name);
+                preparedStatement.setString(2, plant.common_name);
                 preparedStatement.setString(3, plant.family);
-                preparedStatement.setString(4, plant.common_name);
+                preparedStatement.setString(4, plant.scientific_name);
                 preparedStatement.setString(5, plant.image_url);
                 preparedStatement.setString(6, plant.light);
                 preparedStatement.setString(7, plant.maintenance);

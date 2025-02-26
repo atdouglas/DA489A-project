@@ -32,6 +32,12 @@
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
+.plant-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
 
 .plant-fact {
     background-color: #f0f0f0;
