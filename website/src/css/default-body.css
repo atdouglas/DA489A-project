@@ -6,7 +6,7 @@ body {
     font-family: Georgia, serif;
     background-color: #f0f7f4;
     color: #350;
-    background-image: url('../../public/background-login-page.png');
+    background-image: url('/background-login-page.png');
     background-repeat: no-repeat;
     background-position: center center;
     background-size: cover;

@@ -12,8 +12,8 @@
      <div class="navbar">
         <div class="menu-icon">&#9776;</div>
         <div class="searchbar">
-          <input type="text" placeholder="Search plants...">
-          <span class="search-icon">&#128269;</span> 
+          <input id="search-input" type="text" placeholder="Search plants...">
+          <span id="search-icon" class="search-icon">&#128269;</span> 
         </div>
         <div class="logo">Plantopedia</div>
       </div>
@@ -24,7 +24,7 @@
         <div class="search-results">
             <!--Demo search hit-->
             <div class="search-hit">
-                <img src="../../public/search-explant.jpg" alt="Plant image" class="plant-image">
+                <img src="/search-explant.jpg" alt="Plant image" class="plant-image">
                 <div class="plant-details">
                     <h2 class="plant-name">Tempflower</h2>
                     <p class="scientific-name">Temporirs petulis verdinare</p>
@@ -37,7 +37,7 @@
 
             <!--And another demo search hit // this will be cleaned later-->
             <div class="search-hit">
-                <img src="../../public/search-explant2.jpg" alt="Plant image" class="plant-image">
+                <img src="/search-explant2.jpg" alt="Plant image" class="plant-image">
                 <div class="plant-details">
                     <h2 class="plant-name">Tempflower2</h2>
                     <p class="scientific-name">Temporirs plantatis verdinare</p>
@@ -48,6 +48,7 @@
                 </div>
             </div>
       </div>
-    
+      <script src="../ts/search.ts" type="module"></script>
+      <script src="../ts/navbar.ts" type="module"></script>   
 </body>
 </html>

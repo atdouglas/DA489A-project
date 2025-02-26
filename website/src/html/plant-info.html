@@ -8,15 +8,15 @@
     <title>Plant Info</title>
 </head>
 <body>
-<!-- Navbar -->
-<div class="navbar">
+ <!-- Navbar -->
+ <div class="navbar">
     <div class="menu-icon">&#9776;</div>
     <div class="searchbar">
-        <input placeholder="Search.." type="text">
-        <span class="search-icon">&#128269;</span>
+      <input id="search-input" type="text" placeholder="Search plants...">
+      <span id="search-icon" class="search-icon">&#128269;</span> 
     </div>
     <div class="logo">Plantopedia</div>
-</div>
+  </div>
 <!-- Main Container -->
 <div class="main-container">
     <div class="left-container">
@@ -48,5 +48,6 @@
     </div>
 </div>
 <script src="../ts/plant-info.ts"></script>
+<script src="../ts/navbar.ts" type="module"></script>
 </body>
 </html>
