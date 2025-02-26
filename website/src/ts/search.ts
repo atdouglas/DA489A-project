@@ -13,11 +13,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
 const fetchSearchResults = async (searchTerm: string) => {
     try {
-        const response = await fetch(`/api/search/${encodeURIComponent(searchTerm)}`);
+        //const url = `/api/search/${encodeURIComponent(searchTerm)}`;
+        const url = `http://localhost:7888/search/${encodeURIComponent(searchTerm)}`;
+
+        console.log('This is the formatted url:', url);
+        const response = await fetch(url);
         if(!response.ok){
             throw new Error('nätverket snear yao');
         }
         const plants: Plant[] = await response.json();
+        console.log('Plants:', plants);
         updateSearchResults(plants);
     }catch(error) {
         console.error('Something went wrong with fetch: ', error);

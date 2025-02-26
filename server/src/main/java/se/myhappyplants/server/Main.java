@@ -49,14 +49,17 @@ public class Main {
 
     private static void setUpSearch() {
         app.get("/search/{search_term}", ctx -> ctx.async(() -> {
+            System.out.println("request received, making db request");
                             List<Plant> plantList = dbch.databaseRequest(
                                     new Message(MessageType.search, ctx.pathParam("search_term"))
                             ).getPlantArray();
 
                             if (plantList.isEmpty()) {
                                 ctx.status(404).result("No plants found");
+                                System.out.println("404 was returned, No plants found");
                             } else {
                                 ctx.status(200).json(plantList);
+                                System.out.println("200 was returned, Plants found");
                             }
                         }));
     }
@@ -76,6 +79,11 @@ public class Main {
 
     private static Javalin getApp() {
         return Javalin.create(config -> {
+            config.bundledPlugins.enableCors(cors ->{
+                cors.addRule(corsConfig -> {
+                    corsConfig.allowHost("http://localhost:5173");
+                });
+            });
             config.jsonMapper(new JsonMapper() {
                 @NotNull
                 @Override
