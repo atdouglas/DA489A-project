@@ -1,0 +1,146 @@
+@import url('default-body.css');
+/* Main Container */
+.main-container {
+    display: flex;
+    width: 90%;
+    max-width: 1400px;
+    margin: 20px auto;
+
+    background-color: #d4e8d9;
+    border-radius: 8px;
+    padding: 30px;
+
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+    min-height: calc(100vh - 100px);
+    overflow-y: auto;
+}
+.left-container {
+    width: 35%;
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    row-gap: 10px;
+    box-sizing: border-box;
+    padding: 10px;
+}
+
+.plant-image {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.plant-fact {
+    background-color: #f0f0f0;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+
+.right-container {
+    width: 65%;
+    box-sizing: border-box;
+    padding: 10px;
+    display: grid;
+    grid-template-rows: auto 1fr;
+    gap: 20px;
+}
+
+.top-right {
+    display: grid;
+    grid-template-columns: 90% 10%;
+    align-items: flex-start;
+}
+
+.top-right-left {
+    padding: 10px;
+}
+
+.common-name {
+    font-size: 2em;
+    margin: 0;
+}
+
+.scientific-name {
+    font-style: italic;
+    color: #555;
+    margin: 5px 0 0;
+}
+
+.family-name {
+    font-style: italic;
+    color: #666;
+    margin: 5px 0 0;
+}
+
+.top-right-right {
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-start;
+    padding: 10px;
+}
+
+.add-button {
+    background-color: rgba(51, 61, 49, 0.75);
+    color: #fff;
+    border: none;
+    padding: 10px 50px;
+    cursor: pointer;
+    border-radius: 8px;
+    font-size: 0.9em;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease;
+}
+
+.add-button:hover {
+    background-color: #333d31;
+}
+
+
+.bottom-right {
+    padding: 10px;
+    background-color: #f9f9f9;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+}
+
+.description-title {
+    font-size: 1.5em;
+    letter-spacing: 2px;
+    color: #333;
+    margin-top: 0;
+
+}
+
+.description-text {
+    margin-top: 10px;
+    line-height: 1.4;
+    color: #555;
+
+}
+@media (max-width: 950px) {
+    .main-container {
+        width: 90%;
+        min-height: calc(100vh - 140px);
+
+    }
+    .top-right {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .top-right-right {
+        align-self: flex-end;
+        margin-top: 10px;
+    }
+
+    .common-name {
+        font-size: 1.5em;
+    }
+}

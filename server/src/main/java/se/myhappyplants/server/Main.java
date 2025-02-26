@@ -35,46 +35,46 @@ public class Main {
         setupRegister();
     }
 
-    private static void setUpGetPlant(){
-        app.get("/plants/{id}", ctx ->{
+    private static void setUpGetPlant() {
+        app.get("/plants/{id}", ctx -> ctx.async(() -> {
             Plant plant = dbch.databaseRequest(new Message(MessageType.getPlant, ctx.pathParam("id"))).getPlant();
 
-            if(plant == null){
+            if (plant == null) {
                 ctx.status(404).result("No plant with this id was found.");
-            }else {
+            } else {
                 ctx.status(200).json(plant);
             }
-        });
+        }));
     }
 
-    private static void setUpSearch(){
-        app.get("/search/{search_term}", ctx -> {
-            List<Plant> plantList = dbch.databaseRequest(
-                    new Message(MessageType.search, ctx.pathParam("search_term"))
-            ).getPlantArray();
+    private static void setUpSearch() {
+        app.get("/search/{search_term}", ctx -> ctx.async(() -> {
+                            List<Plant> plantList = dbch.databaseRequest(
+                                    new Message(MessageType.search, ctx.pathParam("search_term"))
+                            ).getPlantArray();
 
-            if (plantList.isEmpty()) {
-                ctx.status(404).result("No plants found");
-            } else {
-                ctx.status(200).json(plantList);
-            }
-        });
+                            if (plantList.isEmpty()) {
+                                ctx.status(404).result("No plants found");
+                            } else {
+                                ctx.status(200).json(plantList);
+                            }
+                        }));
     }
 
-    private static void setupRegister(){
-        app.post("/register", ctx -> {
-            User newUser = ctx.bodyAsClass(User.class);
-            boolean success = dbch.databaseRequest(new Message(MessageType.register, newUser)).isSuccess();
+    private static void setupRegister() {
+        app.post("/register", ctx -> ctx.async(() -> {
+                    User newUser = ctx.bodyAsClass(User.class);
+                    boolean success = dbch.databaseRequest(new Message(MessageType.register, newUser)).isSuccess();
 
-            if(!success){
-                ctx.status(404).result("There was an error adding the user.");
-            }else{
-                ctx.status(200).result("User registered.");
-            }
-        });
+                    if (!success) {
+                        ctx.status(404).result("There was an error adding the user.");
+                    } else {
+                        ctx.status(200).result("User registered.");
+                    }
+                }));
     }
 
-    private static Javalin getApp(){
+    private static Javalin getApp() {
         return Javalin.create(config -> {
             config.jsonMapper(new JsonMapper() {
                 @NotNull
@@ -101,7 +101,10 @@ public class Main {
                     return gson.fromJson(new InputStreamReader(json, StandardCharsets.UTF_8), targetType);
                 }
             });
-
+            // 10 sec
+            config.http.asyncTimeout = 10000;
+            // TODO: figure out appropriate size
+            config.http.maxRequestSize = 10000;
         });
     }
 }
