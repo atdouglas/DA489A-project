@@ -153,13 +153,52 @@ public class UserRepository extends Repository {
         return funFactsChanged;
     }
 
-    public String getAccessToken(String email, String password){
+    public String getNewAccessToken(String email, String password){
         if(!checkLogin(email, password)){
             return null;
         }
 
-        return "";
-        
+        deleteAccessToken(email, password);
+
+        String token = generateToken();
+        long creation_time = System.currentTimeMillis();
+
+        String query = """
+                INSERT INTO access_token (token, user_email, creation_time)
+                VALUES (?, ?, ?);
+                """;
+        try (java.sql.Connection connection = startConnection()) {
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                preparedStatement.setString(1, token);
+                preparedStatement.setString(2, email);
+                preparedStatement.setLong(3, creation_time);
+                preparedStatement.executeUpdate();
+            }
+        } catch (SQLException sqlException) {
+            System.out.println(sqlException.getMessage());
+        }
+
+        return token;
+    }
+
+    public boolean deleteAccessToken(String email, String password){
+        if(!checkLogin(email, password)){
+            return false;
+        }
+        boolean success = false;
+        String query = """
+                DELETE from access_token WHERE user_email = ?;
+                """;
+        try (java.sql.Connection connection = startConnection()) {
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                preparedStatement.setString(1, email);
+                preparedStatement.executeUpdate();
+                success = true;
+            }
+        } catch (SQLException sqlException) {
+            System.out.println(sqlException.getMessage());
+        }
+        return success;
     }
 
 
@@ -196,5 +235,27 @@ public class UserRepository extends Repository {
 
         return base64Encoder.encodeToString(randomBytes);
     }
+
+    /*
+
+    This will be deleted later. It's currently used for manual testing of the authentication system.
+
+    public static void main(String[] args) {
+        User testUser = new User(
+                "test123@testmail.com",
+                "test123",
+                true,
+                true
+        );
+
+        UserRepository ur = new UserRepository();
+
+        ur.saveUser(testUser);
+        String token = ur.getNewAccessToken(testUser.getEmail(), testUser.getPassword());
+        System.out.println(token);
+        ur.deleteAccessToken(testUser.getEmail(), testUser.getPassword());
+    }
+
+     */
 }
 
