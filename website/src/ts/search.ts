@@ -49,11 +49,11 @@ const updateSearchResults = (plants: Plant[]) => {
 
             const plantName = document.createElement('h2');
             plantName.className = 'plant-name';
-            plantName.textContent = plant.common_name || 'No known common name';
+            plantName.textContent = plant.scientific_name || 'No known common name';
 
             const scientificName = document.createElement('p');
             scientificName.className = 'scientific-name';
-            scientificName.textContent = plant.scientific_name || 'No known scientific name';
+            scientificName.textContent = plant.common_name || 'No known scientific name';
 
             const plantActions = document.createElement('div');
             plantActions.className = 'plant-actions';
@@ -68,8 +68,9 @@ const updateSearchResults = (plants: Plant[]) => {
 
             plantDetails.appendChild(plantName);
             plantDetails.appendChild(scientificName);
-            plantDetails.appendChild(infoButton);
-            plantDetails.appendChild(libraryButton);
+
+            plantActions.appendChild(infoButton);
+            plantActions.appendChild(libraryButton);
 
             searchHit.appendChild(plantImage);
             searchHit.appendChild(plantDetails);
