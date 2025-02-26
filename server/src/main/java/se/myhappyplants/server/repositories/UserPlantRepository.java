@@ -20,7 +20,6 @@ public class UserPlantRepository extends Repository {
 
     //TODO Update this class to work on the new implementation.
 
-
     public boolean savePlant(User user, UserPlant userPlant) {
         boolean success = false;
         String query = """

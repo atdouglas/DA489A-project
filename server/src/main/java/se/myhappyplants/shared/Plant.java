@@ -1,6 +1,5 @@
 package se.myhappyplants.shared;
 
-import se.myhappyplants.client.model.PictureRandomizer;
 
 /**
  * Class defining a plant
@@ -63,7 +62,7 @@ public class Plant {
     public String getImage_url() {
         if(image_url == null) {
             // TODO: replace with non-random default picture
-            image_url = PictureRandomizer.getRandomPictureURL();
+            image_url = "";
         }
         return image_url.replace("https", "http");
     }
