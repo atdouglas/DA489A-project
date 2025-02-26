@@ -13,6 +13,7 @@ public class User {
     private String email;
     private String password;
     private String avatarURL;
+    private String accessToken;
     private boolean isNotificationsActivated = true;
     private boolean funFactsActivated = true;
 
@@ -79,6 +80,14 @@ public class User {
 
     public boolean areNotificationsActivated() {
         return isNotificationsActivated;
+    }
+
+    public String getAccessToken(){
+        return this.accessToken;
+    }
+
+    public void setAccessToken(String accessToken){
+        this.accessToken = accessToken;
     }
 
     public void setIsNotificationsActivated(boolean notificationsActivated) {

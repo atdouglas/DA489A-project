@@ -33,6 +33,7 @@ public class Main {
         setUpGetPlant();
         setUpSearch();
         setupRegister();
+        setupLogin();
     }
 
     private static void setUpGetPlant() {
@@ -49,29 +50,46 @@ public class Main {
 
     private static void setUpSearch() {
         app.get("/search/{search_term}", ctx -> ctx.async(() -> {
-                            List<Plant> plantList = dbch.databaseRequest(
-                                    new Message(MessageType.search, ctx.pathParam("search_term"))
-                            ).getPlantArray();
+            List<Plant> plantList = dbch.databaseRequest(
+                    new Message(MessageType.search, ctx.pathParam("search_term"))
+            ).getPlantArray();
 
-                            if (plantList.isEmpty()) {
-                                ctx.status(404).result("No plants found");
-                            } else {
-                                ctx.status(200).json(plantList);
-                            }
-                        }));
+            if (plantList.isEmpty()) {
+                ctx.status(404).result("No plants found");
+            } else {
+                ctx.status(200).json(plantList);
+            }
+        }));
+    }
+
+    private static void setupLogin() {
+        app.post("/login", ctx -> ctx.async(() -> {
+            User newUser = ctx.bodyAsClass(User.class);
+
+            Message message = dbch.databaseRequest(new Message(MessageType.login, newUser));
+
+            boolean success = message.isSuccess();
+            User user = message.getUser();
+
+            if (!success) {
+                ctx.status(404).result("There was an error adding the user.");
+            } else {
+                ctx.status(200).json(user);
+            }
+        }));
     }
 
     private static void setupRegister() {
         app.post("/register", ctx -> ctx.async(() -> {
-                    User newUser = ctx.bodyAsClass(User.class);
-                    boolean success = dbch.databaseRequest(new Message(MessageType.register, newUser)).isSuccess();
+            User newUser = ctx.bodyAsClass(User.class);
+            boolean success = dbch.databaseRequest(new Message(MessageType.register, newUser)).isSuccess();
 
-                    if (!success) {
-                        ctx.status(404).result("There was an error adding the user.");
-                    } else {
-                        ctx.status(200).result("User registered.");
-                    }
-                }));
+            if (!success) {
+                ctx.status(404).result("There was an error adding the user.");
+            } else {
+                ctx.status(200).result("User registered.");
+            }
+        }));
     }
 
     private static Javalin getApp() {
