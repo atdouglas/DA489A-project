@@ -1,6 +1,7 @@
 package se.myhappyplants.server.repositories;
 
 import org.mindrot.jbcrypt.BCrypt;
+import se.myhappyplants.shared.TokenStatus;
 import se.myhappyplants.shared.User;
 
 import java.security.SecureRandom;
@@ -201,6 +202,41 @@ public class UserRepository extends Repository {
         return success;
     }
 
+    public TokenStatus verifyAccessToken(int userID, String accessToken){
+        String returnedToken;
+        long tokenCreated;
+        TokenStatus tokenStatus = TokenStatus.NO_MATCH;
+
+        String query = """
+                select at.token, at.creation_time from registered_users as ru
+                join access_token as at on ru.email = at.user_email
+                where ru.id = ?;
+                """;
+
+        try (java.sql.Connection connection = startConnection()) {
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                preparedStatement.setInt(1, userID);
+                ResultSet resultSet = preparedStatement.executeQuery();
+                while (resultSet.next()) {
+                    returnedToken = resultSet.getString(1);
+                    tokenCreated = resultSet.getLong(2);
+
+                    if(returnedToken.equals(accessToken)){
+                        tokenStatus = TokenStatus.EXPIRED;
+
+                        if((System.currentTimeMillis() - tokenCreated) < 3600000){
+                            tokenStatus = TokenStatus.VALID;
+                        }
+                    }
+                }
+            }
+        } catch (SQLException sqlException) {
+            System.out.println(sqlException.getMessage());
+        }
+
+        return tokenStatus;
+    }
+
 
     /**
      * Checks if the email and password of a user is a legal input.
@@ -226,7 +262,7 @@ public class UserRepository extends Repository {
      * Generates an access token for a user.
      * @author Douglas Almö Thorsell
      */
-    public String generateToken(){
+    private String generateToken(){
         SecureRandom secureRandom = new SecureRandom();
         Base64.Encoder base64Encoder = Base64.getUrlEncoder();
 
@@ -236,26 +272,29 @@ public class UserRepository extends Repository {
         return base64Encoder.encodeToString(randomBytes);
     }
 
-    /*
 
-    This will be deleted later. It's currently used for manual testing of the authentication system.
+
+    //This will be deleted later. It's currently used for manual testing of the authentication system.
 
     public static void main(String[] args) {
-        User testUser = new User(
-                "test123@testmail.com",
+        UserRepository ur = new UserRepository();
+/*        User testUser = new User(
+                "test@testmail.com",
                 "test123",
                 true,
                 true
         );
 
-        UserRepository ur = new UserRepository();
 
         ur.saveUser(testUser);
         String token = ur.getNewAccessToken(testUser.getEmail(), testUser.getPassword());
         System.out.println(token);
-        ur.deleteAccessToken(testUser.getEmail(), testUser.getPassword());
+        ur.deleteAccessToken(testUser.getEmail(), testUser.getPassword());*/
+
+        System.out.println(ur.verifyAccessToken(90, "SqAum_5KmAgJVo7_6gHWxfmgcMGcefVl"));
+
     }
 
-     */
+
 }
 

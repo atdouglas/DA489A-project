@@ -14,11 +14,12 @@ public enum MessageType {
     //changePlantPicture,
     deleteAccount,
     //deletePlant,
-    //getLibrary,
+    getLibrary,
     //getMorePlantInfo,
     login,
     register,
     //savePlant,
     search,
-    getPlant
+    getPlant,
+    verifyToken
 }

@@ -23,7 +23,6 @@ module se.myhappyplants {
     opens se.myhappyplants.shared to com.google.gson;
 
     opens se.myhappyplants.client.controller to javafx.fxml;
-    exports se.myhappyplants.server.responses;
     exports se.myhappyplants.server.repositories;
     exports se.myhappyplants.server.addplantsutility;
 }

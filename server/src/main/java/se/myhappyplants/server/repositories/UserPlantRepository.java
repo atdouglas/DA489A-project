@@ -17,11 +17,13 @@ import java.util.ArrayList;
 // TODO: fix this whole thing...
 public class UserPlantRepository extends Repository {
 
-
     //TODO Update this class to work on the new implementation.
 
     public boolean savePlant(User user, UserPlant userPlant) {
         boolean success = false;
+
+
+
         String query = """
                 INSERT INTO user_plants (user_id, nickname,last_watered, plant_id, image_url) VALUES (?, ?, ?, ?, ?);
                 """;
