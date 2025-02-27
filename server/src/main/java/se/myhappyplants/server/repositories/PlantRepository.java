@@ -30,7 +30,7 @@ public class PlantRepository extends Repository {
                     long wateringFrequency = resultSet.getLong("watering_frequency");
                     boolean poisonousToPets = resultSet.getBoolean("poisonous_to_pets");
                     String light = resultSet.getString("light");
-                    plantList.add(new Plant(plantId, scientificName, commonName, familyName, imageURL,
+                    plantList.add(new Plant(plantId, scientificName, familyName, commonName, imageURL,
                             light, maintenance, poisonousToPets, wateringFrequency));
                 }
             }

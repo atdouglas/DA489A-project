@@ -55,7 +55,6 @@ public class User {
      * Constructor used to return a users details from the database
      */
     public User(int uniqueId, String email, boolean isNotificationsActivated, boolean funFactsActivated) {
-
         this.uniqueId = uniqueId;
         this.email = email;
         this.isNotificationsActivated = isNotificationsActivated;
