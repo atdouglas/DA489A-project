@@ -93,6 +93,10 @@ public class User {
         this.isNotificationsActivated = notificationsActivated;
     }
 
+    public void setUniqueId(int uniqueId){
+        this.uniqueId = uniqueId;
+    }
+
     public String getAvatarURL() {
         return avatarURL;
     }
