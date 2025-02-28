@@ -39,7 +39,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 console.log("Successful login:" + data); //TODO remove
 
                 localStorage.setItem("accessToken", data.accessToken);
-                window.location.href= "/home-page.html";
+                window.location.href= "../html/home-page.html";
             }else {
                 const error = await response.text();
                 alert(`Login failed: ${error}`);
