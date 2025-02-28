@@ -23,6 +23,7 @@
     color: #350;
     position: absolute;
     right: 20px;
+    cursor: pointer;
 }
 
 .navbar .searchbar {
