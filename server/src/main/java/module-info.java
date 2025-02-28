@@ -18,7 +18,6 @@ module se.myhappyplants {
     //exports se.myhappyplants.client.controller;
     exports se.myhappyplants.client.model;
     exports se.myhappyplants.client.view;
-    exports se.myhappyplants.server;
     exports se.myhappyplants.shared to com.google.gson;
     opens se.myhappyplants.shared to com.google.gson;
 

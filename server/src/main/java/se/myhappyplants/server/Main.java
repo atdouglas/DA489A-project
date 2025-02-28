@@ -105,7 +105,6 @@ public class Main {
 
             TokenStatus tokenStatus = userRepository.verifyAccessToken(userID, token);
 
-
             if (tokenStatus == TokenStatus.NO_MATCH) {
                 ctx.status(401).result("401 You are unauthorized to access this data.");
             } else if (tokenStatus == TokenStatus.EXPIRED) {

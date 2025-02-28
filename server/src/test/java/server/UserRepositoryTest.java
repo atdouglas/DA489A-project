@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.*;
 import se.myhappyplants.server.repositories.UserRepository;
+import se.myhappyplants.shared.TokenStatus;
 import se.myhappyplants.shared.User;
 
 /**
@@ -16,9 +17,9 @@ import se.myhappyplants.shared.User;
 @TestClassOrder(ClassOrderer.OrderAnnotation.class)
 public class UserRepositoryTest {
 
-    private final UserRepository userRepository = new UserRepository();
+    private static final UserRepository userRepository = new UserRepository();
 
-    private final User testUser = new User(
+    private static User testUser = new User(
             "test@testmail.com",
             "test123",
             true,
@@ -270,5 +271,38 @@ public class UserRepositoryTest {
 
             assertNull(result, "No such user exist so null should've been returned.");
         }
+    }
+
+    @Nested
+    @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+    @Order(4)
+    class TestVerificationCorrectInput{
+        private static String token;
+
+        @BeforeAll
+        static void setup(){
+            userRepository.saveUser(testUser);
+            testUser.setUniqueId(userRepository.getUserDetails(testUser.getEmail()).getUniqueId());
+
+        }
+
+        @Test
+        @Order(1)
+        void generateToken(){
+            token = userRepository.getNewAccessToken(testUser.getEmail(), testUser.getPassword());
+
+            assertEquals(32, token.length(), "If a token was generated, then the length should be 32 chars.");
+        }
+
+        @Test
+        @Order(2)
+        void verifyToken(){
+            TokenStatus status = userRepository.verifyAccessToken(testUser.getUniqueId(), token);
+
+            assertEquals(TokenStatus.VALID, status, "The token should return as valid.");
+        }
+
+
+
     }
 }
