@@ -1,7 +1,6 @@
 package server;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import se.myhappyplants.server.repositories.UserPlantRepository;
 import se.myhappyplants.server.repositories.UserRepository;
 import se.myhappyplants.shared.Plant;
@@ -14,14 +13,14 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class UserPlantRepositoryTest {
 
     private UserPlantRepository userPlantRepository;
-    private Plant testPlant1;
-    private Plant testPlant2;
-    private UserRepository userRepository = new UserRepository();
+    private static UserRepository userRepository = new UserRepository();
     private UserPlant testUserPlantWorking;
-    private UserPlant testUserPlantNotWorking;
+    private UserPlant testUserPlantWorking2;
     private final User testUser = new User(
             "test@testmail.com",
             "test123",
@@ -30,215 +29,162 @@ public class UserPlantRepositoryTest {
     );
     @BeforeEach
     void setUp() {
-
         userPlantRepository = new UserPlantRepository();
-        testPlant1 = new Plant(999, "Ficus lyrata", "Moraceae", "Fiolfikus",
-                null, "Indirect sunlight", "Medium",
-                false, 7);
 
-        testPlant2 = new Plant(1000, "Monstera deliciosa", "Araceae", "Monstera",
-                null, "Bright, indirect light", "Low",
-                false, 5);
+        userRepository.deleteAccount("test@testmail.com","test123");
+        userRepository.saveUser(testUser);
+        testUser.setUniqueId(userRepository.getUserDetails(testUser.getEmail()).getUniqueId());
+
         testUserPlantWorking = new UserPlant(2862, "Euphorbia amygdaloides subsp. robbiae", "spurge", "Euphorbiaceae",
                 "http://perenual.com/storage/species_image/2862_euphorbia_amygdaloides_subsp_robbiae/og/2048px-Bloeiende_Euphorbia_amygdaloides_var._Robbiae._31-03-2021._28d.j.b29.jpg", "Full sun", "Low",
-                false, 734400000,"peeedeer",734400000);
+                false, 734400000,"peeedeereeeeeeeeeeeeeeeeeeeeeeeeeee",734400000);
 
-        testUserPlantNotWorking = new UserPlant(2862, "Euphorbia amygdaloides subsp. robbiae", "spurge", "Euphorbiaceae",
+        testUserPlantWorking2 = new UserPlant(2862, "Euphorbia amygdaloides subsp. robbiae", "spurge", "Euphorbiaceae",
                 "http://perenual.com/storage/species_image/2862_euphorbia_amygdaloides_subsp_robbiae/og/2048px-Bloeiende_Euphorbia_amygdaloides_var._Robbiae._31-03-2021._28d.j.b29.jpg", "Full sun", "Low",
                 false, 734400000,"peeedeer",734400000);
+    }
 
+    @AfterAll
+    static void tearDown() {
+        userRepository.deleteAccount("test@testmail.com","test123");
     }
 
     @Test
+    @Order(1)
     void testSavePlantSuccess() {
-        userRepository.saveUser(testUser);
-        User testUserCopy = userRepository.getUserDetails("test@testmail.com");
-        boolean result = userPlantRepository.savePlant(testUserCopy, testUserPlantWorking);
-        userRepository.deleteAccount("test@testmail.com","test123");
+        boolean result = userPlantRepository.savePlant(testUser, testUserPlantWorking);
         assertEquals(true,result,
                 "The savePlant method failed and didn't save the plant: testSavePlantSuccess failed");
     }
 
-/*
     @Test
+    @Order(2)
     void testGetUserLibrarySuccess() {
-        userPlantRepository.savePlant(testUser, testPlant1);
-        userPlantRepository.savePlant(testUser, testPlant2);
-
-        List<Plant> plants = userPlantRepository.getUserLibrary(testUser.getId());
-        assertEquals("Ficus lyrata",plants.get(0),
-                "It should be Ficus lyrata :testGetUserLibrarySuccess failed");
-        assertEquals("Monstera deliciosa",plants.get(1),
-                "It should be Monstera Deliciosa :testGetUserLibrarySuccess failed");
+        userPlantRepository.savePlant(testUser, testUserPlantWorking);
+        userPlantRepository.savePlant(testUser, testUserPlantWorking2);
+        List<UserPlant> plants = userPlantRepository.getUserLibrary(testUser.getUniqueId());
+        String commonNameTest = plants.get(0).getCommon_name();
+        int idTest = plants.get(1).getId();
+        assertAll(
+                ()  -> assertEquals("Euphorbiaceae",commonNameTest, "It should be Euphorbiaceae :testGetUserLibrarySuccess failed"),
+                ()  -> assertEquals(2862,idTest, "It should be 2862 :testGetUserLibrarySuccess failed")
+        );
     }
 
     @Test
+    @Order(3)
     void testGetUserLibraryEmpty() {
-        List<Plant> plants = userPlantRepository.getUserLibrary(testUser.getId());
-        assertEquals("",plants.get(0),
+        List<UserPlant> plants = userPlantRepository.getUserLibrary(testUser.getUniqueId());
+        assertTrue(plants.isEmpty(),
                 "it should be empty (this failed for an empty array) :testGetUserLibraryEmpty failed");
     }
 
     @Test
+    @Order(4)
     void testGetUserLibraryNull() {
         userPlantRepository.savePlant(testUser, null);
-        List<Plant> plants = userPlantRepository.getUserLibrary(testUser.getId());
-        assertEquals("",plants.get(0),
+        List<UserPlant> plants = userPlantRepository.getUserLibrary(testUser.getUniqueId());
+        assertFalse(false,
                 "it should be empty (this failed for the value null: testGetUserLibraryNull failed");
     }
 
-
-
     @Test
+    @Order(5)
     void testDeletePlantSuccess() {
-        userPlantRepository.savePlant(testUser, testPlant1);
-
-        //plats i library kanske istället för namn eller nickname då detta bör kunna hantera att en användare har två av samma
-        // planta med exv olika smeknamn//ett unikt id så att man mer kontrollerat kan ta bort den ena över den andra
-        boolean result = userPlantRepository.deletePlant(testUser, testPlant1.getScientific_name());
+        userPlantRepository.savePlant(testUser, testUserPlantWorking);
+        boolean result = userPlantRepository.deletePlant(testUser.getUniqueId(), testUserPlantWorking.getId());
         assertEquals(true,result,
                 "The plant was not deleted :testDeletePlantSuccess failed");
     }
 
     @Test
-    void testDeletePlantFailure() {
-        userPlantRepository.savePlant(testUser, testPlant1);
-        boolean result = userPlantRepository.deletePlant(testUser, "");
+    @Order(6)
+    void testDeletePlantIllegalPlantID() {
+        userPlantRepository.savePlant(testUser, testUserPlantWorking);
+        boolean result = userPlantRepository.deletePlant(testUser.getUniqueId(), -1);
         assertEquals(false,result,
-                "The a non existing plant was deleted :testDeletePlantFailure failed");
+                "A non existing plant was deleted :testDeletePlantIllegalPlantID failed");
     }
 
     @Test
-    void testDeletePlantNull() {
-        userPlantRepository.savePlant(testUser, testPlant1);
-        boolean result = userPlantRepository.deletePlant(testUser, null);
-        assertEquals(false,result,
-                "A null plant was deleted :testDeletePlantNull failed");
-    }
-
-    @Test
+    @Order(7)
     void testChangeLastWateredSuccess() {
-        userPlantRepository.savePlant(testUser, testPlant1);
-        LocalDate newDate = LocalDate.of(2024, 2, 10);
-        //plats i library kanske istället för namn eller nickname då detta bör kunna hantera att en användare har två av samma
-        // planta med exv olika smeknamn//ett unikt id så att man mer kontrollerat kan ta bort den ena över den andra
-        boolean result = userPlantRepository.changeLastWatered(testUser, testPlant1.getCommon_name(), newDate);
+        userPlantRepository.savePlant(testUser, testUserPlantWorking);
+        boolean result = userPlantRepository.changeLastWatered(testUser.getUniqueId(), testUserPlantWorking.getId());
         assertEquals(true, result,
                 "The water was successfully changed :testChangeLastWateredSuccess failed");
+
     }
 
     @Test
-    void testChangeLastWateredFailureNoUser() {
-        userPlantRepository.savePlant(testUser, testPlant1);
-        LocalDate newDate = LocalDate.of(2024, 2, 10);
-        //plats i library kanske istället för namn eller nickname då detta bör kunna hantera att en användare har två av samma
-        // planta med exv olika smeknamn//ett unikt id så att man mer kontrollerat kan ta bort den ena över den andra
-        boolean result = userPlantRepository.changeLastWatered("", testPlant1.getCommon_name(), newDate);
+    @Order(8)
+    void testChangeLastWateredFailureIllegalUser() {
+        userPlantRepository.savePlant(testUser, testUserPlantWorking);
+        boolean result = userPlantRepository.changeLastWatered(-1, testUserPlantWorking.getId());
         assertEquals(false, result,
-                "The water was successfully changed which it should not :testChangeLastWateredFailureNoUser failed");
+                "The water was successfully changed which it should not :testChangeLastWateredFailureIllegalUser failed");
     }
 
     @Test
-    void testChangeLastWateredFailureNullUser() {
-        userPlantRepository.savePlant(testUser, testPlant1);
-        LocalDate newDate = LocalDate.of(2024, 2, 10);
-        //plats i library kanske istället för namn eller nickname då detta bör kunna hantera att en användare har två av samma
-        // planta med exv olika smeknamn//ett unikt id så att man mer kontrollerat kan ta bort den ena över den andra
-        boolean result = userPlantRepository.changeLastWatered(null, testPlant1.getCommon_name(), newDate);
-        assertEquals(false, result,
-                "The water was successfully changed which it should not :testChangeLastWateredFailureNullUser failed");
-    }
-
-    @Test
-    void testChangeLastWateredFailureNullDate() {
-        userPlantRepository.savePlant(testUser, testPlant1);
-        //plats i library kanske istället för namn eller nickname då detta bör kunna hantera att en användare har två av samma
-        // planta med exv olika smeknamn//ett unikt id så att man mer kontrollerat kan ta bort den ena över den andra
-        boolean result = userPlantRepository.changeLastWatered(testUser, testPlant1.getCommon_name(), null);
-        assertEquals(true, result,
-                "The water was successfully changed which it should not :testChangeLastWateredFailureNullDate failed");
-    }
-
-    @Test
-    void testChangeLastWateredFailureNoDate() {
-        userPlantRepository.savePlant(testUser, testPlant1);
-        //plats i library kanske istället för namn eller nickname då detta bör kunna hantera att en användare har två av samma
-        // planta med exv olika smeknamn så att man mer kontrollerat kan ta bort den ena över den andra
-        boolean result = userPlantRepository.changeLastWatered(testUser, testPlant1.getCommon_name(), "");
-        assertEquals(true, result,
-                "The water was successfully changed which it should not :testChangeLastWateredFailureNoDate failed");
-    }
-
-    @Test
+    @Order(9)
     void testChangeNicknameSuccess() {
-        boolean result = userPlantRepository.changeNickname(testUser, plantId, "Adrian is a g" ); //Should be changed to user id, plant id and a new nickname
+        userPlantRepository.savePlant(testUser, testUserPlantWorking);
+        boolean result = userPlantRepository.changeNickname(testUser.getUniqueId(), testUserPlantWorking.getId(), "Adrian is a g" );
         assertEquals(true,result,
                 "The nickname was not changed :testChangeNicknameSuccess failed");
     }
 
     @Test
-    void testChangeNicknameFailureNoUserID() {
-        boolean result = userPlantRepository.changeNickname("", plantId, "Adrian is a g" ); //Should be changed to user id, plant id and a new nickname
+    @Order(10)
+    void testChangeNicknameFailureIllegalID() {
+        userPlantRepository.savePlant(testUser, testUserPlantWorking);
+        boolean result = userPlantRepository.changeNickname(-1, testUserPlantWorking.getId(), "Adrian is a g" );
         assertEquals(false,result,
-                "The nickname was changed :testChangeNicknameFailureNoUserID failed");
+                "The nickname was changed :testChangeNicknameFailureIllegalID failed");
     }
 
 
     @Test
-    void testChangeNicknameFailureNullUserID() {
-        boolean result = userPlantRepository.changeNickname(null, plantId, "Adrian is a g" ); //Should be changed to user id, plant id and a new nickname
+    @Order(11)
+    void testChangeNicknameFailureIllegalPlantID() {
+        userPlantRepository.savePlant(testUser, testUserPlantWorking);
+        boolean result = userPlantRepository.changeNickname(testUser.getUniqueId(), -1, "Adrian is a g" );
         assertEquals(false,result,
-                "The nickname was changed :testChangeNicknameFailureNullUserID failed");
+                "The nickname was changed :testChangeNicknameFailureIllegalPlantID failed");
     }
 
-    @Test
-    void testChangeNicknameFailureNoPlantID() {
-        boolean result = userPlantRepository.changeNickname(testUser, "", "Adrian is a g" ); //Should be changed to user id, plant id and a new nickname
-        assertEquals(false,result,
-                "The nickname was changed :testChangeNicknameFailureNoPlantID failed");
-    }
 
     @Test
-    void testChangeNicknameFailureNullPlantID() {
-        boolean result = userPlantRepository.changeNickname(testUser, null, "Adrian is a g" ); //Should be changed to user id, plant id and a new nickname
-        assertEquals(false,result,
-                "The nickname was changed :testChangeNicknameFailureNullPlantID failed");
-    }
-
-    @Test
+    @Order(12)
     void testChangeNicknameFailureNullNickname() {
-        boolean result = userPlantRepository.changeNickname(testUser, plantId, null ); //Should be changed to user id, plant id and a new nickname
+        userPlantRepository.savePlant(testUser, testUserPlantWorking);
+        boolean result = userPlantRepository.changeNickname(testUser.getUniqueId(), testUserPlantWorking.getId(), null );
         assertEquals(false,result,
-                "The nickname was changed :testChangeNicknameSuccess failed");
+                "The nickname was changed :testChangeNicknameFailureNullNickname failed");
     }
 
     @Test
+    @Order(13)
     void testChangeNicknameFailureNoNickname() {
-        boolean result = userPlantRepository.changeNickname(testUser, plantId, "" ); //Should be changed to user id, plant id and a new nickname
+        userPlantRepository.savePlant(testUser, testUserPlantWorking);
+        boolean result = userPlantRepository.changeNickname(testUser.getUniqueId(), testUserPlantWorking.getId(), "" );
         assertEquals(false,result,
                 "The nickname was changed :testChangeNicknameFailureNoNickname failed");
     }
 
     @Test
+    @Order(14)
     void testWaterAllPlantsSuccess() {
-        boolean result = changeAllToWatered(testUser);
+        boolean result = userPlantRepository.changeAllToWatered(testUser.getUniqueId());
         assertEquals(true,result,
                 "All plants weren't watered :testWaterAllPlantsSuccess failed");
     }
 
     @Test
-    void testWaterAllPlantFailureNoUserID() {
-        boolean result = changeAllToWatered("");
+    @Order(15)
+    void testWaterAllPlantFailureIllegalUserID() {
+        boolean result = userPlantRepository.changeAllToWatered(-1);
         assertEquals(false,result,
-                "All plants were watered which they should not be :testWaterAllPlantFailureNoUserID failed");
+                "All plants were watered which they should not be :testWaterAllPlantFailureIllegalUserID failed");
     }
-
-    @Test
-    void testWaterAllPlantFailureNullUserID() {
-        boolean result = changeAllToWatered(null);
-        assertEquals(false,result,
-                "All plants were watered which they should not be :testWaterAllPlantFailureNullUserID failed");
-    }
-
-    */
 }
