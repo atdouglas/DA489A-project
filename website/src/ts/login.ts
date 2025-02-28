@@ -1,12 +1,22 @@
 document.addEventListener("DOMContentLoaded", () => {
     const loginForm = document.querySelector(".loginbox") as HTMLDivElement;
     const emailInput = document.querySelector('input[type="email"]') as HTMLInputElement;
-    const passwordInput = document.querySelector('input[type="password"]') as HTMLInputElement;
+    const passwordInput = document.getElementById("password-input") as HTMLInputElement;
     const loginButton = document.querySelector('button[type="submit"]') as HTMLButtonElement;
     const registerButton = document.getElementById("register-button");
+    const togglePassword = document.getElementById("toggle-password") as HTMLSpanElement;
 
     registerButton?.addEventListener("click", () => {
         window.location.href = "register-page.html";
+    });
+
+    //TODO maybe add graphics for the eye being open and closed?
+    togglePassword?.addEventListener("click", () => {
+        if(passwordInput.type === "password"){
+            passwordInput.type = "text";
+        }else{
+            passwordInput.type = "password";
+        }
     });
 
     loginForm?.addEventListener("submit", async(event) => {
