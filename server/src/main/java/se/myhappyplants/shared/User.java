@@ -26,6 +26,11 @@ public class User {
         this.isNotificationsActivated = isNotificationsActivated;
     }
 
+    public User(int uniqueId, String accessToken){
+        this.uniqueId = uniqueId;
+        this.accessToken = accessToken;
+    }
+
     /**
      * Constructor used for testing purposes.
      * @author Douglas Almö Thorsell

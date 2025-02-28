@@ -38,6 +38,7 @@ public class Main {
         setupRegister();
         setupLogin();
         setupGetUserLibrary();
+        setupPostUserLibrary();
     }
 
     private static void setupGetPlant() {
@@ -116,6 +117,55 @@ public class Main {
                 ctx.status(404).result("An error has occurred.");
             }
         }));
+    }
+
+    private static void setupPostUserLibrary(){
+        app.post("/library/{user_id}", ctx -> ctx.async(() -> {
+            int userID = Integer.parseInt(ctx.pathParam("user_id"));
+            String token = ctx.queryParam("token");
+            String plantIDString = ctx.queryParam("plantID");
+            String nickname = ctx.queryParam("nickname");
+
+            TokenStatus tokenStatus = userRepository.verifyAccessToken(userID, token);
+
+            if (tokenStatus == TokenStatus.NO_MATCH) {
+                ctx.status(401).result("401 You are unauthorized to access this data.");
+            } else if (tokenStatus == TokenStatus.EXPIRED) {
+                ctx.status(419).result("419 Your token has expired.");
+            } else if(plantIDString == null || plantIDString.isEmpty()) {
+                ctx.status(400).result("Plant ID can't be empty.");
+
+            } else if(nickname == null || nickname.isEmpty()) {
+                ctx.status(400).result("Nickname can't be empty.");
+
+            } else if (tokenStatus == TokenStatus.VALID){
+                int plantID = Integer.parseInt(plantIDString);
+
+
+                userPlantRepository.savePlant(new User(userID, token), createUserPlant(plantID, nickname));
+
+                ctx.status(200).result("Plant added to user library.");
+            }else {
+                ctx.status(404).result("An error has occurred.");
+            }
+        }));
+    }
+
+    private static UserPlant createUserPlant(int plantID, String nickname){
+        Plant plant = plantRepository.getPlantDetails(plantID);
+
+        return new UserPlant(
+                plant.getId(),
+                plant.getScientific_name(),
+                plant.getFamily(),
+                plant.getCommon_name(),
+                plant.getImage_url(),
+                plant.getLight(),
+                plant.getMaintenance(),
+                plant.getIsPoisonoutToPets(),
+                plant.getWaterFrequency(),
+                nickname,
+                System.currentTimeMillis());
     }
 
 
