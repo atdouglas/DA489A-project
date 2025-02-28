@@ -22,11 +22,12 @@ public class UserPlantRepository extends Repository {
     public boolean savePlant(User user, UserPlant userPlant) {
         boolean success = false;
 
-
-
         String query = """
                 INSERT INTO user_plants (user_id, nickname,last_watered, plant_id, image_url) VALUES (?, ?, ?, ?, ?);
                 """;
+        if (userPlant == null) {
+            return success;
+        }
         try (java.sql.Connection connection = startConnection()) {
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                 preparedStatement.setInt(1, user.getUniqueId());
@@ -65,7 +66,7 @@ public class UserPlantRepository extends Repository {
                     String light = resultSet.getString("light");
                     String maintenance = resultSet.getString("maintenance");
                     boolean poisonousToPets = resultSet.getBoolean("poisonous_to_pets");
-                    long waterFrequency = resultSet.getLong("water_frequency");
+                    long waterFrequency = resultSet.getLong("watering_frequency");
                     String nickname = resultSet.getString("nickname");
                     long lastWatered = resultSet.getLong("last_watered");
                     plantList.add(new UserPlant(plantId, scientificName, family, commonName, imageURL, light, maintenance, poisonousToPets, waterFrequency, nickname, lastWatered));
@@ -119,6 +120,9 @@ public class UserPlantRepository extends Repository {
         String query = """
                         DELETE FROM user_plants WHERE plant_id = ? AND user_id = ?;
                 """;
+        if (plantId <= 0) {
+            return plantDeleted;
+        }
         try (java.sql.Connection connection = startConnection()) {
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                 preparedStatement.setInt(1, plantId);
@@ -141,6 +145,9 @@ public class UserPlantRepository extends Repository {
         String query = """ 
                     UPDATE user_plants SET last_watered = ? WHERE plant_id = ? AND user_id = ?;
                     """;
+        if (userId <= 0 || plant_id <= 0) {
+            return dateChanged;
+        }
         try (java.sql.Connection connection = startConnection()) {
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                 preparedStatement.setLong(1, System.currentTimeMillis());
@@ -164,12 +171,18 @@ public class UserPlantRepository extends Repository {
                     SET nickname = ? 
                     WHERE plant_id = ? AND user_id = ?;
                    """;
+        if (newNickname == null || newNickname.isEmpty()) {
+            return nicknameChanged;
+        }
+        if (userId <= 0 || plantId <= 0) {
+            return nicknameChanged;
+        }
         try (Connection connection = startConnection()) {
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                 preparedStatement.setString(1, newNickname);
                 preparedStatement.setInt(2, plantId);
                 preparedStatement.setInt(3, userId);
-
+                preparedStatement.executeUpdate();
                 nicknameChanged = true;
             }
         } catch (SQLException sqlException) {
@@ -188,6 +201,9 @@ public class UserPlantRepository extends Repository {
                     SET last_watered = ? 
                     WHERE user_id = ?;
                    """;
+        if (userId <= 0) {
+            return dateChanged;
+        }
         try (Connection connection = startConnection()) {
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                 preparedStatement.setLong(1, System.currentTimeMillis());
