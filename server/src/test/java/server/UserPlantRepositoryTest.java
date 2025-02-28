@@ -3,8 +3,10 @@ package server;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import se.myhappyplants.server.repositories.UserPlantRepository;
+import se.myhappyplants.server.repositories.UserRepository;
 import se.myhappyplants.shared.Plant;
 import se.myhappyplants.shared.User;
+import se.myhappyplants.shared.UserPlant;
 
 import java.sql.Date;
 import java.time.LocalDate;
@@ -12,20 +14,24 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-
 public class UserPlantRepositoryTest {
 
     private UserPlantRepository userPlantRepository;
-    private User testUser;
     private Plant testPlant1;
     private Plant testPlant2;
-
+    private UserRepository userRepository = new UserRepository();
+    private UserPlant testUserPlantWorking;
+    private UserPlant testUserPlantNotWorking;
+    private final User testUser = new User(
+            "test@testmail.com",
+            "test123",
+            true,
+            true
+    );
     @BeforeEach
     void setUp() {
+
         userPlantRepository = new UserPlantRepository();
-
-        testUser = new User("113", "test@testmail.com");
-
         testPlant1 = new Plant(999, "Ficus lyrata", "Moraceae", "Fiolfikus",
                 null, "Indirect sunlight", "Medium",
                 false, 7);
@@ -33,25 +39,27 @@ public class UserPlantRepositoryTest {
         testPlant2 = new Plant(1000, "Monstera deliciosa", "Araceae", "Monstera",
                 null, "Bright, indirect light", "Low",
                 false, 5);
+        testUserPlantWorking = new UserPlant(2862, "Euphorbia amygdaloides subsp. robbiae", "spurge", "Euphorbiaceae",
+                "http://perenual.com/storage/species_image/2862_euphorbia_amygdaloides_subsp_robbiae/og/2048px-Bloeiende_Euphorbia_amygdaloides_var._Robbiae._31-03-2021._28d.j.b29.jpg", "Full sun", "Low",
+                false, 734400000,"peeedeer",734400000);
+
+        testUserPlantNotWorking = new UserPlant(2862, "Euphorbia amygdaloides subsp. robbiae", "spurge", "Euphorbiaceae",
+                "http://perenual.com/storage/species_image/2862_euphorbia_amygdaloides_subsp_robbiae/og/2048px-Bloeiende_Euphorbia_amygdaloides_var._Robbiae._31-03-2021._28d.j.b29.jpg", "Full sun", "Low",
+                false, 734400000,"peeedeer",734400000);
+
+    }
+
+    @Test
+    void testSavePlantSuccess() {
+        userRepository.saveUser(testUser);
+        User testUserCopy = userRepository.getUserDetails("test@testmail.com");
+        boolean result = userPlantRepository.savePlant(testUserCopy, testUserPlantWorking);
+        userRepository.deleteAccount("test@testmail.com","test123");
+        assertEquals(true,result,
+                "The savePlant method failed and didn't save the plant: testSavePlantSuccess failed");
     }
 
 /*
-    @Test
-    void testSavePlantSuccess() {
-        boolean result = userPlantRepository.savePlant(testUser, testPlant1);
-        assertEquals(true,result,
-                "The savePlant method failed and didn't save the plant: testSavePlantSuccess failed");
-
-    }
-
-    @Test
-    void testSavePlantFailure() {
-        boolean result = userPlantRepository.savePlant(testUser, testPlant1);
-        assertEquals(false,result,
-                "The savePlant method saved the plant which it shouldn't: testSavePlantFailure failed");
-
-    }
-
     @Test
     void testGetUserLibrarySuccess() {
         userPlantRepository.savePlant(testUser, testPlant1);

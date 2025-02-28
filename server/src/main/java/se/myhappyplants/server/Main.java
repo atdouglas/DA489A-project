@@ -4,10 +4,10 @@ import io.javalin.Javalin;
 import io.javalin.json.JsonMapper;
 import com.google.gson.Gson;
 import org.jetbrains.annotations.NotNull;
-import se.myhappyplants.shared.Message;
-import se.myhappyplants.shared.MessageType;
-import se.myhappyplants.shared.Plant;
-import se.myhappyplants.shared.User;
+import se.myhappyplants.server.repositories.PlantRepository;
+import se.myhappyplants.server.repositories.UserPlantRepository;
+import se.myhappyplants.server.repositories.UserRepository;
+import se.myhappyplants.shared.*;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -18,7 +18,10 @@ import java.util.List;
 
 public class Main {
 
-    private static final DatabaseConnectionHandler dbch = new DatabaseConnectionHandler();
+    private static final PlantRepository plantRepository = new PlantRepository();
+    private static final UserPlantRepository userPlantRepository = new UserPlantRepository();
+    private static final UserRepository userRepository = new UserRepository();
+
     private static final Gson gson = new Gson();
     private static Javalin app;
 
@@ -30,14 +33,18 @@ public class Main {
 
         app.get("/", ctx -> ctx.result("Plantopedia API"));
 
-        setUpGetPlant();
-        setUpSearch();
+        setupGetPlant();
+        setupSearch();
         setupRegister();
+        setupLogin();
+        setupGetUserLibrary();
     }
 
-    private static void setUpGetPlant() {
+    private static void setupGetPlant() {
         app.get("/plants/{id}", ctx -> ctx.async(() -> {
-            Plant plant = dbch.databaseRequest(new Message(MessageType.getPlant, ctx.pathParam("id"))).getPlant();
+            int plantID = Integer.parseInt(ctx.pathParam("id"));
+
+            Plant plant = plantRepository.getPlantDetails(plantID);
 
             if (plant == null) {
                 ctx.status(404).result("No plant with this id was found.");
@@ -47,35 +54,70 @@ public class Main {
         }));
     }
 
-    private static void setUpSearch() {
+    private static void setupSearch() {
         app.get("/search/{search_term}", ctx -> ctx.async(() -> {
-            System.out.println("request received, making db request");
-                            List<Plant> plantList = dbch.databaseRequest(
-                                    new Message(MessageType.search, ctx.pathParam("search_term"))
-                            ).getPlantArray();
+          List<Plant> plantList = plantRepository.getResult(ctx.pathParam("search_term"));
 
-                            if (plantList.isEmpty()) {
-                                ctx.status(404).result("No plants found");
-                                System.out.println("404 was returned, No plants found");
-                            } else {
-                                ctx.status(200).json(plantList);
-                                System.out.println("200 was returned, Plants found");
-                            }
-                        }));
+            if (plantList.isEmpty()) {
+                ctx.status(404).result("No plants found");
+            } else {
+                ctx.status(200).json(plantList);
+            }
+        }));
+    }
+
+    private static void setupLogin() {
+        app.post("/login", ctx -> ctx.async(() -> {
+            User user = ctx.bodyAsClass(User.class);
+            String email = user.getEmail();
+            String password = user.getPassword();
+
+            boolean success = userRepository.checkLogin(email, password);
+            user = userRepository.getUserDetails(user.getEmail());
+
+            if (!success) {
+                ctx.status(404).result("Login error. User not found.");
+            } else {
+                user.setPassword(password);
+                user.setAccessToken(userRepository.getNewAccessToken(user.getEmail(), user.getPassword()));
+                ctx.status(200).json(user);
+            }
+        }));
     }
 
     private static void setupRegister() {
         app.post("/register", ctx -> ctx.async(() -> {
-                    User newUser = ctx.bodyAsClass(User.class);
-                    boolean success = dbch.databaseRequest(new Message(MessageType.register, newUser)).isSuccess();
+            User newUser = ctx.bodyAsClass(User.class);
+            boolean success = userRepository.saveUser(newUser);
 
-                    if (!success) {
-                        ctx.status(404).result("There was an error adding the user.");
-                    } else {
-                        ctx.status(200).result("User registered.");
-                    }
-                }));
+            if (!success) {
+                ctx.status(404).result("There was an error adding the user.");
+            } else {
+                ctx.status(200).result("User registered.");
+            }
+        }));
     }
+
+    private static void setupGetUserLibrary(){
+        app.get("/library/{user_id}", ctx -> ctx.async(() -> {
+            int userID = Integer.parseInt(ctx.pathParam("user_id"));
+            String token = ctx.queryParam("token");
+
+            TokenStatus tokenStatus = userRepository.verifyAccessToken(userID, token);
+
+            if (tokenStatus == TokenStatus.NO_MATCH) {
+                ctx.status(401).result("401 You are unauthorized to access this data.");
+            } else if (tokenStatus == TokenStatus.EXPIRED) {
+                ctx.status(419).result("419 Your token has expired.");
+            } else if (tokenStatus == TokenStatus.VALID){
+                List<UserPlant> plantList = userPlantRepository.getUserLibrary(userID);
+                ctx.status(200).json(plantList);
+            }else {
+                ctx.status(404).result("An error has occurred.");
+            }
+        }));
+    }
+
 
     private static Javalin getApp() {
         return Javalin.create(config -> {

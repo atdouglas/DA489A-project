@@ -1,9 +1,12 @@
 package se.myhappyplants.server.repositories;
 
 import org.mindrot.jbcrypt.BCrypt;
+import se.myhappyplants.shared.TokenStatus;
 import se.myhappyplants.shared.User;
 
+import java.security.SecureRandom;
 import java.sql.*;
+import java.util.Base64;
 
 public class UserRepository extends Repository {
 
@@ -151,6 +154,89 @@ public class UserRepository extends Repository {
         return funFactsChanged;
     }
 
+    public String getNewAccessToken(String email, String password){
+        if(!checkLogin(email, password)){
+            return null;
+        }
+
+        deleteAccessToken(email, password);
+
+        String token = generateToken();
+        long creation_time = System.currentTimeMillis();
+
+        String query = """
+                INSERT INTO access_token (token, user_email, creation_time)
+                VALUES (?, ?, ?);
+                """;
+        try (java.sql.Connection connection = startConnection()) {
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                preparedStatement.setString(1, token);
+                preparedStatement.setString(2, email);
+                preparedStatement.setLong(3, creation_time);
+                preparedStatement.executeUpdate();
+            }
+        } catch (SQLException sqlException) {
+            System.out.println(sqlException.getMessage());
+        }
+
+        return token;
+    }
+
+    public boolean deleteAccessToken(String email, String password){
+        if(!checkLogin(email, password)){
+            return false;
+        }
+        boolean success = false;
+        String query = """
+                DELETE from access_token WHERE user_email = ?;
+                """;
+        try (java.sql.Connection connection = startConnection()) {
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                preparedStatement.setString(1, email);
+                preparedStatement.executeUpdate();
+                success = true;
+            }
+        } catch (SQLException sqlException) {
+            System.out.println(sqlException.getMessage());
+        }
+        return success;
+    }
+
+    public TokenStatus verifyAccessToken(int userID, String accessToken){
+        String returnedToken;
+        long tokenCreated;
+        TokenStatus tokenStatus = TokenStatus.NO_MATCH;
+
+        String query = """
+                select at.token, at.creation_time from registered_users as ru
+                join access_token as at on ru.email = at.user_email
+                where ru.id = ?;
+                """;
+
+        try (java.sql.Connection connection = startConnection()) {
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                preparedStatement.setInt(1, userID);
+                ResultSet resultSet = preparedStatement.executeQuery();
+                while (resultSet.next()) {
+                    returnedToken = resultSet.getString(1);
+                    tokenCreated = resultSet.getLong(2);
+
+                    if(returnedToken.equals(accessToken)){
+                        tokenStatus = TokenStatus.EXPIRED;
+
+                        if((System.currentTimeMillis() - tokenCreated) < 3600000){
+                            tokenStatus = TokenStatus.VALID;
+                        }
+                    }
+                }
+            }
+        } catch (SQLException sqlException) {
+            System.out.println(sqlException.getMessage());
+        }
+
+        return tokenStatus;
+    }
+
 
     /**
      * Checks if the email and password of a user is a legal input.
@@ -171,5 +257,44 @@ public class UserRepository extends Repository {
 
         return true;
     }
+
+    /**
+     * Generates an access token for a user.
+     * @author Douglas Almö Thorsell
+     */
+    private String generateToken(){
+        SecureRandom secureRandom = new SecureRandom();
+        Base64.Encoder base64Encoder = Base64.getUrlEncoder();
+
+        byte[] randomBytes = new byte[24];
+        secureRandom.nextBytes(randomBytes);
+
+        return base64Encoder.encodeToString(randomBytes);
+    }
+
+
+
+    //This will be deleted later. It's currently used for manual testing of the authentication system.
+
+    public static void main(String[] args) {
+        UserRepository ur = new UserRepository();
+/*        User testUser = new User(
+                "test@testmail.com",
+                "test123",
+                true,
+                true
+        );
+
+
+        ur.saveUser(testUser);
+        String token = ur.getNewAccessToken(testUser.getEmail(), testUser.getPassword());
+        System.out.println(token);
+        ur.deleteAccessToken(testUser.getEmail(), testUser.getPassword());*/
+
+        System.out.println(ur.verifyAccessToken(90, "SqAum_5KmAgJVo7_6gHWxfmgcMGcefVl"));
+
+    }
+
+
 }
 

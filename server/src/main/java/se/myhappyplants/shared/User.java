@@ -13,6 +13,7 @@ public class User {
     private String email;
     private String password;
     private String avatarURL;
+    private String accessToken;
     private boolean isNotificationsActivated = true;
     private boolean funFactsActivated = true;
 
@@ -54,7 +55,6 @@ public class User {
      * Constructor used to return a users details from the database
      */
     public User(int uniqueId, String email, boolean isNotificationsActivated, boolean funFactsActivated) {
-
         this.uniqueId = uniqueId;
         this.email = email;
         this.isNotificationsActivated = isNotificationsActivated;
@@ -81,8 +81,20 @@ public class User {
         return isNotificationsActivated;
     }
 
+    public String getAccessToken(){
+        return this.accessToken;
+    }
+
+    public void setAccessToken(String accessToken){
+        this.accessToken = accessToken;
+    }
+
     public void setIsNotificationsActivated(boolean notificationsActivated) {
         this.isNotificationsActivated = notificationsActivated;
+    }
+
+    public void setUniqueId(int uniqueId){
+        this.uniqueId = uniqueId;
     }
 
     public String getAvatarURL() {

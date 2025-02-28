@@ -13,10 +13,13 @@ public class Message {
     private User user;
     private boolean success;
     private int plantID;
+    private int userID;
     private LocalDate date;
     private List<Plant> plantArray;
+    private List<UserPlant> userPlantList;
     private Plant plant;
     private String newNickname;
+    private TokenStatus tokenStatus;
 
 
     public Message(boolean success) {
@@ -27,6 +30,17 @@ public class Message {
 
         this.messageType = messageType;
         this.user = user;
+    }
+
+    public Message(MessageType messageType, TokenStatus tokenStatus){
+        this.messageType = messageType;
+        this.tokenStatus = tokenStatus;
+    }
+
+    public Message(MessageType messageType, int userID) {
+
+        this.messageType = messageType;
+        this.userID = userID;
     }
 
     public Message(MessageType messageType, User user, Plant plant) {
@@ -56,6 +70,11 @@ public class Message {
 
     public Message(List<Plant> plantArray, boolean success) {
         this.plantArray = plantArray;
+        this.success = success;
+    }
+
+    public Message(ArrayList<UserPlant> plantArray, boolean success) {
+        this.userPlantList = plantArray;
         this.success = success;
     }
 
