@@ -302,8 +302,123 @@ public class UserRepositoryTest {
             assertEquals(TokenStatus.VALID, status, "The token should return as valid.");
         }
 
+        @Test
+        @Order(3)
+        void deleteAccessToken(){
+            boolean result = userRepository.deleteAccessToken(testUser.getEmail(), testUser.getPassword());
+            userRepository.deleteAccount(testUser.getEmail(), testUser.getPassword());
+            assertTrue(result, "The access token exists so the token should've been deleted. True should've been returned.");
+        }
+    }
 
+    @Nested
+    @Order(5)
+    class TestVerificationIncorrectInput{
 
+        /*
+            Never update this user, or it's access token in the database. If the user is deleted from the database
+            or a new token is generated, then this needs to be updated with the correct token.
+         */
+        private final static User expiredUser = new User(
+                328,
+                "test@expired.token",
+                "test123",
+                "13G_1xZG-5bMAAql85paJz4JSP4Y_QkZ",
+                true,
+                true
+        );
+
+        private static String token;
+
+        @BeforeAll
+        static void setup(){
+            userRepository.saveUser(testUser);
+            token = userRepository.getNewAccessToken(testUser.getEmail(), testUser.getPassword());
+            testUser.setUniqueId(userRepository.getUserDetails(testUser.getEmail()).getUniqueId());
+        }
+
+        @AfterAll
+        static void afterAll(){
+            userRepository.deleteAccount(testUser.getEmail(), testUser.getPassword());
+        }
+
+        @Test
+        void generateTokenWrongEmail(){
+            String result = userRepository.getNewAccessToken("wrong@email.com", "test123");
+
+            assertNull(result, "The token should be null because an account with this email does not exist.");
+        }
+
+        @Test
+        void generateTokenWrongPassword(){
+            String result = userRepository.getNewAccessToken("test@testmail.com", "wrongpassword");
+
+            assertNull(result, "The token should be null because an incorrect password was input.");
+
+        }
+
+        @Test
+        void generateTokenEmptyInputs(){
+            String result = userRepository.getNewAccessToken("", "");
+
+            assertNull(result, "The result should be null because the inputs where empty.");
+        }
+
+        @Test
+        void generateTokenNullInputs(){
+            String result = userRepository.getNewAccessToken(null, null);
+
+            assertNull(result, "The result should be null because the inputs where empty.");
+        }
+
+        @Test
+        void verifyAccessTokenWrongID(){
+            TokenStatus result = userRepository.verifyAccessToken(-1, token);
+
+            assertEquals(TokenStatus.NO_MATCH, result, "The token should return NO_MATCH because a user with this ID does not exist");
+        }
+
+        @Test
+        void verifyAccessTokenWrongToken(){
+            TokenStatus result = userRepository.verifyAccessToken(testUser.getUniqueId(), "123123asd");
+
+            assertEquals(TokenStatus.NO_MATCH, result, "The token should return NO_MATCH because a user with this ID does not exist");
+        }
+
+        @Test
+        void verifyAccessTokenExpired(){
+            TokenStatus result = userRepository.verifyAccessToken(expiredUser.getUniqueId(), expiredUser.getAccessToken());
+
+            assertEquals(TokenStatus.EXPIRED, result, "The token should return EXPIRED because a the access token is expired.");
+        }
+
+        @Test
+        void deleteAccessTokenWrongEmail(){
+            boolean result = userRepository.deleteAccessToken("wrongemail@email.com", "test123");
+
+            assertFalse(result, "The test should've returned false because no user with this email exists.");
+        }
+
+        @Test
+        void deleteAccessTokenWrongPassword(){
+            boolean result = userRepository.deleteAccessToken("test@testmail.com", "wrongpassword");
+
+            assertFalse(result, "The test should've returned false because the wrong password was input.");
+        }
+
+        @Test
+        void deleteAccessTokenEmptyInput(){
+            boolean result = userRepository.deleteAccessToken("", "");
+
+            assertFalse(result, "The test should've returned false because the inputs are empty.");
+        }
+
+        @Test
+        void deleteAccessTokenNullInput(){
+            boolean result = userRepository.deleteAccessToken(null, null);
+
+            assertFalse(result, "The test should've returned false because the inputs are null.");
+        }
     }
 }
 

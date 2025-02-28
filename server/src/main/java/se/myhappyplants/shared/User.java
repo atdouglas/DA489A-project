@@ -61,6 +61,19 @@ public class User {
         this.funFactsActivated = funFactsActivated;
     }
 
+    /**
+     * Constructor used for testing purposes.
+     * @author Douglas Almö Thorsell
+     */
+    public User(int uniqueId, String email, String password, String accessToken, boolean isNotificationsActivated, boolean funFactsActivated) {
+        this.uniqueId = uniqueId;
+        this.email = email;
+        this.password = password;
+        this.accessToken = accessToken;
+        this.isNotificationsActivated = isNotificationsActivated;
+        this.funFactsActivated = funFactsActivated;
+    }
+
     public int getUniqueId() {
         return uniqueId;
     }
