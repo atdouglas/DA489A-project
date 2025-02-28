@@ -171,6 +171,11 @@ public class Main {
 
     private static Javalin getApp() {
         return Javalin.create(config -> {
+            config.bundledPlugins.enableCors(cors ->{
+                cors.addRule(corsConfig -> {
+                    corsConfig.allowHost("http://localhost:5173");
+                });
+            });
             config.jsonMapper(new JsonMapper() {
                 @NotNull
                 @Override
