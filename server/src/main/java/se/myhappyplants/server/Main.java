@@ -123,7 +123,7 @@ public class Main {
         return Javalin.create(config -> {
             config.bundledPlugins.enableCors(cors ->{
                 cors.addRule(corsConfig -> {
-                    corsConfig.allowHost("http://localhost:5173");
+                    corsConfig.anyHost();
                 });
             });
             config.jsonMapper(new JsonMapper() {
