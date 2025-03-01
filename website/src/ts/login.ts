@@ -43,7 +43,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 window.location.href= "../html/home-page.html";
             }else {
                 const error = await response.text();
-                alert(`Login failed: ${error}`);
+                alert(`${error}`);
             }
         }catch (error){
             console.error("Login failiure: ", error);
