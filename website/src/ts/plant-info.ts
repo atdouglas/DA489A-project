@@ -72,16 +72,19 @@ yesAddButton.addEventListener('click', () => {
     if (plantToAdd) {
         const nicknameInput = document.getElementById('plantNickname') as HTMLInputElement;
         let nickname = nicknameInput ? nicknameInput.value.trim() : "";
-        if (!nickname) {
-            nickname = plantToAdd.common_name || plantToAdd.scientific_name || 'Unknown';
+        if (nickname) {
+            plantToAdd.nickname = nickname;
+        } else {
+            plantToAdd.nickname = "";
         }
-        plantToAdd.nickname = nickname;
         addToGarden(plantToAdd);
-        showToast(`Perfect, added "${nickname}" to the garden!`);
+        const toastName = plantToAdd.nickname ? plantToAdd.nickname : plantToAdd.common_name || plantToAdd.scientific_name || 'Unknown';
+        showToast(`Perfect, added "${toastName}" to the garden!`);
         plantToAdd = null;
     }
     confirmAddModal.style.display = 'none';
 });
+
 
 noAddButton.addEventListener('click', () => {
     plantToAdd = null;

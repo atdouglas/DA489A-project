@@ -8,6 +8,7 @@ interface Plant {
     light: string | null;
     watering_frequency: number | null;
     poisonous_to_pets: boolean | null;
+    nickname?: string;
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -117,8 +118,17 @@ const noAddButton = confirmAddModal.querySelector('.no-add-button') as HTMLButto
 
 yesAddButton.addEventListener('click', () => {
     if (plantToAdd) {
+        const nicknameInput = document.getElementById('plantNickname') as HTMLInputElement;
+        let nickname = nicknameInput ? nicknameInput.value.trim() : "";
+        if (nickname) {
+            plantToAdd.nickname = nickname;
+        } else {
+            plantToAdd.nickname = "";
+        }
         addToGarden(plantToAdd);
-        showToast(`Perfect, added "${plantToAdd.common_name || plantToAdd.scientific_name}" to the garden!`);
+        // Per il toast, se non c'è nickname, usiamo il common name
+        const toastName = plantToAdd.nickname ? plantToAdd.nickname : plantToAdd.common_name || plantToAdd.scientific_name || 'Unknown';
+        showToast(`Perfect, added "${toastName}" to the garden!`);
         plantToAdd = null;
     }
     confirmAddModal.style.display = 'none';
