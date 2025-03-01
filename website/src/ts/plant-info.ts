@@ -8,6 +8,7 @@ interface Plant {
     light: string | null;
     watering_frequency: number | null;
     poisonous_to_pets: boolean | null;
+    nickname?: string;
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -48,6 +49,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         const addButton = document.querySelector('.add-button') as HTMLButtonElement;
         addButton.addEventListener('click', () => {
             plantToAdd = plant;
+            const nicknameInput = document.getElementById('plantNickname') as HTMLInputElement;
+            if (nicknameInput) {
+                nicknameInput.value = "";
+            }
             confirmAddModal.style.display = 'flex';
         });
     } catch (error) {
@@ -63,23 +68,26 @@ const confirmAddModal = document.getElementById('confirmAddModal') as HTMLElemen
 const yesAddButton = confirmAddModal.querySelector('.yes-add-button') as HTMLButtonElement;
 const noAddButton = confirmAddModal.querySelector('.no-add-button') as HTMLButtonElement;
 
-// When user clicks "Yes" in the add confirmation modal
 yesAddButton.addEventListener('click', () => {
     if (plantToAdd) {
+        const nicknameInput = document.getElementById('plantNickname') as HTMLInputElement;
+        let nickname = nicknameInput ? nicknameInput.value.trim() : "";
+        if (!nickname) {
+            nickname = plantToAdd.common_name || plantToAdd.scientific_name || 'Unknown';
+        }
+        plantToAdd.nickname = nickname;
         addToGarden(plantToAdd);
-        showToast(`Perfect, added "${plantToAdd.common_name || plantToAdd.scientific_name}" to the garden!`);
+        showToast(`Perfect, added "${nickname}" to the garden!`);
         plantToAdd = null;
     }
     confirmAddModal.style.display = 'none';
 });
 
-// When user clicks "No" in the add confirmation modal
 noAddButton.addEventListener('click', () => {
     plantToAdd = null;
     confirmAddModal.style.display = 'none';
 });
 
-// Function to save the plant to localStorage
 function addToGarden(plant: Plant) {
     const stored = localStorage.getItem('myGarden');
     let garden: Plant[] = stored ? JSON.parse(stored) : [];
@@ -87,21 +95,18 @@ function addToGarden(plant: Plant) {
     localStorage.setItem('myGarden', JSON.stringify(garden));
 }
 
-// Function to show a toast notification that fades in and out
 function showToast(message: string) {
     const toast = document.getElementById('toast') as HTMLElement;
     if (toast) {
         toast.textContent = message;
         toast.style.display = 'block';
-        // Force reflow for transition (optional)
         void toast.offsetWidth;
         toast.classList.add('show');
-        // Hide toast after 3 seconds with fade out
         setTimeout(() => {
             toast.classList.remove('show');
             setTimeout(() => {
                 toast.style.display = 'none';
-            }, 500); // match the CSS transition duration
+            }, 500);
         }, 3000);
     }
 }

@@ -123,6 +123,13 @@
     border-radius: 5px;
     cursor: pointer;
 }
+.confirm-add-modal-content input {
+    width: 100%;
+    padding: 8px;
+    margin-top: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
 
 .yes-add-button {
     background-color: #ffcccc;

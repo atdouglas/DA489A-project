@@ -174,6 +174,13 @@
 .no-add-button:hover {
     background-color: #999;
 }
+.confirm-add-modal-content input {
+    width: 100%;
+    padding: 8px;
+    margin-top: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
 
 .toast {
     position: fixed;

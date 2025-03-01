@@ -8,6 +8,8 @@ interface Plant {
     light: string | null;
     watering_frequency: number | null;
     poisonous_to_pets: boolean | null;
+    nickname?: string;
+
 }
 
 const plantsContainer = document.querySelector('.plants-container') as HTMLElement;
@@ -86,18 +88,27 @@ function createPlantCard(plant: Plant) {
     const newCard = document.createElement('div');
     newCard.classList.add('plant-card');
     newCard.setAttribute('data-plant-id', plant.id.toString());
-    const plantName = plant.common_name || plant.scientific_name || "Unknown Plant";
+
     const imageUrl = plant.image_url || "../../public/plant-1573.png";
+
+    let displayName: string;
+    if (plant.nickname && plant.nickname.trim() !== "") {
+        displayName = `${plant.nickname} (${plant.common_name || "No common name"})`;
+    } else {
+        displayName = `${plant.common_name || "No common name"} - ${plant.scientific_name || "No scientific name"}`;
+    }
+
     newCard.innerHTML = `
-    <span class="delete-icon">🗑</span>
-    <img src="${imageUrl}" alt="Plant" class="plant-image" />
-    <h3 class="plant-name">${plantName}</h3>
-    <p class="plant-subtitle">${plant.family || "No family"}</p>
-    <div class="plant-water-info">
-      <span class="water-time">0 h</span>
-      <button class="water-button">Water</button>
-    </div>
-  `;
+        <span class="delete-icon">🗑</span>
+        <img src="${imageUrl}" alt="Plant" class="plant-image" />
+        <h3 class="plant-name">${displayName}</h3>
+        <p class="plant-subtitle">${plant.family || "No family"}</p>
+        <div class="plant-water-info">
+          <span class="water-time">0 h</span>
+          <button class="water-button">Water</button>
+        </div>
+    `;
     plantsContainer.insertBefore(newCard, addPlantCard);
     attachDeleteListener(newCard);
 }
+
