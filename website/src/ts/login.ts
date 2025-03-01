@@ -1,3 +1,5 @@
+import { setCookie } from "./cookieUtil";
+
 document.addEventListener("DOMContentLoaded", () => {
     const loginForm = document.querySelector(".loginbox") as HTMLDivElement;
     const emailInput = document.querySelector('input[type="email"]') as HTMLInputElement;
@@ -45,7 +47,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 const data = await response.json();
                 console.log("Successful login:" + data); //TODO remove
 
-                localStorage.setItem("accessToken", data.accessToken);
+                setCookie("accessToken", data.accessToken, 1);
                 window.location.href= "../html/home-page.html";
             }else {
                 const error = await response.text();

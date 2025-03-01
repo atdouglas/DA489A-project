@@ -1,3 +1,6 @@
+import { getCookie } from "./cookieUtil";
+import { clearCookie } from "./cookieUtil";
+
 document.addEventListener('DOMContentLoaded', () => {
     const searchInput = document.getElementById('search-input') as HTMLInputElement;
     const searchIcon = document.getElementById('search-icon');
@@ -7,8 +10,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const homeLink = document.getElementById('home-link') as HTMLDivElement;
     const settingsLink = document.getElementById('settings-link') as HTMLDivElement;
     const loginLogoutLink = document.getElementById('login-logout-link') as HTMLDivElement;
-    const accessToken = localStorage.getItem('accessToken');
-
 
 
     const performSearch = (searchTerm: string) => {
@@ -34,7 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     logo?.addEventListener('click', () => {
-        const accessToken = localStorage.getItem('accessToken');
+        const accessToken = getCookie('accessToken');
 
         if(accessToken){
             window.location.href = `../html/home-page.html`;
@@ -48,6 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     homeLink?.addEventListener('click', () => {
+        const accessToken = getCookie('accessToken');
         if(accessToken){
             window.location.href = '../html/home-page.html';
         }else {
@@ -60,6 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     const updateLoginLogoutLink = () => {
+        const accessToken = getCookie('accessToken');
         if (accessToken){
             loginLogoutLink.textContent = 'Sign out';
             loginLogoutLink.removeEventListener('click', handleLogin);
@@ -76,7 +79,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const handleLogout = () => {
-        localStorage.removeItem('accessToken');
+        clearCookie('accessToken');
         window.location.href = '../html/login-page.html'; 
         //TODO maybe adjust so that server also drops token, logout endpoint?
     };
