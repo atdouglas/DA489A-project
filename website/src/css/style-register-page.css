@@ -1,6 +1,6 @@
 @import url('default-body.css');
-/* Loginbox styling */
-.login-container {
+
+.register-container {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -8,7 +8,7 @@
     margin-top: 80px;
 }
 
-.loginbox {
+.registerbox {
     background-color: #ffffff;
     padding: 30px;
     border-radius: 8px;
@@ -18,12 +18,12 @@
     margin: 0 auto;
 }
 
-.loginbox h2 {
+.registerbox h1 {
     margin-bottom: 20px;
     color: #350;
 }
 
-.loginbox input{
+.registerbox input{
     width: 100%;
     padding: 10px;
     margin: 10px 0;
@@ -33,7 +33,7 @@
     box-sizing: border-box;
 }
 
-.loginbox button {
+.registerbox button {
     width: 100%;
     padding: 10px;
     margin: 10px 0;
@@ -46,54 +46,25 @@
     box-sizing: border-box;
 }
 
-.loginbox button:hover {
+.registerbox button:hover {
     background-color: #8cc3a1;
 }
 
-.loginbox .register-button {
+.registerbox .register-button {
     background-color: #d4e8d9;
 }
 
-.loginbox .register-button:hover {
+.registerbox .register-button:hover {
     background-color: #b8d9c5;
 }
 
-.loginbox .forgot-password {
+.registerbox .already-registered {
     display: block;
     margin: 10px 0;
     color: #350;
     text-decoration: none;
 }
 
-.loginbox .forgot-password:hover {
+.registerbox .already-registered:hover {
     text-decoration: underline;
-}
-
-.password-container {
-    position: relative;
-    width: 100%;
-}
-
-#password-input {
-    width: 100%;
-    padding: 10px;
-    margin: 10px 0;
-    border: 1px solid #ccc;
-    background-color: #f0f7f4;
-    box-sizing: border-box;
-    padding-right: 40px;
-}
-
-.toggle-password {
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    cursor: pointer;
-    user-select: none;
-    font-size: 18px;
-}
-
-.toggle-password:hover {
-    opacity: 0.8;
 }

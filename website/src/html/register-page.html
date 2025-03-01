@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="../css/style-login-page.css"/>
+    <link rel="stylesheet" href="../css/style-register-page.css"/>
     <link rel="stylesheet" href="../css/style-navbar.css">
     <title>Plantopedia</title>
   </head>
@@ -16,26 +16,24 @@
         <span id="search-icon" class="search-icon">&#128269;</span> 
       </div>
       <div class="logo">Plantopedia</div>
-         <a href="home-page.html" class="home-btn">Home</a>
-     </div>
+    </div>
 
-    <!-- Loginbox -->
-     <div class="login-container">
-      <div class="loginbox">
+    <!-- Registerbox -->
+     <div class="register-container">
+      <div class="registerbox">
         <h1>Plantopedia</h1>
         <input type="email" placeholder="Email" required>
-          <div class="password-container">
-            <input type="password" id="password-input" placeholder="Password" required>
-            <span id="toggle-password" class="toggle-password">👁️</span>
-          </div>
-        <button type="submit">Sign In</button>
-        <button id="register-button">Register</button>
-        <a href="#" class="forgot-password">Forgot password?</a>
+        <input type="text" placeholder="Password" required>
+        <input type="text" placeholder="Security question" required>
+        <input type="text" placeholder="Answer to security question" required>
+        <button class="register-button">Register</button>
+        <a href="#" class="already-registered">Already have an account? Sign in</a>
       </div>
      </div>
 
      <script src="../ts/navbar.ts" type="module"></script>
-     <script src="../ts/login.ts" type="module"></script>
+     <script src="../ts/register.ts" type="module"></script>
+
 
   </body>
 </html>
