@@ -5,9 +5,15 @@ document.addEventListener("DOMContentLoaded", () => {
     const loginButton = document.querySelector('button[type="submit"]') as HTMLButtonElement;
     const registerButton = document.getElementById("register-button");
     const togglePassword = document.getElementById("toggle-password") as HTMLSpanElement;
+    const forgotPasswordLink = document.querySelector(".forgot-password") as HTMLAnchorElement;
 
     registerButton?.addEventListener("click", () => {
         window.location.href = "register-page.html";
+    });
+
+    forgotPasswordLink?.addEventListener('click', (event) => {
+        event.preventDefault();
+        window.location.href = "forgot-password-page.html"
     });
 
     //TODO maybe add graphics for the eye being open and closed?
@@ -43,7 +49,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 window.location.href= "../html/home-page.html";
             }else {
                 const error = await response.text();
-                alert(`${error}`);
+                alert(`Login failed: ${error}`);
             }
         }catch (error){
             console.error("Login failiure: ", error);
