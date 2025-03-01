@@ -26,6 +26,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const user = {email, password};
 
         try {
+            console.log("Eventlisterner triggered, inside try-block");
             const response = await fetch("http://localhost:7888/login", {
                 method: "POST",
                 headers: {
