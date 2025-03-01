@@ -47,11 +47,19 @@ addPlantCard.addEventListener('click', () => {
 
 yesButton.addEventListener('click', () => {
     if (cardToDelete) {
+        const plantId = cardToDelete.getAttribute('data-plant-id');
+        if (plantId) {
+            const stored = localStorage.getItem('myGarden');
+            let garden: Plant[] = stored ? JSON.parse(stored) : [];
+            garden = garden.filter(p => p.id.toString() !== plantId);
+            localStorage.setItem('myGarden', JSON.stringify(garden));
+        }
         cardToDelete.remove();
         cardToDelete = null;
     }
     confirmModal.style.display = 'none';
 });
+
 noButton.addEventListener('click', () => {
     cardToDelete = null;
     confirmModal.style.display = 'none';
@@ -77,6 +85,7 @@ function loadGarden() {
 function createPlantCard(plant: Plant) {
     const newCard = document.createElement('div');
     newCard.classList.add('plant-card');
+    newCard.setAttribute('data-plant-id', plant.id.toString());
     const plantName = plant.common_name || plant.scientific_name || "Unknown Plant";
     const imageUrl = plant.image_url || "../../public/plant-1573.png";
     newCard.innerHTML = `

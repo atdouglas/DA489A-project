@@ -53,6 +53,22 @@
     color: #350;
     cursor: pointer;
 }
+.home-btn {
+    margin-left: 15px;
+    padding: 10px 20px;
+    background-color: #d4e8d9;
+    color: #350;
+    text-decoration: none;
+    border: 2px solid #350;
+    border-radius: 6px;
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.home-btn:hover {
+    background-color: #c5dbc9;
+    transform: scale(1.05);
+}
 @media (max-width: 950px) {
     .navbar {
         flex-wrap: wrap;

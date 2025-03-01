@@ -13,7 +13,7 @@ interface Plant {
 document.addEventListener('DOMContentLoaded', () => {
     const URLparams = new URLSearchParams(window.location.search);
     const searchTerm = URLparams.get('query');
-    
+
     if(searchTerm){
         const searchQueryElement = document.getElementById('search-query');
         if(searchQueryElement){
@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         fetchSearchResults(searchTerm);
     }
-});    
+});
 
 const fetchSearchResults = async (searchTerm: string) => {
     try {
@@ -82,7 +82,8 @@ const updateSearchResults = (plants: Plant[]) => {
             addBtn.className = 'library-button';
             addBtn.textContent = 'Add to garden';
             addBtn.addEventListener('click', () => {
-                addToGarden(plant);
+                plantToAdd = plant;
+                confirmAddModal.style.display = 'flex';
             });
 
             plantDetails.appendChild(plantName);
@@ -106,5 +107,43 @@ const addToGarden = (plant: Plant) => {
     let garden: Plant[] = stored ? JSON.parse(stored) : [];
     garden.push(plant);
     localStorage.setItem('myGarden', JSON.stringify(garden));
-    alert(`"${plant.common_name || plant.scientific_name}" added to your garden!`);
 };
+
+let plantToAdd: Plant | null = null;
+
+const confirmAddModal = document.getElementById('confirmAddModal') as HTMLElement;
+const yesAddButton = confirmAddModal.querySelector('.yes-add-button') as HTMLButtonElement;
+const noAddButton = confirmAddModal.querySelector('.no-add-button') as HTMLButtonElement;
+
+yesAddButton.addEventListener('click', () => {
+    if (plantToAdd) {
+        addToGarden(plantToAdd);
+        showToast(`Perfect, added "${plantToAdd.common_name || plantToAdd.scientific_name}" to the garden!`);
+        plantToAdd = null;
+    }
+    confirmAddModal.style.display = 'none';
+});
+
+noAddButton.addEventListener('click', () => {
+    plantToAdd = null;
+    confirmAddModal.style.display = 'none';
+});
+
+// Function to show a toast notification
+function showToast(message: string) {
+    const toast = document.getElementById('toast') as HTMLElement;
+    if (toast) {
+        toast.textContent = message;
+        toast.style.display = 'block';
+        // Force reflow to restart CSS transition
+        void toast.offsetWidth;
+        toast.classList.add('show');
+        // Hide toast after 3 seconds, then remove display
+        setTimeout(() => {
+            toast.classList.remove('show');
+            setTimeout(() => {
+                toast.style.display = 'none';
+            }, 500);
+        }, 3000);
+    }
+}
