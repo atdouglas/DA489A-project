@@ -16,7 +16,8 @@
       <span id="search-icon" class="search-icon">&#128269;</span> 
     </div>
     <div class="logo">Plantopedia</div>
-  </div>
+     <a href="home-page.html" class="home-btn">Home</a>
+ </div>
 <!-- Main Container -->
 <div class="main-container">
     <div class="left-container">
@@ -24,8 +25,11 @@
             <img src="../../public/plant-1573.png" alt="New Plant" />
         </div>
         <div class="plant-fact">
-
+            <p><strong>Maintenance:</strong> <span id="maintenance-value"></span></p>
+            <p><strong>Poisons to pets:</strong> <span id="poisons-value"></span></p>
+            <p><strong>Watering frequency:</strong> <span id="watering-value"></span></p>
         </div>
+
     </div>
     <div class="right-container">
         <div class="top-right">
@@ -46,8 +50,21 @@
             </p>
         </div>
     </div>
+    <div id="confirmAddModal" class="confirm-add-modal" style="display: none;">
+        <div class="confirm-add-modal-content">
+            <p>Are you sure you want to add this plant to the garden?</p>
+            <input id="plantNickname" type="text" placeholder="Enter a nickname (optional)" />
+            <div style="margin-top: 10px;">
+            <button class="yes-add-button">Yes</button>
+            <button class="no-add-button">No</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast" class="toast" style="display: none;"></div>
 </div>
-<script src="../ts/plant-info.ts"></script>
+
+ <script src="../ts/plant-info.ts"></script>
 <script src="../ts/navbar.ts" type="module"></script>
 </body>
 </html>

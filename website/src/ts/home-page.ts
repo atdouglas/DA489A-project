@@ -1,36 +1,38 @@
-// Select the main elements from the DOM
+interface Plant {
+    id: number;
+    common_name: string | null;
+    scientific_name: string | null;
+    family: string | null;
+    maintenance: string | null;
+    image_url: string | null;
+    light: string | null;
+    watering_frequency: number | null;
+    poisonous_to_pets: boolean | null;
+    nickname?: string;
+
+}
+
 const plantsContainer = document.querySelector('.plants-container') as HTMLElement;
 const addPlantCard = document.querySelector('.add-plant-card') as HTMLElement;
 const confirmModal = document.getElementById('confirmModal') as HTMLElement;
 const yesButton = confirmModal.querySelector('.yes-button') as HTMLButtonElement;
 const noButton = confirmModal.querySelector('.no-button') as HTMLButtonElement;
-
-// Variable to keep track of which card is to be deleted
 let cardToDelete: HTMLElement | null = null;
 
-/**
- * Attaches a delete event listener to the delete icon within a card.
- * @param card - The card element to which the delete functionality is added.
- */
 function attachDeleteListener(card: HTMLElement): void {
     const deleteIcon = card.querySelector('.delete-icon') as HTMLElement;
     if (deleteIcon) {
-        // When the delete icon is clicked
         deleteIcon.addEventListener('click', (e: Event) => {
-            e.stopPropagation(); // Prevent the event from bubbling up to parent elements
-            cardToDelete = card; // Store the reference to the card to be deleted
-            confirmModal.style.display = 'flex'; // Show the confirmation modal
+            e.stopPropagation();
+            cardToDelete = card;
+            confirmModal.style.display = 'flex';
         });
     }
 }
 
-// Add an event listener to the "Add another plant" card
 addPlantCard.addEventListener('click', () => {
-    // Create a new card element
     const newCard = document.createElement('div');
     newCard.classList.add('plant-card');
-
-    // Set the inner HTML of the new card, including the delete icon and plant details
     newCard.innerHTML = `
     <span class="delete-icon">🗑</span>
     <img src="../../public/plant-1573.png" alt="New Plant" class="plant-image" />
@@ -41,30 +43,72 @@ addPlantCard.addEventListener('click', () => {
       <button class="water-button">Water</button>
     </div>
   `;
-
-    // Insert the new card into the container before the "Add another plant" card
     plantsContainer.insertBefore(newCard, addPlantCard);
-
-    // Attach the delete listener to the new card
     attachDeleteListener(newCard);
 });
 
-// Handle the "Yes" button click in the delete confirmation modal
 yesButton.addEventListener('click', () => {
     if (cardToDelete) {
-        cardToDelete.remove(); // Remove the card from the DOM
-        cardToDelete = null;   // Reset the cardToDelete variable
+        const plantId = cardToDelete.getAttribute('data-plant-id');
+        if (plantId) {
+            const stored = localStorage.getItem('myGarden');
+            let garden: Plant[] = stored ? JSON.parse(stored) : [];
+            garden = garden.filter(p => p.id.toString() !== plantId);
+            localStorage.setItem('myGarden', JSON.stringify(garden));
+        }
+        cardToDelete.remove();
+        cardToDelete = null;
     }
-    confirmModal.style.display = 'none'; // Hide the modal
+    confirmModal.style.display = 'none';
 });
 
-// Handle the "No" button click in the delete confirmation modal
 noButton.addEventListener('click', () => {
-    cardToDelete = null; // Clear the cardToDelete variable
-    confirmModal.style.display = 'none'; // Hide the modal
+    cardToDelete = null;
+    confirmModal.style.display = 'none';
 });
-
-// Attach delete listeners to any existing plant cards (excluding the "Add another plant" card)
 document.querySelectorAll('.plant-card:not(.add-plant-card)').forEach(card => {
     attachDeleteListener(card as HTMLElement);
 });
+
+// Load saved garden items on page load
+document.addEventListener('DOMContentLoaded', () => {
+    loadGarden();
+});
+
+function loadGarden() {
+    const stored = localStorage.getItem('myGarden');
+    if (!stored) return;
+    const garden: Plant[] = JSON.parse(stored);
+    garden.forEach(plant => {
+        createPlantCard(plant);
+    });
+}
+
+function createPlantCard(plant: Plant) {
+    const newCard = document.createElement('div');
+    newCard.classList.add('plant-card');
+    newCard.setAttribute('data-plant-id', plant.id.toString());
+
+    const imageUrl = plant.image_url || "../../public/plant-1573.png";
+
+    let displayName: string;
+    if (plant.nickname && plant.nickname.trim() !== "") {
+        displayName = `${plant.nickname} (${plant.common_name || "No common name"})`;
+    } else {
+        displayName = `${plant.common_name || "No common name"} - ${plant.scientific_name || "No scientific name"}`;
+    }
+
+    newCard.innerHTML = `
+        <span class="delete-icon">🗑</span>
+        <img src="${imageUrl}" alt="Plant" class="plant-image" />
+        <h3 class="plant-name">${displayName}</h3>
+        <p class="plant-subtitle">${plant.family || "No family"}</p>
+        <div class="plant-water-info">
+          <span class="water-time">0 h</span>
+          <button class="water-button">Water</button>
+        </div>
+    `;
+    plantsContainer.insertBefore(newCard, addPlantCard);
+    attachDeleteListener(newCard);
+}
+

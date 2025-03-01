@@ -16,7 +16,9 @@
           <span id="search-icon" class="search-icon">&#128269;</span> 
         </div>
         <div class="logo">Plantopedia</div>
-      </div>
+         <a href="home-page.html" class="home-btn">Home</a>
+
+     </div>
 
       <!--Seachresultbox-->
       <div class="search-container">
@@ -24,6 +26,23 @@
         <div class="search-results">
       </div>
       <script src="../ts/search.ts" type="module"></script>
-      <script src="../ts/navbar.ts" type="module"></script>   
+          <script src="../ts/navbar.ts" type="module"></script>
+      </div>
+     <!-- Confirm Add to Garden Modal -->
+     <div id="confirmAddModal" class="confirm-add-modal" style="display: none;">
+         <div class="confirm-add-modal-content">
+             <p>Are you sure you want to add this plant to the garden?</p>
+             <input id="plantNickname" type="text" placeholder="Enter a nickname (optional)" />
+             <div style="margin-top: 10px;">
+                 <button class="yes-add-button">Yes</button>
+                 <button class="no-add-button">No</button>
+             </div>
+         </div>
+     </div>
+
+     <!-- Toast notification -->
+     <div id="toast" class="toast" style="display: none;"></div>
+
 </body>
+
 </html>

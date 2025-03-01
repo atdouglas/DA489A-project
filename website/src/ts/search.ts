@@ -1,7 +1,19 @@
+interface Plant {
+    id: number;
+    common_name: string | null;
+    scientific_name: string | null;
+    family: string | null;
+    image_url: string | null;
+    maintenance: string | null;
+    light: string | null;
+    watering_frequency: number | null;
+    poisonous_to_pets: boolean | null;
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     const URLparams = new URLSearchParams(window.location.search);
     const searchTerm = URLparams.get('query');
-    
+
     if(searchTerm){
         const searchQueryElement = document.getElementById('search-query');
         if(searchQueryElement){
@@ -9,7 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         fetchSearchResults(searchTerm);
     }
-});    
+});
 
 const fetchSearchResults = async (searchTerm: string) => {
     try {
@@ -49,11 +61,11 @@ const updateSearchResults = (plants: Plant[]) => {
 
             const plantName = document.createElement('h2');
             plantName.className = 'plant-name';
-            plantName.textContent = plant.scientific_name || 'No known common name';
+            plantName.textContent = plant.common_name || 'No known common name';
 
             const scientificName = document.createElement('p');
             scientificName.className = 'scientific-name';
-            scientificName.textContent = plant.common_name || 'No known scientific name';
+            scientificName.textContent = plant.scientific_name || 'No known scientific name';
 
             const plantActions = document.createElement('div');
             plantActions.className = 'plant-actions';
@@ -62,34 +74,76 @@ const updateSearchResults = (plants: Plant[]) => {
             infoButton.className = 'info-button';
             infoButton.textContent = 'Plant info';
 
-            const libraryButton = document.createElement('button');
-            libraryButton.className = 'library-button';
-            libraryButton.textContent = 'Add to library';
+            infoButton.addEventListener('click', () => {
+                window.location.href = `plant-info.html?id=${plant.id}`;
+            });
+
+            const addBtn = document.createElement('button');
+            addBtn.className = 'library-button';
+            addBtn.textContent = 'Add to garden';
+            addBtn.addEventListener('click', () => {
+                plantToAdd = plant;
+                confirmAddModal.style.display = 'flex';
+            });
 
             plantDetails.appendChild(plantName);
             plantDetails.appendChild(scientificName);
 
             plantActions.appendChild(infoButton);
-            plantActions.appendChild(libraryButton);
+            plantActions.appendChild(addBtn);
 
             searchHit.appendChild(plantImage);
             searchHit.appendChild(plantDetails);
             searchHit.appendChild(plantActions);
 
             searchResultsContainer.appendChild(searchHit);
+            console.log('Plant data:', plant);
+
         });
     }
 };
+const addToGarden = (plant: Plant) => {
+    const stored = localStorage.getItem('myGarden');
+    let garden: Plant[] = stored ? JSON.parse(stored) : [];
+    garden.push(plant);
+    localStorage.setItem('myGarden', JSON.stringify(garden));
+};
 
+let plantToAdd: Plant | null = null;
 
-interface Plant {
-    id: number;
-    common_name: string | null;
-    scientific_name: string | null;
-    family: string | null;
-    maintenance: string | null;
-    image_url: string | null;
-    light: string | null;
-    watering_frequency: number | null;
-    poisonous_to_pets: boolean | null;
+const confirmAddModal = document.getElementById('confirmAddModal') as HTMLElement;
+const yesAddButton = confirmAddModal.querySelector('.yes-add-button') as HTMLButtonElement;
+const noAddButton = confirmAddModal.querySelector('.no-add-button') as HTMLButtonElement;
+
+yesAddButton.addEventListener('click', () => {
+    if (plantToAdd) {
+        addToGarden(plantToAdd);
+        showToast(`Perfect, added "${plantToAdd.common_name || plantToAdd.scientific_name}" to the garden!`);
+        plantToAdd = null;
+    }
+    confirmAddModal.style.display = 'none';
+});
+
+noAddButton.addEventListener('click', () => {
+    plantToAdd = null;
+    confirmAddModal.style.display = 'none';
+});
+
+// Function to show a toast notification
+function showToast(message: string) {
+    const toast = document.getElementById('toast') as HTMLElement;
+    if (toast) {
+        toast.textContent = message;
+        toast.style.display = 'block';
+        // Force reflow to restart CSS transition
+        void toast.offsetWidth;
+        toast.classList.add('show');
+        // Hide toast after 3 seconds, then remove display
+        setTimeout(() => {
+            toast.classList.remove('show');
+            setTimeout(() => {
+                toast.style.display = 'none';
+            }, 500);
+        }, 3000);
+    }
 }
