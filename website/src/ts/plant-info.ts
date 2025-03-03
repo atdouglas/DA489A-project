@@ -21,7 +21,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (!response.ok) throw new Error('Plant not found');
         const plant: Plant = await response.json();
 
-        // Update main plant info
         const commonNameEl = document.querySelector('.common-name') as HTMLElement;
         const scientificNameEl = document.querySelector('.scientific-name') as HTMLElement;
         const familyNameEl = document.querySelector('.family-name') as HTMLElement;
@@ -63,7 +62,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 // Global variable for storing the plant to add
 let plantToAdd: Plant | null = null;
 
-// Get the Add confirmation modal elements
 const confirmAddModal = document.getElementById('confirmAddModal') as HTMLElement;
 const yesAddButton = confirmAddModal.querySelector('.yes-add-button') as HTMLButtonElement;
 const noAddButton = confirmAddModal.querySelector('.no-add-button') as HTMLButtonElement;

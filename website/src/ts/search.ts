@@ -126,7 +126,6 @@ yesAddButton.addEventListener('click', () => {
             plantToAdd.nickname = "";
         }
         addToGarden(plantToAdd);
-        // Per il toast, se non c'è nickname, usiamo il common name
         const toastName = plantToAdd.nickname ? plantToAdd.nickname : plantToAdd.common_name || plantToAdd.scientific_name || 'Unknown';
         showToast(`Perfect, added "${toastName}" to the garden!`);
         plantToAdd = null;
@@ -145,10 +144,8 @@ function showToast(message: string) {
     if (toast) {
         toast.textContent = message;
         toast.style.display = 'block';
-        // Force reflow to restart CSS transition
         void toast.offsetWidth;
         toast.classList.add('show');
-        // Hide toast after 3 seconds, then remove display
         setTimeout(() => {
             toast.classList.remove('show');
             setTimeout(() => {
