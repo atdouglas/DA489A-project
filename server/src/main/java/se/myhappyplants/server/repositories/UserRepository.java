@@ -7,6 +7,7 @@ import se.myhappyplants.shared.User;
 import java.security.SecureRandom;
 import java.sql.*;
 import java.util.Base64;
+import java.util.function.BinaryOperator;
 
 public class UserRepository extends Repository {
 
@@ -14,16 +15,26 @@ public class UserRepository extends Repository {
         if(!checkEmailAndPasswordLegal(user.getEmail(), user.getPassword())){
             return false;
         }
+        if(user.getSecurityAnswer() == null || user.getSecurityQuestion() == null){
+            return false;
+        }
+        if(!checkSecurityQuestionLegal(user.getSecurityQuestion(), user.getSecurityAnswer())){
+            return false;
+        }
 
         boolean success = false;
         String hashedPassword = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt());
+        String hashedAnswer = BCrypt.hashpw(user.getSecurityAnswer(), BCrypt.gensalt());
+
         String query = """
-                INSERT INTO registered_users (email, password) VALUES (?, ?);
+                INSERT INTO registered_users (email, password, security_question, security_answer) VALUES (?, ?, ?, ?);
                 """;
         try (java.sql.Connection connection = startConnection()) {
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                 preparedStatement.setString(1, user.getEmail());
                 preparedStatement.setString(2, hashedPassword);
+                preparedStatement.setString(3, user.getSecurityQuestion());
+                preparedStatement.setString(4, hashedAnswer);
                 preparedStatement.executeUpdate();
                 success = true;
             }
@@ -52,6 +63,76 @@ public class UserRepository extends Repository {
         }
         return isVerified;
     }
+
+    public String getSecurityQuestion(String email) {
+        String question = "";
+
+        String query = """
+                SELECT security_question FROM registered_users WHERE email = ?;
+                """;
+        try (java.sql.Connection connection = startConnection()) {
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                preparedStatement.setString(1, email);
+                ResultSet resultSet = preparedStatement.executeQuery();
+                if (resultSet.next()) {
+                    question = resultSet.getString(1);
+                }
+            }
+        } catch (SQLException sqlException) {
+            System.out.println(sqlException.getMessage());
+        }
+        return question;
+    }
+
+    public boolean verifySecurityQuestion(String email, String userAnswer) {
+        boolean verified = false;
+
+        String query = """
+                SELECT security_answer FROM registered_users WHERE email = ?;
+                """;
+        try (java.sql.Connection connection = startConnection()) {
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                preparedStatement.setString(1, email);
+                ResultSet resultSet = preparedStatement.executeQuery();
+                if (resultSet.next()) {
+                    String actualAnswer = resultSet.getString(1);
+                    if(BCrypt.checkpw(userAnswer, actualAnswer)){
+                        verified = true;
+                    }
+                }
+            }
+        } catch (SQLException sqlException) {
+            System.out.println(sqlException.getMessage());
+        }
+        return verified;
+    }
+
+    public boolean updatePasswordWithSecurityQuestion(String email, String userAnswer, String newPassword) {
+        boolean updated = false;
+        if(!verifySecurityQuestion(email, userAnswer)){
+            return false;
+        }
+
+        String hashedPassword = BCrypt.hashpw(newPassword, BCrypt.gensalt());
+
+
+        String query = """
+                UPDATE registered_users SET password = ? WHERE email = ?;
+                """;
+        try (java.sql.Connection connection = startConnection()) {
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                preparedStatement.setString(1, hashedPassword);
+                preparedStatement.setString(2, email);
+                preparedStatement.executeUpdate();
+                updated = true;
+            }
+        } catch (SQLException sqlException) {
+            System.out.println(sqlException.getMessage());
+        }
+        return updated;
+    }
+
+
 
     public User getUserDetails(String email) {
         User user = null;
@@ -252,6 +333,18 @@ public class UserRepository extends Repository {
         }
 
         if(!email.contains("@") || !email.contains(".")){
+            return false;
+        }
+
+        return true;
+    }
+
+    public boolean checkSecurityQuestionLegal(String question, String answer){
+        if(question.isEmpty() || question.length() > 100){
+            return false;
+        }
+
+        if (answer.isEmpty() || answer.length() > 50){
             return false;
         }
 

@@ -28,11 +28,19 @@
      <div class="register-container">
       <div class="registerbox">
         <h1>Plantopedia</h1>
-        <input type="email" placeholder="Email" required>
-        <input type="text" placeholder="Password" required>
-        <input type="text" placeholder="Security question" required>
-        <input type="text" placeholder="Answer to security question" required>
-        <button class="register-button">Register</button>
+        <form id="registerForm">
+			<input id="emailInput" type="email" placeholder="Email" required>
+			<input id="passwordInput" type="password" placeholder="Password" required>
+			<input id="confirmPasswordInput" type="password" placeholder="Confirm password" required>
+
+			<!-- Security questions are currently disabled because it's low priority. -->
+
+			<!--<input type="text" placeholder="Security question" required>
+			<input type="text" placeholder="Answer to security question" required>-->
+
+			<button id="registerButton" class="register-button" type="submit">Register</button>
+        </form>
+
         <a href="#" class="already-registered">Already have an account? Sign in</a>
       </div>
      </div>

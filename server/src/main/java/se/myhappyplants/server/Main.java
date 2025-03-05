@@ -39,6 +39,9 @@ public class Main {
         setupLogin();
         setupGetUserLibrary();
         setupPostUserLibrary();
+        setupGetSecurityQuestion();
+        setupPostSecurityQuestion();
+        setupPostUpdatePassword();
     }
 
     private static void setupGetPlant() {
@@ -115,6 +118,74 @@ public class Main {
                 ctx.status(200).json(plantList);
             }else {
                 ctx.status(404).result("An error has occurred.");
+            }
+        }));
+    }
+
+    private static void setupGetSecurityQuestion(){
+        app.get("/security_question", ctx -> ctx.async(() -> {
+            User user = ctx.bodyAsClass(User.class);
+            String question = null;
+
+            if(user.getEmail() == null){
+                ctx.status(400).result("Bad request. No email provided.");
+            }else {
+                question = userRepository.getSecurityQuestion(user.getEmail());
+            }
+
+            if(question == null || question.isEmpty()){
+                ctx.status(404).result("Security question could not be found");
+            } else {
+                ctx.status(200).json(question);
+            }
+        }));
+    }
+
+    private static void setupPostSecurityQuestion(){
+        app.post("/security_question", ctx -> ctx.async(() -> {
+            User user = ctx.bodyAsClass(User.class);
+            boolean verified = false;
+
+            if(user.getEmail() == null){
+                ctx.status(400).result("Bad request. No email provided.");
+                return;
+            }else if(user.getSecurityAnswer() == null){
+                ctx.status(400).result("Bad request. No answer provided.");
+                return;
+            }else {
+                verified = userRepository.verifySecurityQuestion(user.getEmail(), user.getSecurityAnswer());
+            }
+
+            if(!verified){
+                ctx.status(401).result("Wrong security answer.");
+            }else {
+                ctx.status(200).result("Correct answer, password may now be updated.");
+            }
+        }));
+    }
+
+    private static void setupPostUpdatePassword(){
+        app.post("/update_password", ctx -> ctx.async(() -> {
+            User user = ctx.bodyAsClass(User.class);
+            boolean updated = false;
+
+            if(user.getEmail() == null){
+                ctx.status(400).result("Bad request. No email provided.");
+                return;
+            }else if(user.getSecurityAnswer() == null) {
+                ctx.status(400).result("Bad request. No answer provided.");
+                return;
+            }else if(user.getPassword() == null){
+                ctx.status(400).result("Bad request. No password provided.");
+
+            }else {
+                updated = userRepository.updatePasswordWithSecurityQuestion(user.getEmail(), user.getSecurityAnswer(), user.getPassword());
+            }
+
+            if(!updated){
+                ctx.status(401).result("Wrong security answer.");
+            }else {
+                ctx.status(200).result("Correct answer, password updated.");
             }
         }));
     }

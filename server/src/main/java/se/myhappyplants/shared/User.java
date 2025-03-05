@@ -14,6 +14,8 @@ public class User {
     private String password;
     private String avatarURL;
     private String accessToken;
+    private String securityQuestion;
+    private String securityAnswer;
     private boolean isNotificationsActivated = true;
     private boolean funFactsActivated = true;
 
@@ -129,5 +131,12 @@ public class User {
 
     public void setFunFactsActivated(boolean funFactsActivated) {
         this.funFactsActivated = funFactsActivated;
+    }
+    public String getSecurityQuestion() {
+        return securityQuestion;
+    }
+
+    public String getSecurityAnswer() {
+        return securityAnswer;
     }
 }
