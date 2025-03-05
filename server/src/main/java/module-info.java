@@ -4,6 +4,7 @@ module se.myhappyplants {
     requires io.javalin;
     requires com.google.gson;
     requires java.sql;
+    requires org.jetbrains.annotations;
 
     exports se.myhappyplants.shared to com.google.gson;
     opens se.myhappyplants.shared to com.google.gson;
