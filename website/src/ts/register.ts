@@ -46,8 +46,7 @@ async function performRegistration(event: SubmitEvent){
     console.log(success);
 
     if(success == 200){
-        window.location.href = "login-page.html"; 
-        //TODO Make a "registration successful!" notification
+        window.location.href = "login-page.html?showToast=loginSuccessful"; 
     }else{
         //TODO Make this error handling look better.
         alert("An error occured during registration. Please try again.\n" +
@@ -81,7 +80,4 @@ function verifyPassword(password: string, confirmPassword: string): boolean{
 }
 
 
-//TODO implement toast for error and success
-function showToast(){
 
-}

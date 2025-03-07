@@ -20,6 +20,11 @@ public class User {
     private boolean funFactsActivated = true;
 
     /**
+     * Empty constructor is needed for gson to work.
+     */
+    public User(){}
+
+    /**
      * Constructor used when registering a new user account
      */
     public User(String email, String password, boolean isNotificationsActivated) {
