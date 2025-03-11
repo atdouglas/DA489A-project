@@ -27,5 +27,9 @@ export async function registerUser(email: string, password: string, securityQues
     return status;
 }
 
+export async function addPlantToGardenUser(){
+
+}
+
 
 

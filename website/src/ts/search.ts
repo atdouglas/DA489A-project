@@ -1,3 +1,5 @@
+import { addPlantToGardenUser } from "./api_connection";
+
 interface Plant {
     id: number;
     common_name: string | null;
