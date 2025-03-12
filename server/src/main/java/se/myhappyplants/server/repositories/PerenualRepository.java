@@ -1,0 +1,70 @@
+package se.myhappyplants.server.repositories;
+
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import io.github.cdimascio.dotenv.Dotenv;
+
+import java.net.URI;
+import java.net.URL;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.util.ArrayList;
+import java.util.List;
+
+public class PerenualRepository {
+    private Dotenv dotenv = Dotenv.load();
+    String description = "";
+
+    public String getDescription(int plantID){
+        String urlString = "https://perenual.com/api/v2/species/details/" + plantID
+                + "?key=" + dotenv.get("PERENUAL_KEY");
+
+        try{
+            HttpClient client = HttpClient.newHttpClient();
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(new URI(urlString))
+                    .GET()
+                    .build();
+
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            String responseBody = response.body();
+
+            JsonObject jsonObject = JsonParser.parseString(responseBody).getAsJsonObject();
+            description = jsonObject.get("description").getAsString();
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return description;
+    }
+
+    //TODO FINISH THIS IMPLEMENTATION
+    public List<String> getPlantGuides(int plantID){
+        String urlString = "https://perenual.com/api/species-care-guide-list"
+                + "?key=" + dotenv.get("PERENUAL_KEY")
+                + "&species_id=" + plantID;
+
+        List<String> guides = new ArrayList<>();
+
+        try{
+            HttpClient client = HttpClient.newHttpClient();
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(new URI(urlString))
+                    .GET()
+                    .build();
+
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            String responseBody = response.body();
+
+            JsonObject jsonObject = JsonParser.parseString(responseBody).getAsJsonObject();
+            description = jsonObject.get("description").getAsString();
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+}

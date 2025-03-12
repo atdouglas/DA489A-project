@@ -12,7 +12,8 @@
 
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     box-sizing: border-box;
-    min-height: calc(100vh - 100px);
+    min-height: calc(100vh - 500px);
+    min-width: 1400px;
     overflow-y: auto;
 }
 .left-container {
@@ -28,6 +29,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    width: 430px;
+    height: 430px;
     padding: 10px;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);

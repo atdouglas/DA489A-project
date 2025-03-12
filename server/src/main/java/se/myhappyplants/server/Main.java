@@ -4,6 +4,7 @@ import io.javalin.Javalin;
 import io.javalin.json.JsonMapper;
 import com.google.gson.Gson;
 import org.jetbrains.annotations.NotNull;
+import se.myhappyplants.server.repositories.PerenualRepository;
 import se.myhappyplants.server.repositories.PlantRepository;
 import se.myhappyplants.server.repositories.UserPlantRepository;
 import se.myhappyplants.server.repositories.UserRepository;
@@ -21,6 +22,7 @@ public class Main {
     private static final PlantRepository plantRepository = new PlantRepository();
     private static final UserPlantRepository userPlantRepository = new UserPlantRepository();
     private static final UserRepository userRepository = new UserRepository();
+    private static final PerenualRepository perenualRepository = new PerenualRepository();
 
     private static final Gson gson = new Gson();
     private static Javalin app;
@@ -49,6 +51,12 @@ public class Main {
             int plantID = Integer.parseInt(ctx.pathParam("id"));
 
             Plant plant = plantRepository.getPlantDetails(plantID);
+
+            String description = perenualRepository.getDescription(plantID);
+
+            if(!description.isEmpty()){
+                plant.setDescription(description);
+            }
 
             if (plant == null) {
                 ctx.status(404).result("No plant with this id was found.");

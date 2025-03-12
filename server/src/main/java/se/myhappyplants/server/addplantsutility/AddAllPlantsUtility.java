@@ -2,7 +2,7 @@ package se.myhappyplants.server.addplantsutility;
 
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
-import se.myhappyplants.server.PasswordsAndKeys;
+import io.github.cdimascio.dotenv.Dotenv;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -14,6 +14,7 @@ import java.sql.SQLException;
 // the Json objects -- unlike Plant
 public class AddAllPlantsUtility {
     PlantToAdd[] plantsToAdd;
+    Dotenv dotenv = Dotenv.load();
 
     AddAllPlantsUtility() {
         Gson gson = new Gson();
@@ -83,7 +84,7 @@ public class AddAllPlantsUtility {
         for (PlantToAdd plant : plantsToAdd) {
             java.sql.Connection connection;
             try {
-                connection = DriverManager.getConnection(PasswordsAndKeys.dbServerAddress, PasswordsAndKeys.dbUsername, PasswordsAndKeys.dbPassword);
+                connection = DriverManager.getConnection(dotenv.get("DB_SERVER_ADDRESS"), dotenv.get("DB_USERNAME"), dotenv.get("DB_PASSWORD"));
             } catch (SQLException sqlException) {
                 System.out.println(sqlException.getMessage());
                 return;

@@ -216,3 +216,4 @@ server/resources/searchHistory.txt
 server/.idea/workspace.xml
 src/main/java/se/myhappyplants/server/PasswordsAndKeys.java
 server/src/main/java/se/myhappyplants/server/PasswordsAndKeys.java
+.env

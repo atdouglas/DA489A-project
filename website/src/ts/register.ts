@@ -17,6 +17,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     confirmPasswordInput.addEventListener("input", validatePasswordMatch);
+    passwordInput.addEventListener("input", validatePasswordLength);
 });
 
 registerForm.addEventListener("submit", (event) => {
@@ -32,11 +33,19 @@ async function performRegistration(event: SubmitEvent){
     let securityQuestion: string = securityQuestionInput.value;
     let securityAnswer: string = securityAnswerInput.value;
 
-    if(!verifyPassword(password, confirmPassword)){
+    if(password.length < 6){
+        passwordInput.setCustomValidity("Password needs to be at least 6 characters long!")
+        passwordInput.reportValidity();
+        return
+    }else if(!verifyPassword(password, confirmPassword)){
         confirmPasswordInput.setCustomValidity("Passwords does not match.")
         confirmPasswordInput.reportValidity();
         return;
+
+
     }else{
+        passwordInput.setCustomValidity("")
+        passwordInput.reportValidity();
         confirmPasswordInput.setCustomValidity("")
         confirmPasswordInput.reportValidity();
     }
@@ -70,6 +79,23 @@ function validatePasswordMatch() {
     }
 
     confirmPasswordInput.reportValidity();
+}
+
+function validatePasswordLength(){
+    let password: string = passwordInput.value;
+
+    if(password == ""){
+        return;
+    }
+
+    if (password.length < 6) {
+        passwordInput.setCustomValidity("Password needs to be at least 6 characters long!");
+    } else {
+        passwordInput.setCustomValidity("");
+    }
+
+    passwordInput.reportValidity();
+
 }
 
 function verifyPassword(password: string, confirmPassword: string): boolean{
