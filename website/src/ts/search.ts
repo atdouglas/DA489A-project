@@ -1,21 +1,15 @@
-import { addPlantToGardenUser } from "./api_connection";
-
-interface Plant {
-    id: number;
-    common_name: string | null;
-    scientific_name: string | null;
-    family: string | null;
-    image_url: string | null;
-    maintenance: string | null;
-    light: string | null;
-    watering_frequency: number | null;
-    poisonous_to_pets: boolean | null;
-    nickname?: string;
-}
+import { postPlantToUserLibary } from "./api_connection";
+import { getCookie } from "./cookieUtil";
+import { Plant } from "./types";
+ 
 
 document.addEventListener('DOMContentLoaded', () => {
     const URLparams = new URLSearchParams(window.location.search);
     const searchTerm = URLparams.get('query');
+    const token : string | null= getCookie("accessToken");
+    if (token == null){
+           
+    }
 
     if(searchTerm){
         const searchQueryElement = document.getElementById('search-query');
@@ -46,6 +40,7 @@ const fetchSearchResults = async (searchTerm: string) => {
 
 const updateSearchResults = (plants: Plant[]) => {
     const searchResultsContainer = document.querySelector('.search-results');
+    const token : string | null= getCookie("accessToken");
 
     if(searchResultsContainer){
         searchResultsContainer.innerHTML = '';
@@ -93,7 +88,9 @@ const updateSearchResults = (plants: Plant[]) => {
             plantDetails.appendChild(scientificName);
 
             plantActions.appendChild(infoButton);
-            plantActions.appendChild(addBtn);
+            if (token != null){
+                plantActions.appendChild(addBtn);
+            }
 
             searchHit.appendChild(plantImage);
             searchHit.appendChild(plantDetails);
@@ -106,10 +103,14 @@ const updateSearchResults = (plants: Plant[]) => {
     }
 };
 const addToGarden = (plant: Plant) => {
-    const stored = localStorage.getItem('myGarden');
-    let garden: Plant[] = stored ? JSON.parse(stored) : [];
-    garden.push(plant);
-    localStorage.setItem('myGarden', JSON.stringify(garden));
+    const userid :string|null = getCookie("userId")
+    const accessToken :string|null = getCookie("accessToken")
+    const nickname :string|undefined = plant.nickname
+    if (userid!= null && accessToken != null && nickname!= undefined){
+        postPlantToUserLibary(userid,accessToken,nickname,plant.id)
+    }else{
+        console.log("failed to addToGarden")
+    }
 };
 
 let plantToAdd: Plant | null = null;

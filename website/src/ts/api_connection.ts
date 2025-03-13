@@ -59,5 +59,24 @@ export async function getUserLibrary(userId: string, token: string){
     return status;
 }
 
+export async function postPlantToUserLibary(userId: string, token: string, nickname: string, plantID: number) {
+    let status: number = 404;
+    try{
+        const response = await fetch(
+            URL+"/library/"+userId+"?token="+token+"&plantID="+plantID+"&nickname="+nickname,{
+                method: "POST",
+                headers: {"Content-Type": "application/json",
+            }}
+        )
+        status = response.status;
+    }catch(error){
+        console.error("Plant was not added: ", error);
+    }
+    return status;
+    
+}
+
+
+
 
 
