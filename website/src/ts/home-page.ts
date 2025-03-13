@@ -1,16 +1,5 @@
-interface Plant {
-    id: number;
-    common_name: string | null;
-    scientific_name: string | null;
-    family: string | null;
-    maintenance: string | null;
-    image_url: string | null;
-    light: string | null;
-    watering_frequency: number | null;
-    poisonous_to_pets: boolean | null;
-    nickname?: string;
-
-}
+import { Plant } from './types'
+import { getCookie } from './cookieUtil';
 
 const plantsContainer = document.querySelector('.plants-container') as HTMLElement;
 const addPlantCard = document.querySelector('.add-plant-card') as HTMLElement;
@@ -18,6 +7,30 @@ const confirmModal = document.getElementById('confirmModal') as HTMLElement;
 const yesButton = confirmModal.querySelector('.yes-button') as HTMLButtonElement;
 const noButton = confirmModal.querySelector('.no-button') as HTMLButtonElement;
 let cardToDelete: HTMLElement | null = null;
+
+const token: string | null = getCookie("accessToken");
+const userId: string | null = getCookie("userId")
+
+if(token === null){
+    window.location.href = "/src/html/login-page.html"
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+
+    
+
+    loadGarden();
+});
+
+function loadGarden() {
+    
+
+    /*const garden: Plant[];
+    garden.forEach(plant => {
+        createPlantCard(plant);
+    });
+    */
+}
 
 function attachDeleteListener(card: HTMLElement): void {
     const deleteIcon = card.querySelector('.delete-icon') as HTMLElement;
@@ -31,20 +44,7 @@ function attachDeleteListener(card: HTMLElement): void {
 }
 
 addPlantCard.addEventListener('click', () => {
-    const newCard = document.createElement('div');
-    newCard.classList.add('plant-card');
-    newCard.innerHTML = `
-    <span class="delete-icon">🗑</span>
-    <img src="../../public/plant-1573.png" alt="New Plant" class="plant-image" />
-    <h3 class="plant-name">New Plant</h3>
-    <p class="plant-subtitle">Species</p>
-    <div class="plant-water-info">
-      <span class="water-time">0 h</span>
-      <button class="water-button">Water</button>
-    </div>
-  `;
-    plantsContainer.insertBefore(newCard, addPlantCard);
-    attachDeleteListener(newCard);
+
 });
 
 yesButton.addEventListener('click', () => {
@@ -70,19 +70,8 @@ document.querySelectorAll('.plant-card:not(.add-plant-card)').forEach(card => {
     attachDeleteListener(card as HTMLElement);
 });
 
-// Load saved garden items on page load
-document.addEventListener('DOMContentLoaded', () => {
-    loadGarden();
-});
 
-function loadGarden() {
-    const stored = localStorage.getItem('myGarden');
-    if (!stored) return;
-    const garden: Plant[] = JSON.parse(stored);
-    garden.forEach(plant => {
-        createPlantCard(plant);
-    });
-}
+
 
 function createPlantCard(plant: Plant) {
     const newCard = document.createElement('div');

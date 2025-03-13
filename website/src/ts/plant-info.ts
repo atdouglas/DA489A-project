@@ -1,3 +1,5 @@
+import { Plant } from './types'
+
 const commonNameEl = document.querySelector('.common-name') as HTMLElement;
 const scientificNameEl = document.querySelector('.scientific-name') as HTMLElement;
 const familyNameEl = document.querySelector('.family-name') as HTMLElement;
@@ -13,21 +15,6 @@ const confirmAddModal = document.getElementById('confirmAddModal') as HTMLElemen
 const yesAddButton = confirmAddModal.querySelector('.yes-add-button') as HTMLButtonElement;
 const noAddButton = confirmAddModal.querySelector('.no-add-button') as HTMLButtonElement;
 
-
-
-interface Plant {
-    id: number;
-    common_name: string | null;
-    scientific_name: string | null;
-    family: string | null;
-    image_url: string | null;
-    maintenance: string | null;
-    light: string | null;
-    description: string | null;
-    watering_frequency: number | null;
-    poisonous_to_pets: boolean | null;
-    nickname?: string;
-}
 
 document.addEventListener('DOMContentLoaded', async () => {
     const params = new URLSearchParams(window.location.search);

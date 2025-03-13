@@ -58,6 +58,7 @@ async function login(event : SubmitEvent){
                     console.log("Successful login:" + data); //TODO remove
 
                     setCookie("accessToken", data.accessToken, 1);
+                    setCookie("userId", data.uniqueId, 1)
                     window.location.href= "../html/home-page.html";
                 }else {
                     const error = await response.text();
