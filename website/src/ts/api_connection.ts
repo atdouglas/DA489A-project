@@ -36,27 +36,27 @@ export async function addPlantToGardenUser(){
 //TODO FIX THIS IMPLEMENTATION
 export async function getUserLibrary(userId: string, token: string){
     let status: number = 404;
-    let data: Promise<any> | null;
+    let data: UserPlant[] | null = null;
 
     try{
         const response = await fetch(
-                URL+"/library/"+userId, {
+                URL+"/library/"+userId+"?token="+token, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify(token),
             });
 
         status = response.status;
-        data = response.json()
+        data = await response.json()
+        console.log("User library fetched.")
         
         
     }catch(error){
         console.error("Login failiure: ", error);
     }
 
-    return status;
+    return data;
 }
 
 export async function postPlantToUserLibary(userId: string, token: string, nickname: string, plantID: number) {
