@@ -23,14 +23,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (!plantId) return;
 
 
-    /*
-    if(token == null){
-        //Detta var lösning 1 som inte funkade
+    
+    if(token === null){
         addButton.hidden = true;
-        //Detta var lösning 2 som inte funkade häller 
-        addButton.style.display = 'none';
     }
-    */
 
     try {
         const response = await fetch(`http://localhost:7888/plants/${plantId}`);
