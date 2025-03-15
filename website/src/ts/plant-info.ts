@@ -1,4 +1,5 @@
 import { Plant } from './types'
+import { getCookie } from "./cookieUtil";
 
 const commonNameEl = document.querySelector('.common-name') as HTMLElement;
 const scientificNameEl = document.querySelector('.scientific-name') as HTMLElement;
@@ -15,28 +16,41 @@ const confirmAddModal = document.getElementById('confirmAddModal') as HTMLElemen
 const yesAddButton = confirmAddModal.querySelector('.yes-add-button') as HTMLButtonElement;
 const noAddButton = confirmAddModal.querySelector('.no-add-button') as HTMLButtonElement;
 
-
+const token : string | null= getCookie("accessToken");
 document.addEventListener('DOMContentLoaded', async () => {
     const params = new URLSearchParams(window.location.search);
     const plantId = params.get('id');
     if (!plantId) return;
 
+
+    /*
+    if(token == null){
+        //Detta var lösning 1 som inte funkade
+        addButton.hidden = true;
+        //Detta var lösning 2 som inte funkade häller 
+        addButton.style.display = 'none';
+    }
+    */
+
     try {
         const response = await fetch(`http://localhost:7888/plants/${plantId}`);
         if (!response.ok) throw new Error('Plant not found');
         const plant: Plant = await response.json();
-
         setupPlantDescription(plant)
+  
 
         // Set up add-to-garden with confirmation modal
         addButton.addEventListener('click', () => {
             plantToAdd = plant;
+            
             const nicknameInput = document.getElementById('plantNickname') as HTMLInputElement;
             if (nicknameInput) {
                 nicknameInput.value = "";
             }
             confirmAddModal.style.display = 'flex';
         });
+
+
     } catch (error) {
         console.error('Error loading plant:', error);
     }
