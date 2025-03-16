@@ -123,7 +123,6 @@ function calculateLastWatered(waterInMilli: number): string{
     }
 }
 
-
 //TODO Change this implementation. Should not be a delete button, should be a "more options" button instead where change nickname and delete exists.
 function attachDeleteListener(card: HTMLElement): void {
     const deleteIcon = card.querySelector('.delete-icon') as HTMLElement;

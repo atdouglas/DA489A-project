@@ -109,7 +109,26 @@ public class Main {
             }
         }));
     }
-
+/* WIP
+    private static void setUpDeleteFromUserLibrary(){
+        app.delete("/library/{user_id}/{plant_id}", ctx -> ctx.async(() -> {
+            int userID = Integer.parseInt(ctx.pathParam("user_id"));
+            int plantID = Integer.parseInt(ctx.pathParam("plant_id"));
+            String token = ctx.queryParam("token");
+            TokenStatus tokenStatus = userRepository.verifyAccessToken(userID, token);
+            if (tokenStatus == TokenStatus.NO_MATCH) {
+                ctx.status(401).result("401 You are unauthorized to access this data.");
+            } else if (tokenStatus == TokenStatus.EXPIRED) {
+                ctx.status(419).result("419 Your token has expired.");
+            } else if (tokenStatus == TokenStatus.VALID){
+                boolean result = userPlantRepository.deletePlant(userID,plantID);
+                ctx.status(200).json(result);
+            }else {
+                ctx.status(404).result("An error has occurred.");
+            }
+        }));
+    }
+*/
     private static void setupGetUserLibrary(){
         app.get("/library/{user_id}", ctx -> ctx.async(() -> {
             int userID = Integer.parseInt(ctx.pathParam("user_id"));

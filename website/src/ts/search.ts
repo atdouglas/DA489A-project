@@ -76,22 +76,27 @@ const updateSearchResults = (plants: Plant[]) => {
                 window.location.href = `plant-info.html?id=${plant.id}`;
             });
 
-            const addBtn = document.createElement('button');
-            addBtn.className = 'library-button';
-            addBtn.textContent = 'Add to garden';
-            addBtn.addEventListener('click', () => {
-                plantToAdd = plant;
-                confirmAddModal.style.display = 'flex';
-            });
-
+            const addToGardenBtn = document.createElement('button');
+            addToGardenBtn.className = 'library-button';
+            addToGardenBtn.textContent = 'Add to garden';
+            if (token != null){
+                addToGardenBtn.addEventListener('click', () => {
+                    plantToAdd = plant;
+                    confirmAddModal.style.display = 'flex';
+                });
+            }else{
+                addToGardenBtn.addEventListener('click', () => {
+                    window.location.href = "/src/html/login-page.html";
+                });
+            }
+      
             plantDetails.appendChild(plantName);
             plantDetails.appendChild(scientificName);
 
             plantActions.appendChild(infoButton);
-            if (token != null){
-                plantActions.appendChild(addBtn);
-            }
-
+            
+                plantActions.appendChild(addToGardenBtn);
+        
             searchHit.appendChild(plantImage);
             searchHit.appendChild(plantDetails);
             searchHit.appendChild(plantActions);

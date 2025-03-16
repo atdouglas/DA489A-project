@@ -46,8 +46,8 @@
     position: absolute;
     top: 5px;
     right: 5px;
-    font-size: 18px;
-    color: #ffcccc;
+    font-size: 25px;
+    color: #e34d4d;
     cursor: pointer;
     transition: transform 0.2s, color 0.2s;
 }

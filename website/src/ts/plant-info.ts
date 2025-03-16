@@ -10,7 +10,7 @@ const maintenanceEl = document.getElementById('maintenance-value') as HTMLElemen
 const poisonsEl = document.getElementById('poisons-value') as HTMLElement;
 const wateringEl = document.getElementById('watering-value') as HTMLElement;
 
-const addButton = document.querySelector('.add-button') as HTMLButtonElement;
+const addToGardenButton = document.querySelector('.add-button') as HTMLButtonElement;
 
 const confirmAddModal = document.getElementById('confirmAddModal') as HTMLElement;
 const yesAddButton = confirmAddModal.querySelector('.yes-add-button') as HTMLButtonElement;
@@ -22,29 +22,31 @@ document.addEventListener('DOMContentLoaded', async () => {
     const plantId = params.get('id');
     if (!plantId) return;
 
-
-    
-    if(token === null){
-        addButton.hidden = true;
-    }
-
     try {
         const response = await fetch(`http://localhost:7888/plants/${plantId}`);
         if (!response.ok) throw new Error('Plant not found');
         const plant: Plant = await response.json();
         setupPlantDescription(plant)
   
-
         // Set up add-to-garden with confirmation modal
-        addButton.addEventListener('click', () => {
-            plantToAdd = plant;
-            
-            const nicknameInput = document.getElementById('plantNickname') as HTMLInputElement;
-            if (nicknameInput) {
-                nicknameInput.value = "";
-            }
-            confirmAddModal.style.display = 'flex';
-        });
+        if(token != null){
+            addToGardenButton.addEventListener('click', () => {
+                plantToAdd = plant;
+                
+                const nicknameInput = document.getElementById('plantNickname') as HTMLInputElement;
+                if (nicknameInput) {
+                    nicknameInput.value = "";
+                }
+                confirmAddModal.style.display = 'flex';
+            });
+        }else{
+            addToGardenButton.addEventListener('click', () => {
+                window.location.href = "/src/html/login-page.html";
+                //kanske lägga till en popup med att man måste vara inloggad?
+            })
+
+        }
+
 
 
     } catch (error) {
@@ -70,7 +72,6 @@ function setupPlantDescription(plant: Plant){
         wateringEl.textContent = daysRounded > 0 ? `Every ${daysRounded} days` : "No information";
 }
 
-
 yesAddButton.addEventListener('click', () => {
     if (plantToAdd) {
         const nicknameInput = document.getElementById('plantNickname') as HTMLInputElement;
@@ -87,7 +88,6 @@ yesAddButton.addEventListener('click', () => {
     }
     confirmAddModal.style.display = 'none';
 });
-
 
 noAddButton.addEventListener('click', () => {
     plantToAdd = null;
