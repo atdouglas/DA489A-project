@@ -36,9 +36,7 @@ public class PlantRepository extends Repository {
             }
         } catch (SQLException sqlException) {
             System.out.println(sqlException.getMessage());
-            return null;
         }
-
         return plantList;
     }
 

@@ -37,11 +37,11 @@ public class User {
      * Constructor used for testing purposes.
      * @author Douglas Almö Thorsell
      */
-    public User(String email, String password, boolean isNotificationsActivated, boolean funFactsActivated) {
+    public User(String email, String password, String securityQuestion, String securityAnswer) {
         this.email = email;
         this.password = password;
-        this.isNotificationsActivated = isNotificationsActivated;
-        this.funFactsActivated = funFactsActivated;
+        this.securityQuestion = securityQuestion;
+        this.securityAnswer = securityAnswer;
     }
 
     /**
