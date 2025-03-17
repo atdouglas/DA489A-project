@@ -44,6 +44,7 @@ public class Main {
         setupGetSecurityQuestion();
         setupPostSecurityQuestion();
         setupPostUpdatePassword();
+        setUpDeleteFromUserLibrary();
     }
 
     private static void setupGetPlant() {
@@ -109,11 +110,14 @@ public class Main {
             }
         }));
     }
-/* WIP
+
     private static void setUpDeleteFromUserLibrary(){
         app.delete("/library/{user_id}/{plant_id}", ctx -> ctx.async(() -> {
             int userID = Integer.parseInt(ctx.pathParam("user_id"));
             int plantID = Integer.parseInt(ctx.pathParam("plant_id"));
+
+            System.out.println(userID);
+            System.out.println(plantID);
             String token = ctx.queryParam("token");
             TokenStatus tokenStatus = userRepository.verifyAccessToken(userID, token);
             if (tokenStatus == TokenStatus.NO_MATCH) {
@@ -128,7 +132,7 @@ public class Main {
             }
         }));
     }
-*/
+
     private static void setupGetUserLibrary(){
         app.get("/library/{user_id}", ctx -> ctx.async(() -> {
             int userID = Integer.parseInt(ctx.pathParam("user_id"));

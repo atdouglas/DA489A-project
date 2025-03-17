@@ -118,7 +118,7 @@ public class UserPlantRepository extends Repository {
         boolean plantDeleted = false;
 
         String query = """
-                        DELETE FROM user_plants WHERE plant_id = ? AND user_id = ?;
+                        DELETE FROM user_plants WHERE id = ? AND user_id = ?;
                 """;
         if (plantId <= 0) {
             return plantDeleted;
