@@ -321,7 +321,7 @@ public class UserRepositoryTest {
                 328,
                 "test@expired.token",
                 "test123",
-                "13G_1xZG-5bMAAql85paJz4JSP4Y_QkZ",
+                "mouqspHpCosdRbQt-8zb-8m0k4kv6D1b",
                 true
         );
 

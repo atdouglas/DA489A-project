@@ -136,7 +136,7 @@ public class UserRepository extends Repository {
     public User getUserDetails(String email) {
         User user = null;
         String query = """
-                SELECT id, notification_activated, fun_facts_activated FROM registered_users WHERE email = ?;
+                SELECT id, notification_activated FROM registered_users WHERE email = ?;
                 """;
         try (java.sql.Connection connection = startConnection()) {
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -145,7 +145,7 @@ public class UserRepository extends Repository {
                 while (resultSet.next()) {
                     int uniqueID = resultSet.getInt(1);
                     boolean notificationActivated = resultSet.getBoolean(2);
-                    user = new User(uniqueID, email, notificationActivated);
+                    user = new User(uniqueID, email);
                 }
             }
         } catch (SQLException sqlException) {
