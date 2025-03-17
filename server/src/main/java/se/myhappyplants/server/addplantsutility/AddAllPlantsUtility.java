@@ -39,25 +39,52 @@ public class AddAllPlantsUtility {
                     plantToAdd.scientific_name = "Unknown";
                 } else {
                     // fix for entries having mixed use of uppercase and lowercase
-                    char[] chars = plantToAdd.light.toCharArray();
-                    chars[0] = Character.toUpperCase(chars[0]);
-                    plantToAdd.light = new String(chars);
+                    String[] split = plantToAdd.scientific_name.split(" ");
+                    StringBuilder newString = new StringBuilder();
+                    for (String string : split) {
+                        char[] chars = string.toCharArray();
+                        chars[0] = Character.toUpperCase(chars[0]);
+                        newString.append(chars);
+                        newString.append(' ');
+                    }
+                    if (!newString.isEmpty() && newString.charAt(newString.length() - 1) == ' ') {
+                        newString.deleteCharAt(newString.length() - 1);
+                    }
+                    plantToAdd.scientific_name = newString.toString();
                 }
                 if (plantToAdd.family == null) {
                     plantToAdd.family = "Unknown";
                 } else {
                     // fix for entries having mixed use of uppercase and lowercase
-                    char[] chars = plantToAdd.light.toCharArray();
-                    chars[0] = Character.toUpperCase(chars[0]);
-                    plantToAdd.light = new String(chars);
+                    String[] split = plantToAdd.family.split(" ");
+                    StringBuilder newString = new StringBuilder();
+                    for (String string : split) {
+                        char[] chars = string.toCharArray();
+                        chars[0] = Character.toUpperCase(chars[0]);
+                        newString.append(chars);
+                        newString.append(' ');
+                    }
+                    if (!newString.isEmpty() && newString.charAt(newString.length() - 1) == ' ') {
+                        newString.deleteCharAt(newString.length() - 1);
+                    }
+                    plantToAdd.family = newString.toString();
                 }
                 if (plantToAdd.common_name == null) {
                     plantToAdd.common_name = "Unknown";
                 } else {
                     // fix for entries having mixed use of uppercase and lowercase
-                    char[] chars = plantToAdd.light.toCharArray();
-                    chars[0] = Character.toUpperCase(chars[0]);
-                    plantToAdd.light = new String(chars);
+                    String[] split = plantToAdd.common_name.split(" ");
+                    StringBuilder newString = new StringBuilder();
+                    for (String string : split) {
+                        char[] chars = string.toCharArray();
+                        chars[0] = Character.toUpperCase(chars[0]);
+                        newString.append(chars);
+                        newString.append(' ');
+                    }
+                    if (!newString.isEmpty() && newString.charAt(newString.length() - 1) == ' ') {
+                        newString.deleteCharAt(newString.length() - 1);
+                    }
+                    plantToAdd.common_name = newString.toString();
                 }
                 if (plantToAdd.light == null) {
                     plantToAdd.light = "Unknown";
