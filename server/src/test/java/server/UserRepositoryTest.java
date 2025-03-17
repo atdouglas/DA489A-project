@@ -91,9 +91,7 @@ public class UserRepositoryTest {
                     () -> assertEquals(testUser.getEmail(), result.getEmail(),
                             "Wrong email, the expected email is " + testUser.getEmail()),
                     () -> assertEquals(testUser.areNotificationsActivated(), result.areNotificationsActivated(),
-                            "The test user has notifications active, but the test returned false."),
-                    () -> assertEquals(testUser.areFunFactsActivated(), result.areFunFactsActivated(),
-                            "The test user has fun facts activated, but the test returned false.")
+                            "The test user has notifications active, but the test returned false.")
             );
         }
 
@@ -324,7 +322,6 @@ public class UserRepositoryTest {
                 "test@expired.token",
                 "test123",
                 "13G_1xZG-5bMAAql85paJz4JSP4Y_QkZ",
-                true,
                 true
         );
 

@@ -7,7 +7,6 @@ import se.myhappyplants.shared.User;
 import java.security.SecureRandom;
 import java.sql.*;
 import java.util.Base64;
-import java.util.function.BinaryOperator;
 
 public class UserRepository extends Repository {
 
@@ -146,8 +145,7 @@ public class UserRepository extends Repository {
                 while (resultSet.next()) {
                     int uniqueID = resultSet.getInt(1);
                     boolean notificationActivated = resultSet.getBoolean(2);
-                    boolean funFactsActivated = resultSet.getBoolean(3);
-                    user = new User(uniqueID, email, notificationActivated, funFactsActivated);
+                    user = new User(uniqueID, email, notificationActivated);
                 }
             }
         } catch (SQLException sqlException) {

@@ -68,13 +68,4 @@ public class PlantRepository extends Repository {
         }
         return plantDetails;
     }
-
-    public static boolean isNumeric(String str) {
-        try {
-            Double.parseDouble(str);
-            return true;
-        } catch (NumberFormatException e) {
-            return false;
-        }
-    }
 }
