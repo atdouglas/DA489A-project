@@ -77,6 +77,38 @@ export async function postPlantToUserLibary(userId: string, token: string, nickn
     
 }
 
+export async function updateUserPlantNickname(userId: string, token: string, nickname: string, userPlantId: number) {
+    let status: number = 404;
+    try{
+        const response = await fetch(
+            URL+"/library/"+userId+"/"+ userPlantId + "?token="+ token+ "&nickname="+ nickname,{
+                method: "PATCH",
+                headers: {"Content-Type": "application/json",
+            }}
+        )
+        status = response.status;
+    }catch(error){
+        console.error("Nickname was not updated: ", error);
+    }
+    return status;
+}
+
+export async function updateUserPlantLastWatered(userId: string, token: string, last_watered: number , userPlantId: number) {
+    let status: number = 404;
+    try{
+        const response = await fetch(
+            URL+"/library/"+userId+"/"+ userPlantId + "?token="+ token+ "&last_watered="+ last_watered,{
+                method: "PATCH",
+                headers: {"Content-Type": "application/json",
+            }}
+        )
+        status = response.status;
+    }catch(error){
+        console.error("Last watered was not updated: ", error);
+    }
+    return status;
+}
+
 export async function deleteUserPlantFromLibrary(userPlantId: string, userId: string, token: string) {
     let status: number = 404;
     try{

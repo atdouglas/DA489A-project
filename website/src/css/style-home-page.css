@@ -42,18 +42,16 @@
 }
 
 /* icon trash for eliminate */
-.delete-icon {
+.more-options {
     position: absolute;
-    top: 5px;
-    right: 5px;
+    top: 15px;
+    right: 10px;
     font-size: 25px;
-    color: #e34d4d;
     cursor: pointer;
     transition: transform 0.2s, color 0.2s;
 }
 
-.delete-icon:hover {
-    color: #ff0000;
+.more-options:hover {
     transform: scale(1.05);
 }
 

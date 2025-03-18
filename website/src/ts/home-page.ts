@@ -82,9 +82,8 @@ async function loadGarden() {
 function createPlantCard(plant: UserPlant) {
     const newCard = document.createElement('div');
     newCard.classList.add('plant-card');
-    newCard.setAttribute('data-plant-id', plant.id.toString());
 
-    const imageUrl = plant.image_url || "../../public/plant-1573.png";
+    const imageUrl = plant.image_url || "/plant-1573.png";
 
     let mainName: string;
     let subTitle: string;
@@ -104,7 +103,7 @@ function createPlantCard(plant: UserPlant) {
         lastWatered = "0 h"
     }
     newCard.innerHTML = `
-        <span class="delete-icon">🗑</span>
+        <span class="more-options"><img id="more_vert_img" src="/more_vert.svg"/></span>
         <img src="${imageUrl}" alt="Plant" class="plant-image" />
         <h3 class="plant-name">${mainName}</h3>
         <p class="plant-subtitle">${subTitle}</p>
@@ -138,6 +137,10 @@ function calculateLastWatered(waterInMilli: number): string{
 
         return (totalDays + "d " + totalHours + "h")
     }
+}
+
+function attachOptionsMenu(){
+
 }
 
 //TODO Change this implementation. Should not be a delete button, should be a "more options" button instead where change nickname and delete exists.
