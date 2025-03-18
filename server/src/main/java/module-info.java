@@ -5,6 +5,8 @@ module se.myhappyplants {
     requires com.google.gson;
     requires java.sql;
     requires org.jetbrains.annotations;
+    requires io.github.cdimascio.dotenv.java;
+    requires java.net.http;
 
     exports se.myhappyplants.shared to com.google.gson;
     opens se.myhappyplants.shared to com.google.gson;

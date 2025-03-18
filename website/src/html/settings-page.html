@@ -3,10 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="../css/style-template-page.css"/>
+    <link rel="stylesheet" href="../css/style-login-page.css"/>
     <link rel="stylesheet" href="../css/style-navbar.css">
-    <link rel="icon" type="image/x-icon" href="/favicon.png">
-
     <title>Plantopedia</title>
   </head>
   <body>
@@ -26,12 +24,20 @@
          </div>
      </div>
 
-    <!-- Continue here -->
-     <div class="purpose-container">
-    
+    <!-- Loginbox -->
+     <div class="login-container">
+      <div class="loginbox">
+        <h1>Settings</h1>
+        <form id="login-form">
+          <button type="change-password">Change password</button>
+        </form>
+      </div>
      </div>
 
+      <div id="toast" class="toast" style="display: none;"></div>
+
      <script src="../ts/navbar.ts" type="module"></script>
+     <script src="../ts/login.ts" type="module"></script>
 
   </body>
 </html>

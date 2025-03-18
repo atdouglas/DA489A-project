@@ -4,6 +4,7 @@ import io.javalin.Javalin;
 import io.javalin.json.JsonMapper;
 import com.google.gson.Gson;
 import org.jetbrains.annotations.NotNull;
+import se.myhappyplants.server.repositories.PerenualRepository;
 import se.myhappyplants.server.repositories.PlantRepository;
 import se.myhappyplants.server.repositories.UserPlantRepository;
 import se.myhappyplants.server.repositories.UserRepository;
@@ -21,6 +22,7 @@ public class Main {
     private static final PlantRepository plantRepository = new PlantRepository();
     private static final UserPlantRepository userPlantRepository = new UserPlantRepository();
     private static final UserRepository userRepository = new UserRepository();
+    private static final PerenualRepository perenualRepository = new PerenualRepository();
 
     private static final Gson gson = new Gson();
     private static Javalin app;
@@ -42,6 +44,8 @@ public class Main {
         setupGetSecurityQuestion();
         setupPostSecurityQuestion();
         setupPostUpdatePassword();
+        setUpDeleteFromUserLibrary();
+        setupUpdateUserLibraryPlant();
     }
 
     private static void setupGetPlant() {
@@ -49,6 +53,12 @@ public class Main {
             int plantID = Integer.parseInt(ctx.pathParam("id"));
 
             Plant plant = plantRepository.getPlantDetails(plantID);
+
+            String description = perenualRepository.getDescription(plantID);
+
+            if(!description.isEmpty()){
+                plant.setDescription(description);
+            }
 
             if (plant == null) {
                 ctx.status(404).result("No plant with this id was found.");
@@ -102,6 +112,28 @@ public class Main {
         }));
     }
 
+    private static void setUpDeleteFromUserLibrary(){
+        app.delete("/library/{user_id}/{plant_id}", ctx -> ctx.async(() -> {
+            int userID = Integer.parseInt(ctx.pathParam("user_id"));
+            int plantID = Integer.parseInt(ctx.pathParam("plant_id"));
+
+            System.out.println(userID);
+            System.out.println(plantID);
+            String token = ctx.queryParam("token");
+            TokenStatus tokenStatus = userRepository.verifyAccessToken(userID, token);
+            if (tokenStatus == TokenStatus.NO_MATCH) {
+                ctx.status(401).result("401 You are unauthorized to access this data.");
+            } else if (tokenStatus == TokenStatus.EXPIRED) {
+                ctx.status(419).result("419 Your token has expired.");
+            } else if (tokenStatus == TokenStatus.VALID){
+                boolean result = userPlantRepository.deletePlant(userID,plantID);
+                ctx.status(200).json(result);
+            }else {
+                ctx.status(404).result("An error has occurred.");
+            }
+        }));
+    }
+
     private static void setupGetUserLibrary(){
         app.get("/library/{user_id}", ctx -> ctx.async(() -> {
             int userID = Integer.parseInt(ctx.pathParam("user_id"));
@@ -124,13 +156,12 @@ public class Main {
 
     private static void setupGetSecurityQuestion(){
         app.get("/security_question", ctx -> ctx.async(() -> {
-            User user = ctx.bodyAsClass(User.class);
-            String question = null;
+            String email = ctx.queryParam("email");            String question = null;
 
-            if(user.getEmail() == null){
+            if(email == null){
                 ctx.status(400).result("Bad request. No email provided.");
             }else {
-                question = userRepository.getSecurityQuestion(user.getEmail());
+                question = userRepository.getSecurityQuestion(email);
             }
 
             if(question == null || question.isEmpty()){
@@ -219,6 +250,41 @@ public class Main {
             }else {
                 ctx.status(404).result("An error has occurred.");
             }
+        }));
+    }
+
+    private static void setupUpdateUserLibraryPlant(){
+        app.patch("/library/{user_id}/{user_plant_id}", ctx -> ctx.async(() -> {
+            int userID = Integer.parseInt(ctx.pathParam("user_id"));
+            int userPlantID = Integer.parseInt(ctx.pathParam("user_plant_id"));
+            String token = ctx.queryParam("token");
+            String nickname = ctx.queryParam("nickname");
+            String lastWateredString = ctx.queryParam("last_watered");
+
+            TokenStatus tokenStatus = userRepository.verifyAccessToken(userID, token);
+
+            if (tokenStatus == TokenStatus.NO_MATCH) {
+                ctx.status(401).result("401 You are unauthorized to access this data.");
+            } else if (tokenStatus == TokenStatus.EXPIRED) {
+                ctx.status(419).result("419 Your token has expired.");
+            } else if (tokenStatus == TokenStatus.VALID){
+
+                if(nickname != null && !nickname.isEmpty()){
+                    userPlantRepository.changeNickname(userID, userPlantID, nickname);
+                    ctx.status(200).result("Nickname updated.");
+
+                } else if (lastWateredString != null && !lastWateredString.isEmpty()) {
+                    long lastWatered = Long.parseLong(lastWateredString);
+                    userPlantRepository.changeLastWatered(userID, userPlantID, lastWatered);
+                    ctx.status(200).result("Last watered changed.");
+
+                }else{
+                    ctx.status(400).result("Both nickname and last_watered can't be empty.");
+                }
+            }else {
+                ctx.status(404).result("An error has occurred.");
+            }
+
         }));
     }
 

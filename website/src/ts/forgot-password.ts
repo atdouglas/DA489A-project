@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const emailInput = document.getElementById("email-input") as HTMLInputElement;
     const nextButton = document.getElementById("next-button") as HTMLButtonElement;
     const securityQuestion = document.getElementById("security-question") as HTMLParagraphElement;
-    const securityAnswerInput = document.getElementById("security-asnwer") as HTMLInputElement;
+    const securityAnswerInput = document.getElementById("security-answer") as HTMLInputElement;
     const securityAnswerButton = document.getElementById("submit-button") as HTMLButtonElement;
     const newPasswordInput = document.getElementById("new-password") as HTMLInputElement;
     const confirmPasswordInput = document.getElementById("confirm-password") as HTMLInputElement;
@@ -42,22 +42,27 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         try {
-            const response = await fetch(''); //TODO add url for actually getting the secuity q, new endpoint in server?
-            
+            const response = await fetch(`http://localhost:7888/security_question?email=${encodeURIComponent(userEmail)}`, {
+                method: 'GET',
+                headers: {
+                    "Content-Type": "application/json",
+                }
+            });
             if (response.ok){
                 const q = await response.json();
-                securityQuestionText = q.question; //TODO change to actual param
+                
+                securityQuestionText = q; 
                 securityQuestion.textContent = securityQuestionText;
 
                 step1.style.display = "none";
                 step2.style.display = "block";
             }else {
-                const error = response.text();
+                const error  = await response.text();
                 alert(error);
             }
         }catch (error) {
             console.error(error);
-            alert('An error occure, please try again');
+            alert('An error occured, please try again');
         }
     });
 
@@ -70,7 +75,16 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         try {
-            const response = await fetch(''); //TODO add url for verifying the answer, prob also new endpoint?
+            const response = await fetch('http://localhost:7888/security_question', {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    email: userEmail,
+                    securityAnswer: answer
+                })
+            });
             if (response.ok){
                 step2.style.display = "none";
                 step3.style.display = "block";
@@ -94,7 +108,17 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         try {
-            const response = await fetch(''); //TODO add url for updating user with new password, third endpoint?
+            const response = await fetch('http://localhost:7888/update_password', {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    email: userEmail,
+                    securityAnswer: securityAnswerInput.value,
+                    password: newPassword
+                })
+            });
             if (response.ok){
                 alert('Password has been reset');
                 window.location.href = "../html/login-page.html";

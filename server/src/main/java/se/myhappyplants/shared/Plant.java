@@ -17,6 +17,7 @@ public class Plant {
     private String image_url;
     private String maintenance;
     private String light;
+    private String description;
     // time in millisecond form
     private long watering_frequency;
     private boolean poisonous_to_pets;
@@ -81,6 +82,10 @@ public class Plant {
 
     public String getMaintenance() {
         return maintenance;
+    }
+
+    public void setDescription(String description){
+        this.description = description;
     }
 
     public long getWaterFrequency() {

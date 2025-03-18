@@ -42,18 +42,16 @@
 }
 
 /* icon trash for eliminate */
-.delete-icon {
+.more-options {
     position: absolute;
-    top: 5px;
-    right: 5px;
-    font-size: 18px;
-    color: #ffcccc;
+    top: 15px;
+    right: 10px;
+    font-size: 25px;
     cursor: pointer;
     transition: transform 0.2s, color 0.2s;
 }
 
-.delete-icon:hover {
-    color: #ff0000;
+.more-options:hover {
     transform: scale(1.05);
 }
 
@@ -83,7 +81,7 @@
 /*stile and info every cards */
 .plant-image {
     width: 100%;
-    height: auto;
+    height: 100%;
     border-radius: 8px;
     margin-bottom: 10px;
 }

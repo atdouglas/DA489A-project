@@ -12,7 +12,8 @@
 
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     box-sizing: border-box;
-    min-height: calc(100vh - 100px);
+    min-height: calc(100vh - 500px);
+    min-width: 1400px;
     overflow-y: auto;
 }
 .left-container {
@@ -28,6 +29,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    width: 430px;
+    height: 430px;
     padding: 10px;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -180,23 +183,6 @@
     margin-top: 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
-}
-
-.toast {
-    position: fixed;
-    top: 20px;            /* Adjust position as needed */
-    right: 20px;
-    background-color: #4caf50; /* A green background */
-    color: white;
-    padding: 15px 20px;
-    border-radius: 5px;
-    opacity: 0;
-    transition: opacity 0.5s ease-in-out;
-    z-index: 1001;
-}
-
-.toast.show {
-    opacity: 1;
 }
 
 @media (max-width: 950px) {

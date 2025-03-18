@@ -5,7 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="../css/style-register-page.css"/>
     <link rel="stylesheet" href="../css/style-navbar.css">
-    <title>Plantopedia</title>
+    <link rel="icon" type="image/x-icon" href="/favicon.png">
+
+    <title>Register</title>
   </head>
   <body>
      <!-- Navbar -->
@@ -33,10 +35,8 @@
 			<input id="passwordInput" type="password" placeholder="Password" required>
 			<input id="confirmPasswordInput" type="password" placeholder="Confirm password" required>
 
-			<!-- Security questions are currently disabled because it's low priority. -->
-
-			<!--<input type="text" placeholder="Security question" required>
-			<input type="text" placeholder="Answer to security question" required>-->
+			<input id="securityQuestionInput" type="text" placeholder="Security question" required>
+			<input id="securityAnswerInput" type="text" placeholder="Answer to security question" required>
 
 			<button id="registerButton" class="register-button" type="submit">Register</button>
         </form>
@@ -44,6 +44,8 @@
         <a href="#" class="already-registered">Already have an account? Sign in</a>
       </div>
      </div>
+
+
 
      <script src="../ts/navbar.ts" type="module"></script>
      <script src="../ts/register.ts" type="module"></script>

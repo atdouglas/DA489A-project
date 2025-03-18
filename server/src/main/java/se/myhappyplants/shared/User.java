@@ -14,6 +14,12 @@ public class User {
     private boolean isNotificationsActivated = true;
 
     /**
+     * This is needed for Javalin to work properly. DONT DELETE
+     */
+    public User(){
+
+    }
+    /**
      * Constructor used when registering a new user account or for login requests
      */
     public User(String email, String password) {

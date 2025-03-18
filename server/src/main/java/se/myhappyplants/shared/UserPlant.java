@@ -6,12 +6,21 @@ import java.time.LocalDate;
 public class UserPlant extends Plant {
     private String nickname;
     private long last_watered;
+    private int user_plant_id;
 
     public UserPlant(int id, String scientific_name, String family, String common_name, String image_url, String light,
                      String maintenance, boolean poisonous_to_pets, long water_frequency, String nickname, long last_watered) {
         super(id, common_name, scientific_name, family, image_url, maintenance, light, poisonous_to_pets, water_frequency);
         this.nickname = nickname;
         this.last_watered = last_watered;
+    }
+
+    public UserPlant(int id, String scientific_name, String family, String common_name, String image_url, String light,
+                     String maintenance, boolean poisonous_to_pets, long water_frequency, String nickname, long last_watered, int userPlantId) {
+        super(id, common_name, scientific_name, family, image_url, maintenance, light, poisonous_to_pets, water_frequency);
+        this.nickname = nickname;
+        this.last_watered = last_watered;
+        this.user_plant_id = userPlantId;
     }
 
     public long getProgress(long currentTime) {

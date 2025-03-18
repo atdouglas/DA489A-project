@@ -9,6 +9,9 @@ const togglePassword = document.getElementById("toggle-password") as HTMLSpanEle
 const forgotPasswordLink = document.querySelector(".forgot-password") as HTMLAnchorElement;
 
 document.addEventListener("DOMContentLoaded", () => {
+    if (new URLSearchParams(window.location.search).get('showToast') === 'loginSuccessful') {
+        showToast("Registration successful.")
+    }
     registerButton?.addEventListener("click", () => {
         window.location.href = "register-page.html";
     });
@@ -18,12 +21,14 @@ document.addEventListener("DOMContentLoaded", () => {
         window.location.href = "forgot-password-page.html"
     });
 
-    //TODO maybe add graphics for the eye being open and closed?
     togglePassword?.addEventListener("click", () => {
+        const eyeImage = document.getElementById("eyeImage") as HTMLImageElement;
         if(passwordInput.type === "password"){
             passwordInput.type = "text";
+            eyeImage.src = "/public/eye_not_visible.svg"
         }else{
             passwordInput.type = "password";
+            eyeImage.src = "/public/eye_visible.svg"
         }
     });
 
@@ -53,6 +58,7 @@ async function login(event : SubmitEvent){
                     console.log("Successful login:" + data); //TODO remove
 
                     setCookie("accessToken", data.accessToken, 1);
+                    setCookie("userId", data.uniqueId, 1)
                     window.location.href= "../html/home-page.html";
                 }else {
                     const error = await response.text();
@@ -62,4 +68,20 @@ async function login(event : SubmitEvent){
                 console.error("Login failiure: ", error);
                 alert("An error occured during login. Please try again");
             }
+}
+
+function showToast(message : string){
+    const toast = document.getElementById('toast') as HTMLElement;
+    if (toast) {
+        toast.textContent = message;
+        toast.style.display = 'block';
+        void toast.offsetWidth;
+        toast.classList.add('show');
+        setTimeout(() => {
+            toast.classList.remove('show');
+            setTimeout(() => {
+                toast.style.display = 'none';
+            }, 500);
+        }, 3000);
+    }
 }

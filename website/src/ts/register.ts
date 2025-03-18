@@ -1,6 +1,10 @@
+import { registerUser } from "./api_connection";
+
 const emailInput = document.getElementById("emailInput") as HTMLInputElement;
 const passwordInput = document.getElementById("passwordInput") as HTMLInputElement;
 const confirmPasswordInput = document.getElementById("confirmPasswordInput") as HTMLInputElement;
+const securityQuestionInput = document.getElementById("securityQuestionInput") as HTMLInputElement;
+const securityAnswerInput = document.getElementById("securityAnswerInput") as HTMLInputElement;
 const registerButton = document.getElementById("registerButton") as HTMLButtonElement;
 const registerForm = document.getElementById("registerForm") as HTMLFormElement;
 
@@ -11,21 +15,90 @@ document.addEventListener("DOMContentLoaded", () => {
         event.preventDefault();
         window.location.href = "login-page.html";
     });
+
+    confirmPasswordInput.addEventListener("input", validatePasswordMatch);
+    passwordInput.addEventListener("input", validatePasswordLength);
 });
 
-registerButton.addEventListener("click", performRegistration)
+registerForm.addEventListener("submit", (event) => {
+    performRegistration(event)
+})
 
-function performRegistration(){
-    const email: String = emailInput.value;
-    const password: String = passwordInput.value;
-    const confirmPassword: String = confirmPasswordInput.value;
+async function performRegistration(event: SubmitEvent){
+    event.preventDefault()
 
-    if(!verifyPassword(password, confirmPassword)){
+    let email: string = emailInput.value;
+    let password: string = passwordInput.value;
+    let confirmPassword: string = confirmPasswordInput.value;
+    let securityQuestion: string = securityQuestionInput.value;
+    let securityAnswer: string = securityAnswerInput.value;
+
+    if(password.length < 6){
+        passwordInput.setCustomValidity("Password needs to be at least 6 characters long!")
+        passwordInput.reportValidity();
+        return
+    }else if(!verifyPassword(password, confirmPassword)){
+        confirmPasswordInput.setCustomValidity("Passwords does not match.")
+        confirmPasswordInput.reportValidity();
+        return;
+
+
+    }else{
+        passwordInput.setCustomValidity("")
+        passwordInput.reportValidity();
+        confirmPasswordInput.setCustomValidity("")
         confirmPasswordInput.reportValidity();
     }
+
+    const success: number = await registerUser(email, password, securityQuestion, securityAnswer);
+
+    console.log(success);
+
+    if(success == 200){
+        window.location.href = "login-page.html?showToast=loginSuccessful"; 
+    }else{
+        //TODO Make this error handling look better.
+        alert("An error occured during registration. Please try again.\n" +
+                "Status code: " + success);
+    }
+
 }
 
-function verifyPassword(password: String, confirmPassword: String): boolean{
+function validatePasswordMatch() {
+    let password: string = passwordInput.value;
+    let confirmPassword: string = confirmPasswordInput.value;
+
+    if(password == "" || confirmPassword == ""){
+        return;
+    }
+
+    if (!verifyPassword(password, confirmPassword)) {
+        confirmPasswordInput.setCustomValidity("Passwords do not match.");
+    } else {
+        confirmPasswordInput.setCustomValidity("");
+    }
+
+    confirmPasswordInput.reportValidity();
+}
+
+function validatePasswordLength(){
+    let password: string = passwordInput.value;
+
+    if(password == ""){
+        return;
+    }
+
+    if (password.length < 6) {
+        passwordInput.setCustomValidity("Password needs to be at least 6 characters long!");
+    } else {
+        passwordInput.setCustomValidity("");
+    }
+
+    passwordInput.reportValidity();
+
+}
+
+function verifyPassword(password: string, confirmPassword: string): boolean{
     if(password !== confirmPassword){
         return false;
     }
@@ -33,6 +106,4 @@ function verifyPassword(password: String, confirmPassword: String): boolean{
 }
 
 
-function registerUser(email: String, password: String){
 
-}

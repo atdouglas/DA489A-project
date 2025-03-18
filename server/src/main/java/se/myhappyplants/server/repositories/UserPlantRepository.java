@@ -51,7 +51,7 @@ public class UserPlantRepository extends Repository {
     public ArrayList<UserPlant> getUserLibrary(int userId) {
         ArrayList<UserPlant> plantList = new ArrayList<UserPlant>();
         String query = """
-                SELECT p.*, up.nickname, up.last_watered FROM plants p JOIN user_plants up ON p.id = up.plant_id WHERE up.user_id = ?
+                SELECT p.*, up.nickname, up.last_watered, up.id as user_plant_id FROM plants p JOIN user_plants up ON p.id = up.plant_id WHERE up.user_id = ?
                 """;
         try (java.sql.Connection connection = startConnection()) {
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -69,7 +69,9 @@ public class UserPlantRepository extends Repository {
                     long waterFrequency = resultSet.getLong("watering_frequency");
                     String nickname = resultSet.getString("nickname");
                     long lastWatered = resultSet.getLong("last_watered");
-                    plantList.add(new UserPlant(plantId, scientificName, family, commonName, imageURL, light, maintenance, poisonousToPets, waterFrequency, nickname, lastWatered));
+                    int userPlantId = resultSet.getInt("user_plant_id");
+
+                    plantList.add(new UserPlant(plantId, scientificName, family, commonName, imageURL, light, maintenance, poisonousToPets, waterFrequency, nickname, lastWatered, userPlantId));
                 }
             }
         } catch (SQLException sqlException) {
@@ -118,7 +120,7 @@ public class UserPlantRepository extends Repository {
         boolean plantDeleted = false;
 
         String query = """
-                        DELETE FROM user_plants WHERE plant_id = ? AND user_id = ?;
+                        DELETE FROM user_plants WHERE id = ? AND user_id = ?;
                 """;
         if (plantId <= 0) {
             return plantDeleted;
@@ -140,17 +142,17 @@ public class UserPlantRepository extends Repository {
 
 
 
-    public boolean changeLastWatered(int userId, int plant_id) {
+    public boolean changeLastWatered(int userId, int plant_id, long lastWatered) {
         boolean dateChanged = false;
         String query = """ 
-                    UPDATE user_plants SET last_watered = ? WHERE plant_id = ? AND user_id = ?;
+                    UPDATE user_plants SET last_watered = ? WHERE id = ? AND user_id = ?;
                     """;
         if (userId <= 0 || plant_id <= 0) {
             return dateChanged;
         }
         try (java.sql.Connection connection = startConnection()) {
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-                preparedStatement.setLong(1, System.currentTimeMillis());
+                preparedStatement.setLong(1, lastWatered);
                 preparedStatement.setInt(2, plant_id);
                 preparedStatement.setInt(3, userId);
                 preparedStatement.executeUpdate();
@@ -169,7 +171,7 @@ public class UserPlantRepository extends Repository {
         String query = """
                     UPDATE user_plants 
                     SET nickname = ? 
-                    WHERE plant_id = ? AND user_id = ?;
+                    WHERE id = ? AND user_id = ?;
                    """;
         if (newNickname == null || newNickname.isEmpty()) {
             return nicknameChanged;
