@@ -18,26 +18,26 @@ public class PlantRepositoryTest {
         int testNumber = 6;
         assertAll(
                 "Testing correct input",
-                () -> assertEquals(17, result.size(),
-                        "The size of a search of " + searchQuery + " should be 17 :testSearchListCorrectFamilyInput failed"),
-                () -> assertEquals(2862,result.get(testNumber).getId(),
-                        "The ID is " +result.get(testNumber).getId() + " It should be 2862:testSearchListCorrectFamilyInput failed"),
-                () -> assertEquals("Euphorbia amygdaloides subsp. robbiae",result.get(testNumber).getScientific_name(),
+                () -> assertEquals(30, result.size(),
+                        "The size of a search of " + searchQuery + " should be 30 :testSearchListCorrectFamilyInput failed"),
+                () -> assertEquals(2867,result.get(testNumber).getId(),
+                        "The ID is " +result.get(testNumber).getId() + " It should be 2867:testSearchListCorrectFamilyInput failed"),
+                () -> assertEquals("Euphorbia Characias 'Tasmanian Tiger'",result.get(testNumber).getScientific_name(),
                         "The family name is " +result.get(testNumber).getScientific_name() + " It should be Euphorbia amygdaloides subsp. robbiae :testSearchListCorrectFamilyInput failed"),
-                () -> assertEquals("spurge",result.get(testNumber).getFamily(),
-                        "The family is " +result.get(testNumber).getFamily() + " It should be spurge :testSearchListCorrectFamilyInput failed"),
-                () -> assertEquals("Euphorbiaceae",result.get(testNumber).getCommon_name(),
-                        "The common name is " +result.get(testNumber).getCommon_name() + " It should be Euphorbiaceae :testSearchListCorrectFamilyInput failed"),
-                () -> assertEquals("http://perenual.com/storage/species_image/2862_euphorbia_amygdaloides_subsp_robbiae/og/2048px-Bloeiende_Euphorbia_amygdaloides_var._Robbiae._31-03-2021._28d.j.b29.jpg",result.get(testNumber).getImage_url(),
-                        "The image is " +result.get(testNumber).getImage_url() + " It should be http://perenual.com/storage/species_image/2862_euphorbia_amygdaloides_subsp_robbiae/og/2048px-Bloeiende_Euphorbia_amygdaloides_var._Robbiae._31-03-2021._28d.j.b29.jpg :testSearchListCorrectFamilyInput failed"),
+                () -> assertEquals("Euphorbiaceae",result.get(testNumber).getFamily(),
+                        "The family is " +result.get(testNumber).getFamily() + " It should be Euphorbiaceae :testSearchListCorrectFamilyInput failed"),
+                () -> assertEquals("Spurge",result.get(testNumber).getCommon_name(),
+                        "The common name is " +result.get(testNumber).getCommon_name() + " It should be Spurge :testSearchListCorrectFamilyInput failed"),
+                () -> assertEquals("http://perenual.com/storage/species_image/2867_euphorbia_characias_tasmanian_tiger/og/25977518077_dabbb0a978_b.jpg",result.get(testNumber).getImage_url(),
+                        "The image is " +result.get(testNumber).getImage_url() + " It should be http://perenual.com/storage/species_image/2867_euphorbia_characias_tasmanian_tiger/og/25977518077_dabbb0a978_b.jpg :testSearchListCorrectFamilyInput failed"),
                 () -> assertEquals("Full sun",result.get(testNumber).getLight(),
                         "The light level is " +result.get(testNumber).getLight() + " It should be Full sun :testSearchListCorrectFamilyInput failed"),
                 () -> assertEquals("Low",result.get(testNumber).getMaintenance(),
                         "The maintenance is " +result.get(testNumber).getMaintenance() + " It should be Low :testSearchListCorrectFamilyInput failed"),
                 () -> assertEquals(false,result.get(testNumber).getIsPoisonoutToPets(),
                         "The poison is " +result.get(testNumber).getIsPoisonoutToPets() + " It should be false :testSearchListCorrectFamilyInput failed"),
-                () -> assertEquals(734400000,result.get(testNumber).getWaterFrequency(),
-                        "The water frequency is " +result.get(testNumber).getWaterFrequency() + " It should be 734400000 :testSearchListCorrectFamilyInput failed"));
+                () -> assertEquals(0,result.get(testNumber).getWaterFrequency(),
+                        "The water frequency is " +result.get(testNumber).getWaterFrequency() + " It should be 0 :testSearchListCorrectFamilyInput failed"));
     }
 
     @Test

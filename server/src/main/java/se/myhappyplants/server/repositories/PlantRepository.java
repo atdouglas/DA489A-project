@@ -18,7 +18,8 @@ public class PlantRepository extends Repository {
                 """;
         try (java.sql.Connection connection = startConnection()) {
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-                preparedStatement.setString(1, plantSearch + ":*");
+                // this used to say    preparedStatement.setString(1, plantSearch + ":*");   but gave "syntax error"
+                preparedStatement.setString(1, plantSearch);
                 ResultSet resultSet = preparedStatement.executeQuery();
                 while (resultSet.next()) {
                     int plantId = resultSet.getInt("id");
