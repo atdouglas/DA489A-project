@@ -51,7 +51,7 @@ public class UserPlantRepository extends Repository {
     public ArrayList<UserPlant> getUserLibrary(int userId) {
         ArrayList<UserPlant> plantList = new ArrayList<UserPlant>();
         String query = """
-                SELECT p.*, up.nickname, up.last_watered FROM plants p JOIN user_plants up ON p.id = up.plant_id WHERE up.user_id = ?
+                SELECT p.*, up.nickname, up.last_watered, up.id as user_plant_id FROM plants p JOIN user_plants up ON p.id = up.plant_id WHERE up.user_id = ?
                 """;
         try (java.sql.Connection connection = startConnection()) {
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -69,7 +69,9 @@ public class UserPlantRepository extends Repository {
                     long waterFrequency = resultSet.getLong("watering_frequency");
                     String nickname = resultSet.getString("nickname");
                     long lastWatered = resultSet.getLong("last_watered");
-                    plantList.add(new UserPlant(plantId, scientificName, family, commonName, imageURL, light, maintenance, poisonousToPets, waterFrequency, nickname, lastWatered));
+                    int userPlantId = resultSet.getInt("user_plant_id");
+
+                    plantList.add(new UserPlant(plantId, scientificName, family, commonName, imageURL, light, maintenance, poisonousToPets, waterFrequency, nickname, lastWatered, userPlantId));
                 }
             }
         } catch (SQLException sqlException) {

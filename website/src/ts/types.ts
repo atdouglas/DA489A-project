@@ -15,4 +15,5 @@ export interface Plant {
 export interface UserPlant extends Plant{
     nickname: string;
     last_watered: number;
+    user_plant_id: string;
 }
