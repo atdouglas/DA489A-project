@@ -52,7 +52,7 @@ public class UserPlantRepository extends Repository {
         ArrayList<UserPlant> plantList = new ArrayList<UserPlant>();
         String query = """
                 SELECT p.*, up.nickname, up.last_watered, up.id as user_plant_id FROM plants p 
-                JOIN user_plants up ON p.id = up.plant_id WHERE up.user_id = ?
+                JOIN user_plants up ON p.id = up.plant_id WHERE up.user_id = ?;
                 """;
         try (java.sql.Connection connection = startConnection()) {
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -81,17 +81,15 @@ public class UserPlantRepository extends Repository {
         return plantList;
     }
 
-    //TODO Update this method to work on the new implementation
-
-    public UserPlant getUserPlant(int userId, int UniquePlantId) {
+    public UserPlant getUserPlant(int userId, int userPlantId) {
         UserPlant userPlant = null;
         String query = """
-                        SELECT p.*, up.nickname, up.last_watered FROM plants p 
-                        JOIN user_plants up ON p.id = up.plant_id WHERE up.id = ? AND up.user_id = ?;
+                SELECT p.*, up.nickname, up.last_watered, up.id as user_plant_id FROM plants p 
+                JOIN user_plants up ON p.id = up.plant_id WHERE up.id = ? AND up.user_id = ?;
                 """;
         try (java.sql.Connection connection = startConnection()) {
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-                preparedStatement.setInt(1, UniquePlantId);
+                preparedStatement.setInt(1, userPlantId);
                 preparedStatement.setInt(2, userId);
                 ResultSet resultSet = preparedStatement.executeQuery();
                 while (resultSet.next()) {
@@ -103,10 +101,10 @@ public class UserPlantRepository extends Repository {
                     String light = resultSet.getString("light");
                     String maintenance = resultSet.getString("maintenance");
                     boolean poisonousToPets = resultSet.getBoolean("poisonous_to_pets");
-                    long waterFrequency = resultSet.getLong("water_frequency");
+                    long wateringFrequency = resultSet.getLong("watering_frequency");
                     String nickname = resultSet.getString("nickname");
                     long lastWatered = resultSet.getLong("last_watered");
-                    userPlant = new UserPlant(plantId, scientificName, family, commonName, imageURL, light, maintenance, poisonousToPets, waterFrequency, nickname, lastWatered);
+                    userPlant = new UserPlant(plantId, scientificName, family, commonName, imageURL, light, maintenance, poisonousToPets, wateringFrequency, nickname, lastWatered, userPlantId);
                 }
             }
         } catch (SQLException sqlException) {
@@ -118,18 +116,18 @@ public class UserPlantRepository extends Repository {
     //TODO Update this method to work on the new implementation
 
 
-    public boolean deletePlant(int userId, int plantId) {
+    public boolean deletePlant(int userId, int userPlantId) {
         boolean plantDeleted = false;
 
         String query = """
                         DELETE FROM user_plants WHERE id = ? AND user_id = ?;
                 """;
-        if (plantId <= 0) {
+        if (userPlantId <= 0) {
             return plantDeleted;
         }
         try (java.sql.Connection connection = startConnection()) {
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-                preparedStatement.setInt(1, plantId);
+                preparedStatement.setInt(1, userPlantId);
                 preparedStatement.setInt(2, userId);
                 preparedStatement.executeUpdate();
                 plantDeleted = true;
@@ -228,13 +226,13 @@ public class UserPlantRepository extends Repository {
         public long getWaterFrequency(int plantId) {
         long waterFrequency = -1;
         String query = """
-        SELECT water_frequency FROM species WHERE id = ?;
+        SELECT watering_frequency FROM species WHERE id = ?;
         """;
         try (PreparedStatement preparedStatement = connection.getConnection().prepareStatement(query)) {
             preparedStatement.setInt(1, plantId);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                long waterLong = resultSet.getLong("water_frequency");
+                long waterLong = resultSet.getLong("watering_frequency");
                 int water = (int) waterLong;
                 waterFrequency = WaterCalculator.calculateWaterFrequencyForWatering(water);
             }

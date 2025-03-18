@@ -145,7 +145,7 @@ public class UserRepository extends Repository {
                 while (resultSet.next()) {
                     int uniqueID = resultSet.getInt(1);
                     boolean notificationActivated = resultSet.getBoolean(2);
-                    user = new User(uniqueID, email);
+                    user = new User(uniqueID, email, notificationActivated);
                 }
             }
         } catch (SQLException sqlException) {

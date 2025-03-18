@@ -9,6 +9,7 @@ import se.myhappyplants.shared.UserPlant;
 
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -17,57 +18,77 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class UserPlantRepositoryTest {
 
-    private UserPlantRepository userPlantRepository;
+    private UserPlantRepository userPlantRepository = new UserPlantRepository();
     private static UserRepository userRepository = new UserRepository();
     private UserPlant testUserPlantWorking;
-    private UserPlant testUserPlantWorking2;
-    private final User testUser = new User(
-            "test@testmail.com",
-            "test123",
-            "security question clue",
-            "security question answer"
-    );
-    @BeforeEach
-    void setUp() {
-        userPlantRepository = new UserPlantRepository();
+    //private UserPlant testUserPlantWorking2;
+    private static User testUser;
 
-        userRepository.deleteAccount("test@testmail.com","test123");
+    @BeforeAll
+    static void createAndSaveUser() {
+        testUser = new User(
+                "test@testmail.com",
+                "test123",
+                "security question clue",
+                "security question answer"
+        );
         userRepository.saveUser(testUser);
         testUser.setUniqueId(userRepository.getUserDetails(testUser.getEmail()).getUniqueId());
+    }
 
-        testUserPlantWorking = new UserPlant(2862, "Euphorbia amygdaloides subsp. robbiae", "spurge", "Euphorbiaceae",
+    @BeforeEach
+    void createAndAddPlants() {
+        testUserPlantWorking = new UserPlant(2862, "Euphorbia Amygdaloides Subsp. Robbiae", "Spurge", "Euphorbiaceae",
                 "http://perenual.com/storage/species_image/2862_euphorbia_amygdaloides_subsp_robbiae/og/2048px-Bloeiende_Euphorbia_amygdaloides_var._Robbiae._31-03-2021._28d.j.b29.jpg", "Full sun", "Low",
-                false, 734400000,"peeedeereeeeeeeeeeeeeeeeeeeeeeeeeee",734400000);
+                false, 734400000, "peeedeereeeeeeeeeeeeeeeeeeeeeeeeeee", 734400000);
+        userPlantRepository.savePlant(testUser, testUserPlantWorking);
 
-        testUserPlantWorking2 = new UserPlant(2862, "Euphorbia amygdaloides subsp. robbiae", "spurge", "Euphorbiaceae",
-                "http://perenual.com/storage/species_image/2862_euphorbia_amygdaloides_subsp_robbiae/og/2048px-Bloeiende_Euphorbia_amygdaloides_var._Robbiae._31-03-2021._28d.j.b29.jpg", "Full sun", "Low",
-                false, 734400000,"peeedeer",734400000);
+        /*
+        testUserPlantWorking2 = new UserPlant(2895, "Eurybia Divaricata", "Asteraceae", "White Wood Aster",
+                "https://perenual.com/storage/species_image/2895_eurybia_divaricata/og/7515068602_0626782d24_b.jpg", "Part shade", "Low",
+                false, 0,"peeedeer", 0);
+        userPlantRepository.savePlant(testUser, testUserPlantWorking2);
+         */
+
+        ArrayList<UserPlant> userPlants = userPlantRepository.getUserLibrary(testUser.getUniqueId());
+        testUserPlantWorking.setUserPlantId(userPlants.getFirst().getUserPlantId());
+    }
+
+    @AfterEach
+    void resetPlants() {
+        int testUserID = testUser.getUniqueId();
+        ArrayList<UserPlant> plantList = userPlantRepository.getUserLibrary(testUserID);
+        for (UserPlant userPlant : plantList) {
+            userPlantRepository.deletePlant(testUserID, userPlant.getUserPlantId());
+        }
     }
 
     @AfterAll
     static void tearDown() {
-        userRepository.deleteAccount("test@testmail.com","test123");
+        userRepository.deleteAccount("test@testmail.com", "test123");
     }
 
     @Test
     @Order(1)
     void testSavePlantSuccess() {
         boolean result = userPlantRepository.savePlant(testUser, testUserPlantWorking);
-        assertEquals(true,result,
+        assertTrue(result,
                 "The savePlant method failed and didn't save the plant: testSavePlantSuccess failed");
     }
 
     @Test
     @Order(2)
     void testGetUserLibrarySuccess() {
-        userPlantRepository.savePlant(testUser, testUserPlantWorking);
-        userPlantRepository.savePlant(testUser, testUserPlantWorking2);
+        UserPlant newPlant = new UserPlant(2895, "Eurybia Divaricata", "Asteraceae", "White Wood Aster",
+                "https://perenual.com/storage/species_image/2895_eurybia_divaricata/og/7515068602_0626782d24_b.jpg", "Part shade", "Low",
+                false, 0, "peeedeer", 0);
+        userPlantRepository.savePlant(testUser, newPlant);
         List<UserPlant> plants = userPlantRepository.getUserLibrary(testUser.getUniqueId());
-        String commonNameTest = plants.get(0).getCommon_name();
-        int idTest = plants.get(1).getId();
+        int idTest = plants.get(0).getUserPlantId();
+        String commonNameTest = plants.get(1).getCommon_name();
         assertAll(
-                ()  -> assertEquals("Euphorbiaceae",commonNameTest, "It should be Euphorbiaceae :testGetUserLibrarySuccess failed"),
-                ()  -> assertEquals(2862,idTest, "It should be 2862 :testGetUserLibrarySuccess failed")
+                () -> assertEquals(testUserPlantWorking.getUserPlantId(), idTest, "It should be " + testUserPlantWorking.getUserPlantId() + " :testGetUserLibrarySuccess failed"),
+                () -> assertEquals(newPlant.getCommon_name(), commonNameTest, "It should be " + newPlant.getCommon_name() + " :testGetUserLibrarySuccess failed")
         );
     }
 
@@ -75,8 +96,8 @@ public class UserPlantRepositoryTest {
     @Order(3)
     void testGetUserLibraryEmpty() {
         List<UserPlant> plants = userPlantRepository.getUserLibrary(testUser.getUniqueId());
-        assertTrue(plants.isEmpty(),
-                "it should be empty (this failed for an empty array) :testGetUserLibraryEmpty failed");
+        assertEquals(1, plants.size(),
+                "list size should be 2 (this failed for an empty array) :testGetUserLibraryEmpty failed");
     }
 
     @Test
@@ -84,122 +105,118 @@ public class UserPlantRepositoryTest {
     void testGetUserLibraryNull() {
         userPlantRepository.savePlant(testUser, null);
         List<UserPlant> plants = userPlantRepository.getUserLibrary(testUser.getUniqueId());
-        assertFalse(false,
-                "it should be empty (this failed for the value null: testGetUserLibraryNull failed");
+        assertEquals(1, plants.size(),
+                "list size should be 2 (this failed for the value null: testGetUserLibraryNull failed");
     }
 
     @Test
     @Order(5)
     void testDeletePlantSuccess() {
         userPlantRepository.savePlant(testUser, testUserPlantWorking);
-        boolean result = userPlantRepository.deletePlant(testUser.getUniqueId(), testUserPlantWorking.getId());
-        assertEquals(true,result,
+        boolean result = userPlantRepository.deletePlant(testUser.getUniqueId(), testUserPlantWorking.getUserPlantId());
+        assertTrue(result,
                 "The plant was not deleted :testDeletePlantSuccess failed");
     }
 
     @Test
     @Order(6)
     void testDeletePlantIllegalPlantID() {
-        userPlantRepository.savePlant(testUser, testUserPlantWorking);
         boolean result = userPlantRepository.deletePlant(testUser.getUniqueId(), -1);
-        assertEquals(false,result,
+        assertFalse(result,
                 "A non existing plant was deleted :testDeletePlantIllegalPlantID failed");
     }
 
     @Test
     @Order(7)
     void testChangeLastWateredSuccess() {
-        userPlantRepository.savePlant(testUser, testUserPlantWorking);
-        boolean result = userPlantRepository.changeLastWatered(testUser.getUniqueId(), testUserPlantWorking.getId(), 0);
-        assertEquals(true, result,
+        boolean result = userPlantRepository.changeLastWatered(testUser.getUniqueId(), testUserPlantWorking.getUserPlantId(), 0);
+        assertTrue(result,
                 "The water was successfully changed :testChangeLastWateredSuccess failed");
-
     }
 
     @Test
-    @Order(7)
+    @Order(8)
     void testChangeLastWateredCorrectValue() {
-        userPlantRepository.savePlant(testUser, testUserPlantWorking);
-        userPlantRepository.changeLastWatered(testUser.getUniqueId(), testUserPlantWorking.getId(), 0);
-        assertEquals(0, userPlantRepository.getUserPlant(testUser.getUniqueId(), testUserPlantWorking.getId()).getLastWatered());
-    }
-
-    @Test
-    @Order(8)
-    void testChangeLastWateredFailureIllegalUser() {
-        userPlantRepository.savePlant(testUser, testUserPlantWorking);
-        boolean result = userPlantRepository.changeLastWatered(-1, testUserPlantWorking.getId(), 0);
-        assertEquals(false, result,
-                "The water was successfully changed which it should not :testChangeLastWateredFailureIllegalUser failed");
-    }
-
-    @Test
-    @Order(8)
-    void testChangeLastWateredFailureIllegalLastWatered() {
-        userPlantRepository.savePlant(testUser, testUserPlantWorking);
-        assertFalse(userPlantRepository.changeLastWatered(-1, testUserPlantWorking.getId(), -1));
+        userPlantRepository.changeLastWatered(testUser.getUniqueId(), testUserPlantWorking.getUserPlantId(), 10);
+        assertEquals(10, userPlantRepository.getUserPlant(testUser.getUniqueId(), testUserPlantWorking.getUserPlantId()).getLastWatered());
     }
 
     @Test
     @Order(9)
-    void testChangeNicknameSuccess() {
-        userPlantRepository.savePlant(testUser, testUserPlantWorking);
-        boolean result = userPlantRepository.changeNickname(testUser.getUniqueId(), testUserPlantWorking.getId(), "Adrian is a g" );
-        assertEquals(true,result,
-                "The nickname was not changed :testChangeNicknameSuccess failed");
+    void testChangeLastWateredIncorrectValue() {
+        userPlantRepository.changeLastWatered(testUser.getUniqueId(), testUserPlantWorking.getUserPlantId(), 100);
+        assertNotEquals(10, userPlantRepository.getUserPlant(testUser.getUniqueId(), testUserPlantWorking.getUserPlantId()).getLastWatered());
     }
 
     @Test
     @Order(10)
+    void testChangeLastWateredFailureIllegalUser() {
+        boolean result = userPlantRepository.changeLastWatered(-1, testUserPlantWorking.getUserPlantId(), 0);
+        assertFalse(result,
+                "The water was successfully changed which it should not :testChangeLastWateredFailureIllegalUser failed");
+    }
+
+    @Test
+    @Order(11)
+    void testChangeLastWateredFailureIllegalLastWatered() {
+        assertFalse(userPlantRepository.changeLastWatered(testUser.getUniqueId(), testUserPlantWorking.getUserPlantId(), -1));
+    }
+
+    @Test
+    @Order(12)
+    void testChangeNicknameSuccess() {
+        boolean result = userPlantRepository.changeNickname(testUser.getUniqueId(), testUserPlantWorking.getUserPlantId(), "Adrian is a g");
+        assertTrue(result,
+                "The nickname was not changed :testChangeNicknameSuccess failed");
+    }
+
+    @Test
+    @Order(13)
     void testChangeNicknameFailureIllegalID() {
-        userPlantRepository.savePlant(testUser, testUserPlantWorking);
-        boolean result = userPlantRepository.changeNickname(-1, testUserPlantWorking.getId(), "Adrian is a g" );
-        assertEquals(false,result,
+        boolean result = userPlantRepository.changeNickname(-1, testUserPlantWorking.getUserPlantId(), "Adrian is a g");
+        assertFalse(result,
                 "The nickname was changed :testChangeNicknameFailureIllegalID failed");
     }
 
 
     @Test
-    @Order(11)
+    @Order(14)
     void testChangeNicknameFailureIllegalPlantID() {
-        userPlantRepository.savePlant(testUser, testUserPlantWorking);
-        boolean result = userPlantRepository.changeNickname(testUser.getUniqueId(), -1, "Adrian is a g" );
-        assertEquals(false,result,
+        boolean result = userPlantRepository.changeNickname(testUser.getUniqueId(), -1, "Adrian is a g");
+        assertFalse(result,
                 "The nickname was changed :testChangeNicknameFailureIllegalPlantID failed");
     }
 
 
     @Test
-    @Order(12)
+    @Order(15)
     void testChangeNicknameFailureNullNickname() {
-        userPlantRepository.savePlant(testUser, testUserPlantWorking);
-        boolean result = userPlantRepository.changeNickname(testUser.getUniqueId(), testUserPlantWorking.getId(), null );
-        assertEquals(false,result,
+        boolean result = userPlantRepository.changeNickname(testUser.getUniqueId(), testUserPlantWorking.getUserPlantId(), null);
+        assertFalse(result,
                 "The nickname was changed :testChangeNicknameFailureNullNickname failed");
     }
 
     @Test
-    @Order(13)
+    @Order(16)
     void testChangeNicknameFailureNoNickname() {
-        userPlantRepository.savePlant(testUser, testUserPlantWorking);
-        boolean result = userPlantRepository.changeNickname(testUser.getUniqueId(), testUserPlantWorking.getId(), "" );
-        assertEquals(false,result,
+        boolean result = userPlantRepository.changeNickname(testUser.getUniqueId(), testUserPlantWorking.getUserPlantId(), "");
+        assertFalse(result,
                 "The nickname was changed :testChangeNicknameFailureNoNickname failed");
     }
 
     @Test
-    @Order(14)
+    @Order(17)
     void testWaterAllPlantsSuccess() {
         boolean result = userPlantRepository.changeAllToWatered(testUser.getUniqueId());
-        assertEquals(true,result,
+        assertTrue(result,
                 "All plants weren't watered :testWaterAllPlantsSuccess failed");
     }
 
     @Test
-    @Order(15)
+    @Order(18)
     void testWaterAllPlantFailureIllegalUserID() {
         boolean result = userPlantRepository.changeAllToWatered(-1);
-        assertEquals(false,result,
+        assertFalse(result,
                 "All plants were watered which they should not be :testWaterAllPlantFailureIllegalUserID failed");
     }
 }
