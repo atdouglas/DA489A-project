@@ -110,19 +110,34 @@ public class UserPlantRepositoryTest {
     @Order(7)
     void testChangeLastWateredSuccess() {
         userPlantRepository.savePlant(testUser, testUserPlantWorking);
-        boolean result = userPlantRepository.changeLastWatered(testUser.getUniqueId(), testUserPlantWorking.getId());
+        boolean result = userPlantRepository.changeLastWatered(testUser.getUniqueId(), testUserPlantWorking.getId(), 0);
         assertEquals(true, result,
                 "The water was successfully changed :testChangeLastWateredSuccess failed");
 
     }
 
     @Test
+    @Order(7)
+    void testChangeLastWateredCorrectValue() {
+        userPlantRepository.savePlant(testUser, testUserPlantWorking);
+        userPlantRepository.changeLastWatered(testUser.getUniqueId(), testUserPlantWorking.getId(), 0);
+        assertEquals(0, userPlantRepository.getUserPlant(testUser.getUniqueId(), testUserPlantWorking.getId()).getLastWatered());
+    }
+
+    @Test
     @Order(8)
     void testChangeLastWateredFailureIllegalUser() {
         userPlantRepository.savePlant(testUser, testUserPlantWorking);
-        boolean result = userPlantRepository.changeLastWatered(-1, testUserPlantWorking.getId());
+        boolean result = userPlantRepository.changeLastWatered(-1, testUserPlantWorking.getId(), 0);
         assertEquals(false, result,
                 "The water was successfully changed which it should not :testChangeLastWateredFailureIllegalUser failed");
+    }
+
+    @Test
+    @Order(8)
+    void testChangeLastWateredFailureIllegalLastWatered() {
+        userPlantRepository.savePlant(testUser, testUserPlantWorking);
+        assertFalse(userPlantRepository.changeLastWatered(-1, testUserPlantWorking.getId(), -1));
     }
 
     @Test

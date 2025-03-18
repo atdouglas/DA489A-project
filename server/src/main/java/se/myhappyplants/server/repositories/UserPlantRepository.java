@@ -51,7 +51,8 @@ public class UserPlantRepository extends Repository {
     public ArrayList<UserPlant> getUserLibrary(int userId) {
         ArrayList<UserPlant> plantList = new ArrayList<UserPlant>();
         String query = """
-                SELECT p.*, up.nickname, up.last_watered, up.id as user_plant_id FROM plants p JOIN user_plants up ON p.id = up.plant_id WHERE up.user_id = ?
+                SELECT p.*, up.nickname, up.last_watered, up.id as user_plant_id FROM plants p 
+                JOIN user_plants up ON p.id = up.plant_id WHERE up.user_id = ?
                 """;
         try (java.sql.Connection connection = startConnection()) {
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -85,7 +86,8 @@ public class UserPlantRepository extends Repository {
     public UserPlant getUserPlant(int userId, int UniquePlantId) {
         UserPlant userPlant = null;
         String query = """
-                        SELECT p.*, up.nickname, up.last_watered FROM plants p JOIN user_plants up ON p.id = up.plant_id WHERE up.id = ? AND up.user_id = ?;
+                        SELECT p.*, up.nickname, up.last_watered FROM plants p 
+                        JOIN user_plants up ON p.id = up.plant_id WHERE up.id = ? AND up.user_id = ?;
                 """;
         try (java.sql.Connection connection = startConnection()) {
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -147,7 +149,7 @@ public class UserPlantRepository extends Repository {
         String query = """ 
                     UPDATE user_plants SET last_watered = ? WHERE id = ? AND user_id = ?;
                     """;
-        if (userId <= 0 || plant_id <= 0) {
+        if (userId <= 0 || plant_id <= 0 || lastWatered < 0) {
             return dateChanged;
         }
         try (java.sql.Connection connection = startConnection()) {
