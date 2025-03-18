@@ -216,23 +216,6 @@ public class UserRepository extends Repository {
         return notificationsChanged;
     }
 
-    public boolean changeFunFacts(String email, boolean funFactsActivated) {
-        boolean funFactsChanged = false;
-        String query = """
-                UPDATE registered_users SET fun_facts_activated = ? WHERE email = ?;
-                """;
-        try (java.sql.Connection connection = startConnection()) {
-            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-                preparedStatement.setBoolean(1, funFactsActivated);
-                preparedStatement.setString(2, email);
-                funFactsChanged = true;
-            }
-        } catch (SQLException sqlException) {
-            System.out.println(sqlException.getMessage());
-        }
-        return funFactsChanged;
-    }
-
     public String getNewAccessToken(String email, String password){
         if(!checkLogin(email, password)){
             return null;

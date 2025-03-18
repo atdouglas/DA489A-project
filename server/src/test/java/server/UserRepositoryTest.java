@@ -16,7 +16,6 @@ import se.myhappyplants.shared.User;
 
 @TestClassOrder(ClassOrderer.OrderAnnotation.class)
 public class UserRepositoryTest {
-
     private static final UserRepository userRepository = new UserRepository();
 
     private static User testUser = new User(
@@ -114,15 +113,6 @@ public class UserRepositoryTest {
 
         @Test
         @Order(8)
-        void changeFunFactsCorrectInput(){
-            boolean result = userRepository.changeFunFacts(testUser.getEmail(), false);
-
-            assertTrue(result, "Change fun facts failed. The user is registered and " +
-                    "the change value is correct so the result should return true.");
-        }
-
-        @Test
-        @Order(9)
         void deleteAccountCorrectInput(){
             boolean result1 = userRepository.deleteAccount(testUser.getEmail(), testUser.getPassword());
 
@@ -304,8 +294,12 @@ public class UserRepositoryTest {
         @Order(3)
         void deleteAccessToken(){
             boolean result = userRepository.deleteAccessToken(testUser.getEmail(), testUser.getPassword());
-            userRepository.deleteAccount(testUser.getEmail(), testUser.getPassword());
             assertTrue(result, "The access token exists so the token should've been deleted. True should've been returned.");
+        }
+
+        @AfterAll
+        static void close(){
+            userRepository.deleteAccount(testUser.getEmail(), testUser.getPassword());
         }
     }
 
@@ -415,6 +409,65 @@ public class UserRepositoryTest {
             boolean result = userRepository.deleteAccessToken(null, null);
 
             assertFalse(result, "The test should've returned false because the inputs are null.");
+        }
+    }
+
+    @Nested
+    @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+    @Order(6)
+    class TestSecurityQuestion{
+        public static String newPassword = "newPassword123";
+
+        @BeforeAll
+        static void setup(){
+            userRepository.saveUser(testUser);
+        }
+
+        @Test
+        @Order(1)
+        void checkSecurityQuestion(){
+            assertEquals(testUser.getSecurityQuestion(), userRepository.getSecurityQuestion(testUser.getEmail()));
+        }
+
+        @Test
+        @Order(2)
+        void checkWrongSecurityQuestion(){
+            assertNotEquals("not security question clue", userRepository.getSecurityQuestion(testUser.getEmail()));
+        }
+
+        @Test
+        @Order(3)
+        void verifySecurityAnswer(){
+            assertTrue(userRepository.verifySecurityQuestion(testUser.getEmail(), testUser.getSecurityAnswer()));
+        }
+
+        @Test
+        @Order(4)
+        void verifyWrongSecurityAnswer(){
+            assertFalse(userRepository.verifySecurityQuestion(testUser.getEmail(), "not security question answer"));
+        }
+
+        @Test
+        @Order(5)
+        void changePassword(){
+            assertTrue(userRepository.updatePasswordWithSecurityQuestion(testUser.getEmail(), testUser.getSecurityAnswer(), newPassword));
+        }
+
+        @Test
+        @Order(6)
+        void checkNewPassword(){
+            assertTrue(userRepository.checkLogin(testUser.getEmail(), newPassword));
+        }
+
+        @Test
+        @Order(7)
+        void changePasswordWrongAnswer(){
+            assertFalse(userRepository.updatePasswordWithSecurityQuestion(testUser.getEmail(), "not security question answer", newPassword));
+        }
+
+        @AfterAll
+        static void close(){
+            userRepository.deleteAccount(testUser.getEmail(), newPassword);
         }
     }
 }
