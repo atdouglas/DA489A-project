@@ -1,5 +1,5 @@
 import { Plant, UserPlant } from './types'
-import { getCookie } from './cookieUtil';
+import { getCookie, clearCookie } from './cookieUtil';
 import { getUserLibrary } from './api_connection';
 import { deleteUserPlantFromLibrary } from './api_connection';
 
@@ -29,12 +29,18 @@ yesButton.addEventListener('click', () => {
     if (cardToDelete && plantToDelete) {
         cardToDelete.remove();
         cardToDelete = null;
+        if (plantToDelete != null && userId != null && token !=null){
+            deleteUserPlantFromLibrary(plantToDelete,userId,token)
+        }else {
+            console.log("Error the plant was not deleted")
+        }
     }
     confirmModal.style.display = 'none';
 });
 
 noButton.addEventListener('click', () => {
     cardToDelete = null;
+    plantToDelete = null;
     confirmModal.style.display = 'none';
 });
 
@@ -48,11 +54,19 @@ async function loadGarden() {
         plants = data;
         statusCode = status;
         console.log("STATUS: " + statusCode)
-    } else if (statusCode = 401) {
+    } 
+    
+    if (statusCode === 401) {
         console.error("You are unauthorized")
+        if (token != null) {
+            clearCookie(token);
+        }
         window.location.href = "/src/html/login-page.html";
-    }else if (statusCode = 419) {
+    }else if (statusCode === 419) {
         console.error("Your token expired")
+        if (token != null) {
+            clearCookie(token);
+        }
         window.location.href = "/src/html/login-page.html";
     }
 
@@ -136,11 +150,6 @@ function attachDeleteListener(card: HTMLElement, plantID : string): void {
             cardToDelete = card;
             plantToDelete = plantID
             confirmModal.style.display = 'flex';
-            if (plantID != null && userId != null && token !=null){
-                deleteUserPlantFromLibrary(plantID,userId,token)
-            }else {
-                console.log("Error the plant was not deleted")
-            }
         });
     }
 }
