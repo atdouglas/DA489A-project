@@ -143,7 +143,7 @@ public class UserPlantRepository extends Repository {
     public boolean changeLastWatered(int userId, int plant_id) {
         boolean dateChanged = false;
         String query = """ 
-                    UPDATE user_plants SET last_watered = ? WHERE plant_id = ? AND user_id = ?;
+                    UPDATE user_plants SET last_watered = ? WHERE id = ? AND user_id = ?;
                     """;
         if (userId <= 0 || plant_id <= 0) {
             return dateChanged;
@@ -169,7 +169,7 @@ public class UserPlantRepository extends Repository {
         String query = """
                     UPDATE user_plants 
                     SET nickname = ? 
-                    WHERE plant_id = ? AND user_id = ?;
+                    WHERE id = ? AND user_id = ?;
                    """;
         if (newNickname == null || newNickname.isEmpty()) {
             return nicknameChanged;

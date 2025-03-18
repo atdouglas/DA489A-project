@@ -253,6 +253,42 @@ public class Main {
         }));
     }
 
+    private static void setupUpdateUserLibraryPlant(){
+        app.patch("/library/{user_id}/{user_plant_id}", ctx -> ctx.async(() -> {
+            int userID = Integer.parseInt(ctx.pathParam("user_id"));
+            int userPlantID = Integer.parseInt(ctx.pathParam("user_plant_id"));
+            String token = ctx.queryParam("token");
+            String nickname = ctx.queryParam("nickname");
+            String lastWateredString = ctx.queryParam("last_watered");
+
+            TokenStatus tokenStatus = userRepository.verifyAccessToken(userID, token);
+
+            if (tokenStatus == TokenStatus.NO_MATCH) {
+                ctx.status(401).result("401 You are unauthorized to access this data.");
+            } else if (tokenStatus == TokenStatus.EXPIRED) {
+                ctx.status(419).result("419 Your token has expired.");
+            } else if(nickname == null && lastWateredString == null) {
+                ctx.status(400).result("Both nickname and last_watered can't be empty.");
+
+            } else if (tokenStatus == TokenStatus.VALID){
+
+                if(nickname != null && !nickname.isEmpty()){
+                    userPlantRepository.changeNickname(userID, userPlantID, nickname);
+                    ctx.status(200).result("Nickname updated.");
+                }
+                //int plantID = Integer.parseInt(plantIDString);
+
+
+                //userPlantRepository.savePlant(new User(userID, token), createUserPlant(plantID, nickname));
+
+                ctx.status(200).result("Plant added to user library.");
+            }else {
+                ctx.status(404).result("An error has occurred.");
+            }
+
+        }));
+    }
+
     private static UserPlant createUserPlant(int plantID, String nickname){
         Plant plant = plantRepository.getPlantDetails(plantID);
 
