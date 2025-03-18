@@ -76,7 +76,21 @@ export async function postPlantToUserLibary(userId: string, token: string, nickn
     
 }
 
-
+export async function deleteUserPlantFromLibrary(userPlantId: string, userId: string, token: string) {
+    let status: number = 404;
+    try{
+        const response = await fetch(
+            URL+"/library/"+userId+"/"+userPlantId+"?token="+token,{
+                method: "DELETE",
+                headers: {"COntent-Type": "application/json",
+            }}
+        )
+        status = response.status;
+    } catch (error){
+        console.error("Plant was not deleted: ", error)
+    }
+    return status;
+}
 
 
 

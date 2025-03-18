@@ -1,6 +1,7 @@
 import { Plant, UserPlant } from './types'
 import { getCookie } from './cookieUtil';
 import { getUserLibrary } from './api_connection';
+import { deleteUserPlantFromLibrary } from './api_connection';
 
 const plantsContainer = document.querySelector('.plants-container') as HTMLElement;
 const addPlantCard = document.querySelector('.add-plant-card') as HTMLElement;
@@ -131,6 +132,12 @@ function attachDeleteListener(card: HTMLElement): void {
             e.stopPropagation();
             cardToDelete = card;
             confirmModal.style.display = 'flex';
+            const userPlantId :string | null = cardToDelete.getAttribute('data-plant-id');
+            if (userPlantId != null && userId != null && token !=null){
+                deleteUserPlantFromLibrary(userPlantId,userId,token)
+            }else {
+                console.log("Error the plant was not deleted")
+            }
         });
     }
 }
