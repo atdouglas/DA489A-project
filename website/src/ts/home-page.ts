@@ -9,7 +9,7 @@ const confirmModal = document.getElementById('confirmModal') as HTMLElement;
 const yesButton = confirmModal.querySelector('.yes-button') as HTMLButtonElement;
 const noButton = confirmModal.querySelector('.no-button') as HTMLButtonElement;
 let cardToDelete: HTMLElement | null = null;
-
+let plantToDelete: string | null = null;
 const token: string | null = getCookie("accessToken");
 const userId: string | null = getCookie("userId")
 
@@ -26,14 +26,7 @@ addPlantCard.addEventListener('click', () => {
 });
 
 yesButton.addEventListener('click', () => {
-    if (cardToDelete) {
-        const plantId = cardToDelete.getAttribute('data-plant-id');
-        if (plantId) {
-            const stored = localStorage.getItem('myGarden');
-            let garden: Plant[] = stored ? JSON.parse(stored) : [];
-            garden = garden.filter(p => p.id.toString() !== plantId);
-            localStorage.setItem('myGarden', JSON.stringify(garden));
-        }
+    if (cardToDelete && plantToDelete) {
         cardToDelete.remove();
         cardToDelete = null;
     }
@@ -44,15 +37,23 @@ noButton.addEventListener('click', () => {
     cardToDelete = null;
     confirmModal.style.display = 'none';
 });
-document.querySelectorAll('.plant-card:not(.add-plant-card)').forEach(card => {
-    attachDeleteListener(card as HTMLElement);
-});
+
 
 async function loadGarden() {
     let plants: UserPlant[] | null = null;
+    let statusCode: number | null = null;
 
     if(token != null && userId != null){
-        plants = await getUserLibrary(userId, token)
+        const {data, status} = await getUserLibrary(userId, token)
+        plants = data;
+        statusCode = status;
+        console.log("STATUS: " + statusCode)
+    } else if (statusCode = 401) {
+        console.error("You are unauthorized")
+        window.location.href = "/src/html/login-page.html";
+    }else if (statusCode = 419) {
+        console.error("Your token expired")
+        window.location.href = "/src/html/login-page.html";
     }
 
     if(plants == null){
@@ -99,7 +100,8 @@ function createPlantCard(plant: UserPlant) {
         </div>
     `;
     plantsContainer.insertBefore(newCard, addPlantCard);
-    attachDeleteListener(newCard);
+    console.log(plant.user_plant_id)
+    attachDeleteListener(newCard,plant.user_plant_id.toString());
     attachWaterButtonListener(newCard);
 }
 
@@ -125,16 +127,17 @@ function calculateLastWatered(waterInMilli: number): string{
 }
 
 //TODO Change this implementation. Should not be a delete button, should be a "more options" button instead where change nickname and delete exists.
-function attachDeleteListener(card: HTMLElement): void {
+function attachDeleteListener(card: HTMLElement, plantID : string): void {
     const deleteIcon = card.querySelector('.delete-icon') as HTMLElement;
+    
     if (deleteIcon) {
         deleteIcon.addEventListener('click', (e: Event) => {
             e.stopPropagation();
             cardToDelete = card;
+            plantToDelete = plantID
             confirmModal.style.display = 'flex';
-            const userPlantId :string | null = cardToDelete.getAttribute('data-plant-id');
-            if (userPlantId != null && userId != null && token !=null){
-                deleteUserPlantFromLibrary(userPlantId,userId,token)
+            if (plantID != null && userId != null && token !=null){
+                deleteUserPlantFromLibrary(plantID,userId,token)
             }else {
                 console.log("Error the plant was not deleted")
             }

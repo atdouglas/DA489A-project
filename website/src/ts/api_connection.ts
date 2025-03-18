@@ -50,13 +50,14 @@ export async function getUserLibrary(userId: string, token: string){
         status = response.status;
         data = await response.json()
         console.log("User library fetched.")
+        console.log(data)
         
         
     }catch(error){
         console.error("Login failiure: ", error);
     }
 
-    return data;
+    return {data, status};
 }
 
 export async function postPlantToUserLibary(userId: string, token: string, nickname: string, plantID: number) {
