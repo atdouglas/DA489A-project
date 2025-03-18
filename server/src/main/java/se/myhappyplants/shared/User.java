@@ -2,11 +2,6 @@ package se.myhappyplants.shared;
 
 import java.io.*;
 
-/**
- * Container class that defines a User
- * Created by: Linn Borgström
- * Updated by: Linn Borgström, 2021-05-17
- */
 public class User {
 
     private int uniqueId;
@@ -17,73 +12,57 @@ public class User {
     private String securityQuestion;
     private String securityAnswer;
     private boolean isNotificationsActivated = true;
-    private boolean funFactsActivated = true;
 
     /**
-     * Empty constructor is needed for gson to work.
-     */
-    public User(){}
-
-    /**
-     * Constructor used when registering a new user account
-     */
-    public User(String email, String password, boolean isNotificationsActivated) {
-        this.email = email;
-        this.password = password;
-        this.isNotificationsActivated = isNotificationsActivated;
-    }
-
-    public User(int uniqueId, String accessToken){
-        this.uniqueId = uniqueId;
-        this.accessToken = accessToken;
-    }
-
-    /**
-     * Constructor used for testing purposes.
-     * @author Douglas Almö Thorsell
-     */
-    public User(String email, String password, boolean isNotificationsActivated, boolean funFactsActivated) {
-        this.email = email;
-        this.password = password;
-        this.isNotificationsActivated = isNotificationsActivated;
-        this.funFactsActivated = funFactsActivated;
-    }
-
-    /**
-     * Simple constructor for login requests
+     * Constructor used when registering a new user account or for login requests
      */
     public User(String email, String password) {
         this.email = email;
         this.password = password;
     }
 
-    public User(int uniqueID, String email, boolean notificationsActivated) {
-        this.uniqueId = uniqueID;
-        this.email = email;
-        this.isNotificationsActivated = notificationsActivated;
-
-    }
     /**
-     * Constructor used to return a users details from the database
+     * Constructor used for token authentication
      */
-    public User(int uniqueId, String email, boolean isNotificationsActivated, boolean funFactsActivated) {
+    public User(String accessToken, int uniqueId){
         this.uniqueId = uniqueId;
-        this.email = email;
-        this.isNotificationsActivated = isNotificationsActivated;
-        this.funFactsActivated = funFactsActivated;
+        this.accessToken = accessToken;
     }
 
     /**
      * Constructor used for testing purposes.
      * @author Douglas Almö Thorsell
      */
-    public User(int uniqueId, String email, String password, String accessToken, boolean isNotificationsActivated, boolean funFactsActivated) {
+    public User(String email, String password, String securityQuestion, String securityAnswer) {
+        this.email = email;
+        this.password = password;
+        this.securityQuestion = securityQuestion;
+        this.securityAnswer = securityAnswer;
+    }
+
+    public User(int uniqueID, String email) {
+        this.uniqueId = uniqueID;
+        this.email = email;
+    }
+    /**
+     * Constructor used to return a users details from the database
+     */
+    public User(int uniqueId, String email, boolean isNotificationsActivated) {
+        this.uniqueId = uniqueId;
+        this.email = email;
+        this.isNotificationsActivated = isNotificationsActivated;
+    }
+
+    /**
+     * Constructor used for testing purposes.
+     * @author Douglas Almö Thorsell
+     */
+    public User(int uniqueId, String email, String password, String accessToken, boolean isNotificationsActivated) {
         this.uniqueId = uniqueId;
         this.email = email;
         this.password = password;
         this.accessToken = accessToken;
         this.isNotificationsActivated = isNotificationsActivated;
-        this.funFactsActivated = funFactsActivated;
     }
 
     public int getUniqueId() {
@@ -122,21 +101,6 @@ public class User {
         this.uniqueId = uniqueId;
     }
 
-    public String getAvatarURL() {
-        return avatarURL;
-    }
-
-    public void setAvatar(String pathToImg) {
-        this.avatarURL = new File(pathToImg).toURI().toString();
-    }
-
-    public boolean areFunFactsActivated() {
-        return funFactsActivated;
-    }
-
-    public void setFunFactsActivated(boolean funFactsActivated) {
-        this.funFactsActivated = funFactsActivated;
-    }
     public String getSecurityQuestion() {
         return securityQuestion;
     }

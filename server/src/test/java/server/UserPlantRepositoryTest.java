@@ -24,8 +24,8 @@ public class UserPlantRepositoryTest {
     private final User testUser = new User(
             "test@testmail.com",
             "test123",
-            true,
-            true
+            "security question clue",
+            "security question answer"
     );
     @BeforeEach
     void setUp() {

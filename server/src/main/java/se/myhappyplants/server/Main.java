@@ -244,7 +244,7 @@ public class Main {
                 int plantID = Integer.parseInt(plantIDString);
 
 
-                userPlantRepository.savePlant(new User(userID, token), createUserPlant(plantID, nickname));
+                userPlantRepository.savePlant(new User(token, userID), createUserPlant(plantID, nickname));
 
                 ctx.status(200).result("Plant added to user library.");
             }else {

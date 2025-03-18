@@ -22,8 +22,8 @@ public class UserRepositoryTest {
     private static User testUser = new User(
             "test@testmail.com",
             "test123",
-            true,
-            true
+            "security question clue",
+            "security question answer"
     );
 
     @Nested
@@ -44,8 +44,8 @@ public class UserRepositoryTest {
             User newTestUser = new User(
                     "testteestesttestestestestestestestest@testmail.com",
                     "test123",
-                    true,
-                    true);
+                    "clue",
+                    "answer");
 
             boolean result = userRepository.saveUser(newTestUser);
             userRepository.deleteAccount(newTestUser.getEmail(), newTestUser.getPassword());
@@ -58,8 +58,8 @@ public class UserRepositoryTest {
             User newTestUser = new User(
                     "test@testmail1.com",
                     "test12",
-                    true,
-                    true);
+                    "clue",
+                    "answer");
 
             boolean result = userRepository.saveUser(newTestUser);
             userRepository.deleteAccount(newTestUser.getEmail(), newTestUser.getPassword());
@@ -72,8 +72,8 @@ public class UserRepositoryTest {
             User newTestUser = new User(
                     "test@testmail2.com",
                     "test12312312312312312312312312312312312312312312312312312312312312312312",
-                    true,
-                    true);
+                    "clue",
+                    "answer");
 
             boolean result = userRepository.saveUser(newTestUser);
             userRepository.deleteAccount(newTestUser.getEmail(), newTestUser.getPassword());
@@ -91,9 +91,7 @@ public class UserRepositoryTest {
                     () -> assertEquals(testUser.getEmail(), result.getEmail(),
                             "Wrong email, the expected email is " + testUser.getEmail()),
                     () -> assertEquals(testUser.areNotificationsActivated(), result.areNotificationsActivated(),
-                            "The test user has notifications active, but the test returned false."),
-                    () -> assertEquals(testUser.areFunFactsActivated(), result.areFunFactsActivated(),
-                            "The test user has fun facts activated, but the test returned false.")
+                            "The test user has notifications active, but the test returned false.")
             );
         }
 
@@ -143,8 +141,8 @@ public class UserRepositoryTest {
             User incorrectUser = new User(
                     "test@testmail.commmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm",
                     "test123",
-                    true,
-                    true);
+                    "clue",
+                    "answer");
 
             boolean result = userRepository.saveUser(incorrectUser);
             assertFalse(result, "The method should return false because a too long email was submitted.");
@@ -155,8 +153,8 @@ public class UserRepositoryTest {
             User incorrectUser = new User(
                     "test@testmail.commmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm",
                     "test123",
-                    true,
-                    true);
+                    "clue",
+                    "answer");
 
             boolean result = userRepository.saveUser(incorrectUser);
             assertFalse(result, "The method should return false because a too long email was submitted.");
@@ -167,8 +165,8 @@ public class UserRepositoryTest {
             User incorrectUser = new User(
                     null,
                     "test123",
-                    true,
-                    true);
+                    "clue",
+                    "answer");
 
             boolean result = userRepository.saveUser(incorrectUser);
             assertFalse(result, "The method should return false because a null email was submitted.");
@@ -179,8 +177,8 @@ public class UserRepositoryTest {
             User incorrectUser = new User(
                     "",
                     "test123",
-                    true,
-                    true);
+                    "clue",
+                    "answer");
 
             boolean result = userRepository.saveUser(incorrectUser);
             assertFalse(result, "The method should return false because an empty email was submitted.");
@@ -191,8 +189,8 @@ public class UserRepositoryTest {
             User incorrectUser = new User(
                     "testmail",
                     "test123",
-                    true,
-                    true);
+                    "clue",
+                    "answer");
 
             boolean result = userRepository.saveUser(incorrectUser);
             assertFalse(result, "The method should return false because an invalid email was submitted.");
@@ -203,8 +201,8 @@ public class UserRepositoryTest {
             User incorrectUser = new User(
                     "test@testmail.com",
                     null,
-                    true,
-                    true);
+                    "clue",
+                    "answer");
 
             boolean result = userRepository.saveUser(incorrectUser);
             assertFalse(result, "The method should return false because a null password was submitted.");
@@ -215,8 +213,8 @@ public class UserRepositoryTest {
             User incorrectUser = new User(
                     "test@testmail.com",
                     "",
-                    true,
-                    true);
+                    "clue",
+                    "answer");
 
             boolean result = userRepository.saveUser(incorrectUser);
             assertFalse(result, "The method should return false because a empty password was submitted.");
@@ -227,8 +225,8 @@ public class UserRepositoryTest {
             User incorrectUser = new User(
                     "test@testmail.com",
                     "abcdefghijklmnopqrstuvwxyz123456790abcdefghijklmnopqrstuvwxyz123456790abcdefghijklmnopq",
-                    true,
-                    true);
+                    "clue",
+                    "answer");
 
             boolean result = userRepository.saveUser(incorrectUser);
             assertFalse(result, "The method should return false because a password with too long of a length was submitted.");
@@ -239,8 +237,8 @@ public class UserRepositoryTest {
             User incorrectUser = new User(
                     "test@testmail.com",
                     "abcde",
-                    true,
-                    true);
+                    "clue",
+                    "answer");
 
             boolean result = userRepository.saveUser(incorrectUser);
             assertFalse(result, "The method should return false because an password with too short of a length was submitted.");
@@ -323,8 +321,7 @@ public class UserRepositoryTest {
                 328,
                 "test@expired.token",
                 "test123",
-                "13G_1xZG-5bMAAql85paJz4JSP4Y_QkZ",
-                true,
+                "mouqspHpCosdRbQt-8zb-8m0k4kv6D1b",
                 true
         );
 

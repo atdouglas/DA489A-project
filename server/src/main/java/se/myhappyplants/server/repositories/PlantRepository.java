@@ -36,9 +36,7 @@ public class PlantRepository extends Repository {
             }
         } catch (SQLException sqlException) {
             System.out.println(sqlException.getMessage());
-            return null;
         }
-
         return plantList;
     }
 
@@ -69,14 +67,5 @@ public class PlantRepository extends Repository {
             System.out.println(sqlException.getMessage());
         }
         return plantDetails;
-    }
-
-    public static boolean isNumeric(String str) {
-        try {
-            Double.parseDouble(str);
-            return true;
-        } catch (NumberFormatException e) {
-            return false;
-        }
     }
 }
