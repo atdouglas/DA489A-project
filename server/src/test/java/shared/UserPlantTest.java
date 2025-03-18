@@ -19,11 +19,11 @@ public class UserPlantTest {
 
     private UserPlant testPlant = new UserPlant(
             527,
-            "Actaea racemosa",
+            "Actaea Racemosa",
             "Ranunculaceae",
-            "black cohosh",
+            "Black Cohosh",
             "https://perenual.com/storage/species_image/527_actaea_racemosa/og/28204469216_e9680ed0a4_b.jpg",
-            "full sun",
+            "Full sun",
             "Low",
             false,
             734400000,
