@@ -140,7 +140,7 @@ public class UserPlantRepository extends Repository {
 
 
 
-    public boolean changeLastWatered(int userId, int plant_id) {
+    public boolean changeLastWatered(int userId, int plant_id, long lastWatered) {
         boolean dateChanged = false;
         String query = """ 
                     UPDATE user_plants SET last_watered = ? WHERE id = ? AND user_id = ?;
@@ -150,7 +150,7 @@ public class UserPlantRepository extends Repository {
         }
         try (java.sql.Connection connection = startConnection()) {
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-                preparedStatement.setLong(1, System.currentTimeMillis());
+                preparedStatement.setLong(1, lastWatered);
                 preparedStatement.setInt(2, plant_id);
                 preparedStatement.setInt(3, userId);
                 preparedStatement.executeUpdate();

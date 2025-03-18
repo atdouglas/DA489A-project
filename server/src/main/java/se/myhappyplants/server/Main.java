@@ -45,6 +45,7 @@ public class Main {
         setupPostSecurityQuestion();
         setupPostUpdatePassword();
         setUpDeleteFromUserLibrary();
+        setupUpdateUserLibraryPlant();
     }
 
     private static void setupGetPlant() {
@@ -267,21 +268,20 @@ public class Main {
                 ctx.status(401).result("401 You are unauthorized to access this data.");
             } else if (tokenStatus == TokenStatus.EXPIRED) {
                 ctx.status(419).result("419 Your token has expired.");
-            } else if(nickname == null && lastWateredString == null) {
-                ctx.status(400).result("Both nickname and last_watered can't be empty.");
-
             } else if (tokenStatus == TokenStatus.VALID){
 
                 if(nickname != null && !nickname.isEmpty()){
                     userPlantRepository.changeNickname(userID, userPlantID, nickname);
                     ctx.status(200).result("Nickname updated.");
+
+                } else if (lastWateredString != null && !lastWateredString.isEmpty()) {
+                    long lastWatered = Long.parseLong(lastWateredString);
+                    userPlantRepository.changeLastWatered(userID, userPlantID, lastWatered);
+                    ctx.status(200).result("Last watered changed.");
+
+                }else{
+                    ctx.status(400).result("Both nickname and last_watered can't be empty.");
                 }
-                //int plantID = Integer.parseInt(plantIDString);
-
-
-                //userPlantRepository.savePlant(new User(userID, token), createUserPlant(plantID, nickname));
-
-                ctx.status(200).result("Plant added to user library.");
             }else {
                 ctx.status(404).result("An error has occurred.");
             }
