@@ -27,7 +27,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (!response.ok) throw new Error('Plant not found');
         const plant: Plant = await response.json();
         setupPlantDescription(plant)
-  
         // Set up add-to-garden with confirmation modal
         if(token != null){
             addToGardenButton.addEventListener('click', () => {
@@ -44,11 +43,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 window.location.href = "/src/html/login-page.html";
                 //kanske lägga till en popup med att man måste vara inloggad?
             })
-
         }
-
-
-
     } catch (error) {
         console.error('Error loading plant:', error);
     }

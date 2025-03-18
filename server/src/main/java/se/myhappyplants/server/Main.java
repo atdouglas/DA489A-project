@@ -156,13 +156,12 @@ public class Main {
 
     private static void setupGetSecurityQuestion(){
         app.get("/security_question", ctx -> ctx.async(() -> {
-            User user = ctx.bodyAsClass(User.class);
-            String question = null;
+            String email = ctx.queryParam("email");            String question = null;
 
-            if(user.getEmail() == null){
+            if(email == null){
                 ctx.status(400).result("Bad request. No email provided.");
             }else {
-                question = userRepository.getSecurityQuestion(user.getEmail());
+                question = userRepository.getSecurityQuestion(email);
             }
 
             if(question == null || question.isEmpty()){
