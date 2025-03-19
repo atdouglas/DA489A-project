@@ -13,6 +13,9 @@ public class PlantRepository extends Repository {
     // TODO: adjust to new implementation
     public List<Plant> getResult(String plantSearch) {
         List<Plant> plantList = new ArrayList<>();
+        if (plantSearch.isEmpty()) {
+            return plantList;
+        }
         String query = """
                 SELECT * FROM plants WHERE to_tsvector(scientific_name || ' ' || common_name || ' ' || family) @@ to_tsquery(?);
                 """;
