@@ -13,7 +13,7 @@ public class PlantRepository extends Repository {
     // TODO: adjust to new implementation
     public List<Plant> getResult(String plantSearch) {
         List<Plant> plantList = new ArrayList<>();
-        if (plantSearch.isEmpty()) {
+        if (plantSearch == null || plantSearch.isEmpty()) {
             return plantList;
         }
         String query = """
