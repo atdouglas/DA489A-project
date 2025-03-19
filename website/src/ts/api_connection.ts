@@ -29,11 +29,6 @@ export async function registerUser(email: string, password: string, securityQues
     return status;
 }
 
-export async function addPlantToGardenUser(){
-
-}
-
-//TODO FIX THIS IMPLEMENTATION
 export async function getUserLibrary(userId: string, token: string){
     let status: number = 404;
     let data: UserPlant[] | null = null;
@@ -109,7 +104,7 @@ export async function updateUserPlantLastWatered(userId: string, token: string, 
     return status;
 }
 
-export async function deleteUserPlantFromLibrary(userPlantId: string, userId: string, token: string) {
+export async function deleteUserPlantFromLibrary(userPlantId: number, userId: string, token: string) {
     let status: number = 404;
     try{
         const response = await fetch(

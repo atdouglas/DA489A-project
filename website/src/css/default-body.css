@@ -26,6 +26,11 @@ body {
     z-index: 1001;
 }
 
+#errorToast{
+    background-color: #b92f2f;
+
+}
+
 .toast.show {
     opacity: 1;
 }
