@@ -103,7 +103,14 @@ function createPlantCard(plant: UserPlant) {
         lastWatered = "0 h"
     }
     newCard.innerHTML = `
-        <span class="more-options"><img id="more_vert_img" src="/more_vert.svg"/></span>
+        <span class="more-options">
+            <img id="more_vert_img" src="/more_vert.svg"/>
+            <div class="more-options-menu">
+                <div id="change-nickname-btn" class="more-options-button">Change nickname</div>
+                <div id="delete-plant-btn" class="more-options-button">Delete plant</div>
+
+            </div>
+        </span>
         <img src="${imageUrl}" alt="Plant" class="plant-image" />
         <h3 class="plant-name">${mainName}</h3>
         <p class="plant-subtitle">${subTitle}</p>
@@ -116,6 +123,7 @@ function createPlantCard(plant: UserPlant) {
     console.log(plant.user_plant_id)
     attachDeleteListener(newCard,plant.user_plant_id.toString());
     attachWaterButtonListener(newCard);
+    attachOptionsMenu(newCard)
 }
 
 function calculateLastWatered(waterInMilli: number): string{
@@ -139,8 +147,25 @@ function calculateLastWatered(waterInMilli: number): string{
     }
 }
 
-function attachOptionsMenu(){
+function attachOptionsMenu(newCard: HTMLElement){
+    const popupContainer = newCard.querySelector(".more-options") as HTMLElement;
+    const popupMenu = newCard.querySelector(".more-options-menu")
+    
 
+    if(popupMenu && popupContainer){
+        popupContainer.addEventListener("click", () => {
+            console.log("SHOULD SHOW UP")
+            popupMenu.classList.toggle("active");
+        })
+
+        document.addEventListener("click", (event) => {
+            if (!popupMenu.contains(event.target as Node) && !popupContainer.contains(event.target as Node)) {
+                popupMenu.classList.remove("active");
+            }
+        });
+    }
+
+    
 }
 
 //TODO Change this implementation. Should not be a delete button, should be a "more options" button instead where change nickname and delete exists.

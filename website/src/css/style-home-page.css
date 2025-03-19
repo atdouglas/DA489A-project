@@ -48,11 +48,48 @@
     right: 10px;
     font-size: 25px;
     cursor: pointer;
+    z-index: 9999;
     transition: transform 0.2s, color 0.2s;
 }
 
 .more-options:hover {
     transform: scale(1.05);
+}
+
+.more-options-menu{
+    display: none;
+    position: absolute;
+    top: 25px;
+    left: 0px;
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    z-index: 9999;
+    width: 150px;
+}
+
+.more-options-menu .more-options-button{
+    display: block;
+    padding: 10px 15px;
+    color: #350;
+    text-decoration: none;
+    font-size: 14px;
+    transition: background-color 0.3 ease;
+}
+
+.more-options-menu .more-options-button:hover{
+    display: block;
+    padding: 10px 15px;
+    background-color: #d4e1d6;
+    color: #350;
+    text-decoration: none;
+    font-size: 14px;
+    transition: background-color 0.3 ease;
+}
+
+.more-options-menu.active {
+    display: block;
 }
 
 /* Card "add plant" */
