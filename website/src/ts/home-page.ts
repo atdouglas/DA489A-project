@@ -1,15 +1,23 @@
-import { Plant, UserPlant } from './types'
+import { UserPlant } from './types'
 import { getCookie, clearCookie } from './cookieUtil';
-import { getUserLibrary } from './api_connection';
+import { getUserLibrary, updateUserPlantLastWatered, updateUserPlantNickname } from './api_connection';
 import { deleteUserPlantFromLibrary } from './api_connection';
 
 const plantsContainer = document.querySelector('.plants-container') as HTMLElement;
 const addPlantCard = document.querySelector('.add-plant-card') as HTMLElement;
 const confirmModal = document.getElementById('confirmModal') as HTMLElement;
-const yesButton = confirmModal.querySelector('.yes-button') as HTMLButtonElement;
-const noButton = confirmModal.querySelector('.no-button') as HTMLButtonElement;
+const changeNickModal = document.getElementById('change-nick-modal') as HTMLElement;
+const yesDelButton = confirmModal.querySelector('.yes-button') as HTMLButtonElement;
+const noDelButton = confirmModal.querySelector('.no-button') as HTMLButtonElement;
+const nickChangeButton = changeNickModal.querySelector('.nick-change-button') as HTMLButtonElement;
+const nickCancelButton = changeNickModal.querySelector('.nick-cancel-button') as HTMLButtonElement;
+const nickInput = changeNickModal.querySelector("#change-nick-input") as HTMLInputElement;
+const nickError = changeNickModal.querySelector(".nickname-error") as HTMLParagraphElement;
+
 let cardToDelete: HTMLElement | null = null;
-let plantToDelete: string | null = null;
+let plantToDelete: number | null = null;
+let plantToChangeNick: number | null = null;
+let cardToChangeNick: HTMLElement | null = null;
 const token: string | null = getCookie("accessToken");
 const userId: string | null = getCookie("userId")
 
@@ -25,7 +33,7 @@ addPlantCard.addEventListener('click', () => {
 
 });
 
-yesButton.addEventListener('click', () => {
+yesDelButton.addEventListener('click', () => {
     if (cardToDelete && plantToDelete) {
         cardToDelete.remove();
         cardToDelete = null;
@@ -38,11 +46,36 @@ yesButton.addEventListener('click', () => {
     confirmModal.style.display = 'none';
 });
 
-noButton.addEventListener('click', () => {
+noDelButton.addEventListener('click', () => {
     cardToDelete = null;
     plantToDelete = null;
     confirmModal.style.display = 'none';
 });
+
+nickChangeButton.addEventListener('click', () => {
+    const newNick: string = nickInput.value;
+
+    if(newNick === null || newNick == "" || newNick.length < 3){
+        nickError.style.display = "flex";
+    }else if(plantToChangeNick){
+        changePlantNickname(newNick);
+        changeNickModal.style.display = 'none';
+    }
+
+
+
+});
+
+nickCancelButton.addEventListener('click', () => {
+    plantToChangeNick = null;
+    cardToChangeNick = null;
+    nickInput.value = "";
+    changeNickModal.style.display = 'none';
+    nickError.style.display = "none";
+
+});
+
+
 
 
 async function loadGarden() {
@@ -103,7 +136,14 @@ function createPlantCard(plant: UserPlant) {
         lastWatered = "0 h"
     }
     newCard.innerHTML = `
-        <span class="more-options"><img id="more_vert_img" src="/more_vert.svg"/></span>
+        <span class="more-options">
+            <img id="more_vert_img" src="/more_vert.svg"/>
+            <div class="more-options-menu">
+                <div id="change-nickname-btn" class="more-options-button">Change nickname</div>
+                <div id="delete-plant-btn" class="more-options-button">Delete plant</div>
+
+            </div>
+        </span>
         <img src="${imageUrl}" alt="Plant" class="plant-image" />
         <h3 class="plant-name">${mainName}</h3>
         <p class="plant-subtitle">${subTitle}</p>
@@ -114,13 +154,18 @@ function createPlantCard(plant: UserPlant) {
     `;
     plantsContainer.insertBefore(newCard, addPlantCard);
     console.log(plant.user_plant_id)
-    attachDeleteListener(newCard,plant.user_plant_id.toString());
-    attachWaterButtonListener(newCard);
+    attachWaterButtonListener(newCard,plant.user_plant_id);
+    attachOptionsMenu(newCard, plant.user_plant_id)
 }
 
 function calculateLastWatered(waterInMilli: number): string{
     const progress = Date.now() - waterInMilli
     const hours: number = (((progress/1000)/60)/60);
+
+    if(hours < 0.5){
+        return "0h"
+    }
+
     const roundedHours: number = Math.ceil(hours);
 
     if(roundedHours < 24){
@@ -139,17 +184,36 @@ function calculateLastWatered(waterInMilli: number): string{
     }
 }
 
-function attachOptionsMenu(){
+function attachOptionsMenu(newCard: HTMLElement, user_plant_id: number){
+    const popupContainer = newCard.querySelector(".more-options") as HTMLElement;
+    const popupMenu = newCard.querySelector(".more-options-menu") as HTMLElement
+    
 
+    if(popupMenu && popupContainer){
+        popupContainer.addEventListener("click", () => {
+            popupMenu.classList.toggle("active");
+        })
+
+        document.addEventListener("click", (event) => {
+            if (!popupMenu.contains(event.target as Node) && !popupContainer.contains(event.target as Node)) {
+                popupMenu.classList.remove("active");
+            }
+        });
+
+        attachDeleteListener(newCard, user_plant_id, popupMenu)
+        attachChangeNicknameListener(newCard, user_plant_id, popupMenu)
+    }
+
+    
 }
 
-//TODO Change this implementation. Should not be a delete button, should be a "more options" button instead where change nickname and delete exists.
-function attachDeleteListener(card: HTMLElement, plantID : string): void {
-    const deleteIcon = card.querySelector('.delete-icon') as HTMLElement;
+function attachDeleteListener(card: HTMLElement, plantID : number, popupMenu: HTMLElement): void {
+    const deleteIcon = card.querySelector('#delete-plant-btn') as HTMLElement;
     
     if (deleteIcon) {
         deleteIcon.addEventListener('click', (e: Event) => {
             e.stopPropagation();
+            popupMenu.classList.remove("active");
             cardToDelete = card;
             plantToDelete = plantID
             confirmModal.style.display = 'flex';
@@ -157,13 +221,88 @@ function attachDeleteListener(card: HTMLElement, plantID : string): void {
     }
 }
 
-//TODO Fix this to update last_watered on plant. (Needs to be implemented in the server and in api_connection first)
-function attachWaterButtonListener(card: HTMLElement, ) {
+function attachChangeNicknameListener(card: HTMLElement, userPlantId: number, popupMenu: HTMLElement){
+    const changeNickBtn = card.querySelector("#change-nickname-btn") as HTMLElement;
+
+    if(changeNickBtn){
+        changeNickBtn.addEventListener('click', (e: Event) => {
+            e.stopPropagation();
+            popupMenu.classList.remove("active");
+            plantToChangeNick = userPlantId;
+            cardToChangeNick = card;
+            changeNickModal.style.display = "flex";
+        });
+    }
+}
+
+function attachWaterButtonListener(card: HTMLElement, userPlantId: number) {
     const waterButton = card.querySelector('.water-button') as HTMLElement;
+    const waterTime = card.querySelector(".water-time") as HTMLElement;
+
     if(waterButton) {
-        waterButton.addEventListener('click', (event: Event) => {
-            
+        waterButton.addEventListener('click', () => {
+            if(userId !== null && token !== null){
+                updateUserPlantLastWatered(userId, token, Date.now(), userPlantId)
+                waterTime.innerHTML = "0h"
+            }
         })
+    }
+}
+
+async function changePlantNickname(newNick: string){
+    if(userId !== null && token !== null && plantToChangeNick !== null && cardToChangeNick !== null){
+        const status: number = await updateUserPlantNickname(userId, token, newNick, plantToChangeNick);
+        const nicknameElement = cardToChangeNick.querySelector(".plant-name");
+
+
+        if(status === 200){
+            showSuccessToast("Plant nickname changed.")
+            
+            if(nicknameElement !== null){
+                nicknameElement.innerHTML = newNick;
+            }
+
+        }else{
+            showErrorToast("There was an error changing the nickname.")
+        }
+    }
+
+    plantToChangeNick = null;
+    cardToChangeNick = null;
+    nickError.style.display = 'none';
+    nickInput.value = "";
+
+}
+
+function showSuccessToast(message : string){
+    const toast = document.getElementById('successToast') as HTMLElement;
+    if (toast) {
+        toast.textContent = message;
+        toast.style.display = 'block';
+        void toast.offsetWidth;
+        toast.classList.add('show');
+        setTimeout(() => {
+            toast.classList.remove('show');
+            setTimeout(() => {
+                toast.style.display = 'none';
+            }, 500);
+        }, 3000);
+    }
+}
+
+function showErrorToast(message : string){
+    const toast = document.getElementById('errorToast') as HTMLElement;
+    if (toast) {
+        toast.textContent = message;
+        toast.style.display = 'block';
+        void toast.offsetWidth;
+        toast.classList.add('show');
+        setTimeout(() => {
+            toast.classList.remove('show');
+            setTimeout(() => {
+                toast.style.display = 'none';
+            }, 500);
+        }, 3000);
     }
 }
 

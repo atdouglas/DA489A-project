@@ -2,7 +2,7 @@
 /* Main Container */
 .main-container {
     width: 90%;
-    max-width: 1400px;
+    max-width: 1480px;
     margin: 20px auto;
 
     background-color: #d4e8d9;
@@ -11,8 +11,9 @@
 
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     box-sizing: border-box;
-    max-height: calc(100vh - 100px);
+    height: 85vh;
     overflow-y: auto;
+    overflow-x:visible;
 }
 
 /* Container card */
@@ -45,14 +46,58 @@
 .more-options {
     position: absolute;
     top: 15px;
-    right: 10px;
+    right: 15px;
     font-size: 25px;
     cursor: pointer;
+    z-index: 1000;
     transition: transform 0.2s, color 0.2s;
+}
+
+#more_vert_img{
+    background: #d4e8d97a;
+    background-size: 500px;
+    border-radius: 3px;
 }
 
 .more-options:hover {
     transform: scale(1.05);
+}
+
+.more-options-menu{
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: auto;
+    right: 0;
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    z-index: 1000;
+    width: 150px;
+}
+
+.more-options-menu .more-options-button{
+    display: block;
+    padding: 10px 15px;
+    color: #350;
+    text-decoration: none;
+    font-size: 14px;
+    transition: background-color 0.3 ease;
+}
+
+.more-options-menu .more-options-button:hover{
+    display: block;
+    padding: 10px 15px;
+    background-color: #d4e1d6;
+    color: #350;
+    text-decoration: none;
+    font-size: 14px;
+    transition: background-color 0.3 ease;
+}
+
+.more-options-menu.active {
+    display: block;
 }
 
 /* Card "add plant" */
@@ -126,7 +171,7 @@
 }
 
 /* confirmation elimination metod */
-.confirm-modal {
+.modal {
     position: fixed;
     top: 0;
     left: 0;
@@ -141,19 +186,34 @@
 
 }
 
-.confirm-modal-content {
+.modal-content {
     background-color: #d4e8d9;
     padding: 20px;
     border-radius: 8px;
     text-align: center;
 }
 
-.confirm-modal-content button {
+.modal-content button {
     margin: 10px;
     padding: 10px 20px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
+}
+
+.nickname-error{
+    font-size: 14px;
+    color: rgb(213, 0, 0);
+    display: none;
+}
+
+#change-nick-input{
+    width: 300px;
+    height: 30px;
+    font-size: 16px;
+    border-radius: 10px;
+    border: 1px black;
+    padding: 5px;
 }
 
 .yes-button {
