@@ -1,5 +1,7 @@
 import { Plant } from './types'
 import { getCookie } from "./cookieUtil";
+import { UserPlant } from './types';
+import { postPlantToUserLibrary } from './api_connection';
 
 const commonNameEl = document.querySelector('.common-name') as HTMLElement;
 const scientificNameEl = document.querySelector('.scientific-name') as HTMLElement;
@@ -71,14 +73,15 @@ yesAddButton.addEventListener('click', () => {
     if (plantToAdd) {
         const nicknameInput = document.getElementById('plantNickname') as HTMLInputElement;
         let nickname = nicknameInput ? nicknameInput.value.trim() : "";
-        if (nickname) {
-            plantToAdd.nickname = nickname;
-        } else {
-            plantToAdd.nickname = "";
+        
+        if (nickname === null || nickname === "" || nickname === undefined) {
+            if(plantToAdd.common_name != null){
+                addToGarden(plantToAdd,plantToAdd.common_name)
+            }
+        }else{
+            addToGarden(plantToAdd, nickname);
         }
-        addToGarden(plantToAdd);
-        const toastName = plantToAdd.nickname ? plantToAdd.nickname : plantToAdd.common_name || plantToAdd.scientific_name || 'Unknown';
-        showToast(`Perfect, added "${toastName}" to the garden!`);
+        showToast(`Perfect, added the plant to the garden!`);
         plantToAdd = null;
     }
     confirmAddModal.style.display = 'none';
@@ -89,12 +92,16 @@ noAddButton.addEventListener('click', () => {
     confirmAddModal.style.display = 'none';
 });
 
-function addToGarden(plant: Plant) {
-    const stored = localStorage.getItem('myGarden');
-    let garden: Plant[] = stored ? JSON.parse(stored) : [];
-    garden.push(plant);
-    localStorage.setItem('myGarden', JSON.stringify(garden));
-}
+const addToGarden = (plant: Plant, nickname : string) => {
+    const userid :string|null = getCookie("userId")
+    const accessToken :string|null = getCookie("accessToken")
+    
+    if (userid!= null && accessToken != null && (nickname != null)){
+        postPlantToUserLibrary(userid,accessToken,nickname,plant.id)
+    }else{
+        console.log("failed to addToGarden")
+    }
+};
 
 function showToast(message: string) {
     const toast = document.getElementById('toast') as HTMLElement;

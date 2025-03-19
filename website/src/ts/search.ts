@@ -1,7 +1,7 @@
-import { postPlantToUserLibary } from "./api_connection";
+import { postPlantToUserLibrary } from "./api_connection";
 import { getCookie } from "./cookieUtil";
 import { Plant } from "./types";
- 
+import { UserPlant } from "./types";
 
 document.addEventListener('DOMContentLoaded', () => {
     const URLparams = new URLSearchParams(window.location.search);
@@ -10,7 +10,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (token == null){
            
     }
-
     if(searchTerm){
         const searchQueryElement = document.getElementById('search-query');
         if(searchQueryElement){
@@ -107,12 +106,12 @@ const updateSearchResults = (plants: Plant[]) => {
         });
     }
 };
-const addToGarden = (plant: Plant) => {
+const addToGarden = (plant: Plant, nickname : string) => {
     const userid :string|null = getCookie("userId")
     const accessToken :string|null = getCookie("accessToken")
-    const nickname :string|undefined = plant.nickname
-    if (userid!= null && accessToken != null && nickname!= undefined){
-        postPlantToUserLibary(userid,accessToken,nickname,plant.id)
+    
+    if (userid!= null && accessToken != null && (nickname != null)){
+        postPlantToUserLibrary(userid,accessToken,nickname,plant.id)
     }else{
         console.log("failed to addToGarden")
     }
@@ -125,17 +124,19 @@ const yesAddButton = confirmAddModal.querySelector('.yes-add-button') as HTMLBut
 const noAddButton = confirmAddModal.querySelector('.no-add-button') as HTMLButtonElement;
 
 yesAddButton.addEventListener('click', () => {
+    
     if (plantToAdd) {
         const nicknameInput = document.getElementById('plantNickname') as HTMLInputElement;
         let nickname = nicknameInput ? nicknameInput.value.trim() : "";
-        if (nickname) {
-            plantToAdd.nickname = nickname;
-        } else {
-            plantToAdd.nickname = "";
+        
+        if (nickname === null || nickname === "" || nickname === undefined) {
+            if(plantToAdd.common_name != null){
+                addToGarden(plantToAdd,plantToAdd.common_name)
+            }
+        }else{
+            addToGarden(plantToAdd, nickname);
         }
-        addToGarden(plantToAdd);
-        const toastName = plantToAdd.nickname ? plantToAdd.nickname : plantToAdd.common_name || plantToAdd.scientific_name || 'Unknown';
-        showToast(`Perfect, added "${toastName}" to the garden!`);
+        showToast(`Perfect, added the plant to the garden!`);
         plantToAdd = null;
     }
     confirmAddModal.style.display = 'none';

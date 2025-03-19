@@ -55,7 +55,7 @@ export async function getUserLibrary(userId: string, token: string){
     return {data, status};
 }
 
-export async function postPlantToUserLibary(userId: string, token: string, nickname: string, plantID: number) {
+export async function postPlantToUserLibrary(userId: string, token: string, nickname: string, plantID: number) {
     let status: number = 404;
     try{
         const response = await fetch(
