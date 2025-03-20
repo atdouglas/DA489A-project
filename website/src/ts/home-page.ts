@@ -158,7 +158,7 @@ async function loadGarden() {
 
 }
 
-function createPlantCard(plant: UserPlant, notifActivated: Boolean) {
+function createPlantCard(plant: UserPlant, notifActivated: boolean) {
     if(plant.user_plant_id === null){
         return
     }
