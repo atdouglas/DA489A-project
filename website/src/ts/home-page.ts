@@ -195,6 +195,11 @@ function createPlantCard(plant: UserPlant) {
     console.log(plant.user_plant_id)
     attachWaterButtonListener(newCard, plant.user_plant_id);
     attachOptionsMenu(newCard, plant.user_plant_id)
+
+    const plantImage = newCard.querySelector('.plant-image') as HTMLImageElement;
+    plantImage.addEventListener('click', () => {
+        window.location.href = `/src/html/plant-info.html?id=${plant.id}`;
+    });
 }
 
 function calculateLastWatered(waterInMilli: number): string {
