@@ -1,24 +1,23 @@
 package se.myhappyplants.server.repositories;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import io.github.cdimascio.dotenv.Dotenv;
 
 import java.net.URI;
-import java.net.URL;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.util.ArrayList;
-import java.util.List;
 
 public class PerenualRepository {
     private Dotenv dotenv = Dotenv.load();
     String description = "";
 
     public String getDescription(int plantID){
+        if (!checkValidID(plantID)){
+            return null;
+        }
         String urlString = "https://perenual.com/api/v2/species/details/" + plantID
                 + "?key=" + dotenv.get("PERENUAL_KEY");
 
@@ -43,6 +42,9 @@ public class PerenualRepository {
     }
 
     public JsonArray getPlantGuides(int plantID){
+        if (!checkValidID(plantID)){
+            return null;
+        }
         String urlString = "https://perenual.com/api/species-care-guide-list"
                 + "?key=" + dotenv.get("PERENUAL_KEY")
                 + "&species_id=" + plantID;
@@ -72,6 +74,10 @@ public class PerenualRepository {
             e.printStackTrace();
         }
         return null;
+    }
+
+    private boolean checkValidID(int plantID) {
+        return plantID >= 1 && plantID <= 3000;
     }
 
     private JsonArray extractCareGuides(JsonObject data){
