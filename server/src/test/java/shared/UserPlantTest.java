@@ -92,4 +92,7 @@ public class UserPlantTest {
         testPlant.setLastWatered(newLastWatered);
         assertEquals(newLastWatered, testPlant.getLastWatered(), "The last watered timestamp should be updated.");
     }
+
+
+
 }
