@@ -232,7 +232,9 @@ public class UserRepository extends Repository {
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                 preparedStatement.setBoolean(1, notifications);
                 preparedStatement.setString(2, email);
-                notificationsChanged = true;
+
+                int updatedRows = preparedStatement.executeUpdate();
+                notificationsChanged = updatedRows > 0;
             }
         } catch (SQLException sqlException) {
             System.out.println(sqlException.getMessage());

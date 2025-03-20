@@ -321,7 +321,7 @@ public class Main {
                 String email = userRepository.getEmailByUserID(userID);
                 User user = userRepository.getUserDetails(email);
                 if (user != null){
-                    ctx.status(200).json(user.areNotificationsActivated());
+                    ctx.json(user.areNotificationsActivated()).status(200);
                 }else{
                     ctx.status(400).result("User not found");
                 }

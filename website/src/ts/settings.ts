@@ -17,6 +17,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (response !== null){
             notifEnabled = response;
             updateButtonState();
+        }else{
+            alert("Faulty response");
+            return;
         }
     });
 
@@ -61,8 +64,8 @@ document.addEventListener('DOMContentLoaded', () => {
     async function updateNotif(userId: string, token: string, enabled: boolean) {
         const response = await updateNotificationsActivated(userId, token, enabled);
     
-        if(!response){
-            //input error handling
+        if(response !== 200){
+            alert("Faulty response");
         }
         return response;
     }

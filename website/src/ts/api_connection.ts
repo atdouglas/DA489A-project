@@ -161,6 +161,7 @@ export async function getNotificationsActivated(userID: string, token: string){
 
         status = response.status;
         data = await response.json();
+        console.log(data);
         console.log("Notifications_activated boolean fetched");
 
     }catch (error){
@@ -171,6 +172,7 @@ export async function getNotificationsActivated(userID: string, token: string){
 
 export async function updateNotificationsActivated(userID: string, token: string, flag: boolean) {
     let status: number = 404;
+    console.log('Boolean sent: ',flag);
     try{
         const response = await fetch(
             URL+"/notif/"+ userID + "?token=" + token+ "&flag="+ flag,{

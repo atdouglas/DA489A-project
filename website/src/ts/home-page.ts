@@ -117,10 +117,12 @@ function handleSearch(){
 async function loadGarden() {
     let plants: UserPlant[] | null = null;
     let statusCode: number | null = null;
-    let notifActivated = true;
+    let notifActivated  = null;
 
     if (token != null && userId != null) {
-        const notifActivated = await getNotificationsActivated(userId, token);
+        const notifPreference = await getNotificationsActivated(userId, token);
+        notifActivated = notifPreference;
+
         if(notifActivated === null){
             console.error("You are unathurized")
             if (token != null) {
@@ -158,7 +160,7 @@ async function loadGarden() {
 
 }
 
-function createPlantCard(plant: UserPlant, notifActivated: boolean) {
+function createPlantCard(plant: UserPlant, notifActivated: boolean | null) {
     if(plant.user_plant_id === null){
         return
     }
