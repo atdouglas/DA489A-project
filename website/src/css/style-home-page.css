@@ -201,13 +201,13 @@
     cursor: pointer;
 }
 
-.nickname-error{
+.error-text{
     font-size: 14px;
     color: rgb(213, 0, 0);
     display: none;
 }
 
-#change-nick-input{
+.home-page-input{
     width: 300px;
     height: 30px;
     font-size: 16px;

@@ -1,6 +1,5 @@
 import { Plant } from './types'
 import { getCookie } from "./cookieUtil";
-import { UserPlant } from './types';
 import { postPlantToUserLibrary } from './api_connection';
 
 const commonNameEl = document.querySelector('.common-name') as HTMLElement;
@@ -11,6 +10,7 @@ const plantImageEl = document.querySelector('.plant-image img') as HTMLImageElem
 const maintenanceEl = document.getElementById('maintenance-value') as HTMLElement;
 const poisonsEl = document.getElementById('poisons-value') as HTMLElement;
 const wateringEl = document.getElementById('watering-value') as HTMLElement;
+const lightEl = document.getElementById('light-value') as HTMLElement;
 const careGuidesBtn = document.getElementById('care-guides-btn') as HTMLButtonElement;
 
 const addToGardenButton = document.querySelector('.add-button') as HTMLButtonElement;
@@ -67,6 +67,7 @@ function setupPlantDescription(plant: Plant){
         plantImageEl.src = plant.image_url || "../../public/plant-1573.png";
         maintenanceEl.textContent = plant.maintenance || "No information";
         poisonsEl.textContent = plant.poisonous_to_pets ? "Yes" : "No";
+        lightEl.textContent = plant.light || "Not available."
 
         const msInADay = 86400000;
         const days = plant.watering_frequency ? plant.watering_frequency / msInADay : 0;

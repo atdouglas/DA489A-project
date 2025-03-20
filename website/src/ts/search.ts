@@ -3,6 +3,10 @@ import { getCookie } from "./cookieUtil";
 import { Plant } from "./types";
 import { UserPlant } from "./types";
 
+const searchTitle = document.querySelector(".search-title") as HTMLElement
+const searchResultsContainer = document.querySelector('.search-results') as HTMLDivElement;
+
+
 document.addEventListener('DOMContentLoaded', () => {
     const URLparams = new URLSearchParams(window.location.search);
     const searchTerm = URLparams.get('query');
@@ -34,11 +38,13 @@ const fetchSearchResults = async (searchTerm: string) => {
         updateSearchResults(plants);
     }catch(error) {
         console.error('Something went wrong with fetch: ', error);
+        searchTitle.innerHTML = "No search results found for: " + searchTerm;
+        searchResultsContainer.style.display = 'none'
+        
     }
 };
 
 const updateSearchResults = (plants: Plant[]) => {
-    const searchResultsContainer = document.querySelector('.search-results');
     const token : string | null= getCookie("accessToken");
 
     if(searchResultsContainer){

@@ -5,14 +5,22 @@ import { deleteUserPlantFromLibrary } from './api_connection';
 
 const plantsContainer = document.querySelector('.plants-container') as HTMLElement;
 const addPlantCard = document.querySelector('.add-plant-card') as HTMLElement;
+
 const confirmModal = document.getElementById('confirmModal') as HTMLElement;
-const changeNickModal = document.getElementById('change-nick-modal') as HTMLElement;
 const yesDelButton = confirmModal.querySelector('.yes-button') as HTMLButtonElement;
 const noDelButton = confirmModal.querySelector('.no-button') as HTMLButtonElement;
+
+const changeNickModal = document.getElementById('change-nick-modal') as HTMLElement
 const nickChangeButton = changeNickModal.querySelector('.nick-change-button') as HTMLButtonElement;
 const nickCancelButton = changeNickModal.querySelector('.nick-cancel-button') as HTMLButtonElement;
 const nickInput = changeNickModal.querySelector("#change-nick-input") as HTMLInputElement;
-const nickError = changeNickModal.querySelector(".nickname-error") as HTMLParagraphElement;
+const nickError = changeNickModal.querySelector("#nickname-error") as HTMLParagraphElement;
+
+const addPlantModal = document.querySelector('#add-plant-modal') as HTMLDivElement
+const addPlantSearchBtn = addPlantModal.querySelector('.add-plant-search-button') as HTMLButtonElement;
+const addPlantCancelBtn = addPlantModal.querySelector('.search-cancel-button') as HTMLButtonElement;
+const addPlantSearchInput = addPlantModal.querySelector("#search-new-plant-input") as HTMLInputElement;
+const addPlantError = addPlantModal.querySelector("#addPlantError") as HTMLParagraphElement;
 
 let cardToDelete: HTMLElement | null = null;
 let plantToDelete: number | null = null;
@@ -29,9 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
     loadGarden();
 });
 
-addPlantCard.addEventListener('click', () => {
-
-});
+setupAddPlantCard()
 
 yesDelButton.addEventListener('click', () => {
     if (cardToDelete && plantToDelete) {
@@ -72,6 +78,42 @@ nickCancelButton.addEventListener('click', () => {
 
 });
 
+function setupAddPlantCard(){
+    addPlantCard.addEventListener('click', () => {
+        addPlantModal.style.display = 'flex';
+    });
+
+    addPlantSearchBtn.addEventListener('click', () => {
+        handleSearch();
+    });
+
+    addPlantSearchInput.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter') {
+        event.preventDefault();
+        handleSearch();
+    }
+    });
+
+    addPlantCancelBtn.addEventListener('click', () => {
+        addPlantModal.style.display = 'none';
+        addPlantError.style.display = 'none'
+        addPlantSearchInput.value = "";
+    })
+}
+
+function handleSearch(){
+    const searchInput = addPlantSearchInput.value;
+
+    if(searchInput == null || searchInput == ""){
+        addPlantError.style.display = 'flex';
+    }else{
+        addPlantError.style.display = 'none'
+        addPlantModal.style.display = 'none';
+        addPlantSearchInput.value = "";
+        window.location.href = `../html/search-page.html?query=${encodeURIComponent(searchInput)}`
+    }
+}
+
 async function loadGarden() {
     let plants: UserPlant[] | null = null;
     let statusCode: number | null = null;
@@ -107,6 +149,9 @@ async function loadGarden() {
 }
 
 function createPlantCard(plant: UserPlant) {
+    if(plant.user_plant_id === null){
+        return
+    }
     const newCard = document.createElement('div');
     newCard.classList.add('plant-card');
 
@@ -124,7 +169,7 @@ function createPlantCard(plant: UserPlant) {
         subTitle = plant.scientific_name || "No scientific name";
     }
 
-    if (plant.last_watered > 0) {
+    if (plant.last_watered !== null && plant.last_watered > 0) {
         lastWatered = calculateLastWatered(plant.last_watered);
     } else {
         lastWatered = "0 h"
@@ -267,6 +312,7 @@ async function changePlantNickname(newNick: string) {
     nickInput.value = "";
 
 }
+
 
 function showSuccessToast(message: string) {
     const toast = document.getElementById('successToast') as HTMLElement;
