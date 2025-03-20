@@ -190,7 +190,6 @@ function createPlantCard(plant: UserPlant, notifActivated: boolean) {
     const wateringFrequency = plant.watering_frequency || 0;
     const timeSinceWatered = currentTime - lastWateredTime;
     const needsWater = timeSinceWatered >= (wateringFrequency + (24 * 3600 * 1000)) && wateringFrequency > 0 && notifActivated; 
-    //TODO change the last argument to notifications boolean ^
 
     newCard.innerHTML = `
         <span class="more-options">

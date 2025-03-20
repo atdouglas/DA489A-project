@@ -7,19 +7,6 @@
     margin-top: -80px;
 }
 
-.settings-container button{
-    width: 100%;
-    padding: 10px;
-    margin: 10px 0;
-    border: none;
-    border-radius: 8px;
-    background-color: #a8d5ba;
-    color: #350;
-    font-size: 16px;
-    cursor: pointer;
-    box-sizing: border-box;
-}
-
 .settings-box {
     background-color: #ffffff;
     padding: 30px;
@@ -28,4 +15,45 @@
     width: 300px;
     text-align: center;
     margin: 0 auto;
+}
+
+.notification-btn{
+    width: 100%;
+    padding: 12px;
+    margin: 15 px;
+    border: none;
+    border-radius: 8px;
+    background-color: #a8d5ba;
+    color: #350;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.notification-btn.inactive{
+    background-color: #e0e0e0;
+    color: #666;
+}
+
+.status{
+    font-weight: bold;
+    font-size: 14px;
+    padding: 4px 10px;
+    border-radius: 12px;
+    background-color: rgba(255, 255, 255, 0.3);
+}
+
+.settings-container button:not(.notification-btn){
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border: none;
+    border-radius: 8px;
+    background-color: #a8d5ba;
+    color: #350;
+    font-size: 16px;
+    cursor: pointer;
 }
