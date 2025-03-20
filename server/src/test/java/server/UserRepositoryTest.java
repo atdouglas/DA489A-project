@@ -70,7 +70,7 @@ public class UserRepositoryTest {
         void saveUserCorrectInputPassUpperLimit(){
             User newTestUser = new User(
                     "test@testmail2.com",
-                    "test12312312312312312312312312312312312312312312312312312312312312312312",
+                    "test1231231231231231231231231231231231231231231231",
                     "clue",
                     "answer");
 
@@ -257,6 +257,13 @@ public class UserRepositoryTest {
         @Test
         void getUserDetailsWrongInputEmpty(){
             User result = userRepository.getUserDetails("");
+
+            assertNull(result, "No such user exist so null should've been returned.");
+        }
+
+        @Test
+        void getUserDetailsWrongInputTooLong(){
+            User result = userRepository.getUserDetails("test@testmail.commmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm");
 
             assertNull(result, "No such user exist so null should've been returned.");
         }

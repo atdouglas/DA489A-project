@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../css/style-care-guides-page.css" />
+    <link rel="stylesheet" href="../css/style-navbar.css">
+    <link rel="icon" type="image/x-icon" href="/favicon.png">
+
+    <title>Plant Info: Guides</title>
+</head>
+<body>
+ <!-- Navbar -->
+ <div class="navbar">
+    <div class="menu-icon">&#9776;</div>
+    <div class="searchbar">
+      <input id="search-input" type="text" placeholder="Search plants...">
+      <span id="search-icon" class="search-icon">&#128269;</span> 
+    </div>
+    <div class="logo">Plantopedia</div>
+       <!--Popup menu-->
+       <div id="popup-menu" class="popup-menu">
+        <div id="home-link" class="menu-link">Home (library)</div>
+        <div id="settings-link" class="menu-link">Settings</div>
+        <div id="login-logout-link" class="menu-link">Login</div>
+       </div>
+   </div>
+<!-- Main Container -->
+<div class="care-guides-container" id="care-guides-container">
+    <span>
+        <button id="plant-info-btn">Plant info</button>
+    </span>
+    <h1 class="common-name" id="plantName">Common name of the plant</h1>
+
+</div>
+
+ <script src="../ts/careGuides.ts" type="module"></script>
+<script src="../ts/navbar.ts" type="module"></script>
+</body>
+</html>

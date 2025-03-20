@@ -5,14 +5,22 @@ import { deleteUserPlantFromLibrary } from './api_connection';
 
 const plantsContainer = document.querySelector('.plants-container') as HTMLElement;
 const addPlantCard = document.querySelector('.add-plant-card') as HTMLElement;
+
 const confirmModal = document.getElementById('confirmModal') as HTMLElement;
-const changeNickModal = document.getElementById('change-nick-modal') as HTMLElement;
 const yesDelButton = confirmModal.querySelector('.yes-button') as HTMLButtonElement;
 const noDelButton = confirmModal.querySelector('.no-button') as HTMLButtonElement;
+
+const changeNickModal = document.getElementById('change-nick-modal') as HTMLElement
 const nickChangeButton = changeNickModal.querySelector('.nick-change-button') as HTMLButtonElement;
 const nickCancelButton = changeNickModal.querySelector('.nick-cancel-button') as HTMLButtonElement;
 const nickInput = changeNickModal.querySelector("#change-nick-input") as HTMLInputElement;
-const nickError = changeNickModal.querySelector(".nickname-error") as HTMLParagraphElement;
+const nickError = changeNickModal.querySelector("#nickname-error") as HTMLParagraphElement;
+
+const addPlantModal = document.querySelector('#add-plant-modal') as HTMLDivElement
+const addPlantSearchBtn = addPlantModal.querySelector('.add-plant-search-button') as HTMLButtonElement;
+const addPlantCancelBtn = addPlantModal.querySelector('.search-cancel-button') as HTMLButtonElement;
+const addPlantSearchInput = addPlantModal.querySelector("#search-new-plant-input") as HTMLInputElement;
+const addPlantError = addPlantModal.querySelector("#addPlantError") as HTMLParagraphElement;
 
 let cardToDelete: HTMLElement | null = null;
 let plantToDelete: number | null = null;
@@ -21,7 +29,7 @@ let cardToChangeNick: HTMLElement | null = null;
 const token: string | null = getCookie("accessToken");
 const userId: string | null = getCookie("userId")
 
-if(token === null){
+if (token === null) {
     window.location.href = "/src/html/login-page.html"
 }
 
@@ -29,17 +37,15 @@ document.addEventListener('DOMContentLoaded', () => {
     loadGarden();
 });
 
-addPlantCard.addEventListener('click', () => {
-
-});
+setupAddPlantCard()
 
 yesDelButton.addEventListener('click', () => {
     if (cardToDelete && plantToDelete) {
         cardToDelete.remove();
         cardToDelete = null;
-        if (plantToDelete != null && userId != null && token !=null){
-            deleteUserPlantFromLibrary(plantToDelete,userId,token)
-        }else {
+        if (plantToDelete != null && userId != null && token != null) {
+            deleteUserPlantFromLibrary(plantToDelete, userId, token)
+        } else {
             console.log("Error the plant was not deleted")
         }
     }
@@ -55,15 +61,12 @@ noDelButton.addEventListener('click', () => {
 nickChangeButton.addEventListener('click', () => {
     const newNick: string = nickInput.value;
 
-    if(newNick === null || newNick == "" || newNick.length < 3){
+    if (newNick === null || newNick == "" || newNick.length < 3) {
         nickError.style.display = "flex";
-    }else if(plantToChangeNick){
+    } else if (plantToChangeNick) {
         changePlantNickname(newNick);
         changeNickModal.style.display = 'none';
     }
-
-
-
 });
 
 nickCancelButton.addEventListener('click', () => {
@@ -75,27 +78,60 @@ nickCancelButton.addEventListener('click', () => {
 
 });
 
+function setupAddPlantCard(){
+    addPlantCard.addEventListener('click', () => {
+        addPlantModal.style.display = 'flex';
+    });
 
+    addPlantSearchBtn.addEventListener('click', () => {
+        handleSearch();
+    });
 
+    addPlantSearchInput.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter') {
+        event.preventDefault();
+        handleSearch();
+    }
+    });
+
+    addPlantCancelBtn.addEventListener('click', () => {
+        addPlantModal.style.display = 'none';
+        addPlantError.style.display = 'none'
+        addPlantSearchInput.value = "";
+    })
+}
+
+function handleSearch(){
+    const searchInput = addPlantSearchInput.value;
+
+    if(searchInput == null || searchInput == ""){
+        addPlantError.style.display = 'flex';
+    }else{
+        addPlantError.style.display = 'none'
+        addPlantModal.style.display = 'none';
+        addPlantSearchInput.value = "";
+        window.location.href = `../html/search-page.html?query=${encodeURIComponent(searchInput)}`
+    }
+}
 
 async function loadGarden() {
     let plants: UserPlant[] | null = null;
     let statusCode: number | null = null;
 
-    if(token != null && userId != null){
-        const {data, status} = await getUserLibrary(userId, token)
+    if (token != null && userId != null) {
+        const { data, status } = await getUserLibrary(userId, token)
         plants = data;
         statusCode = status;
         console.log("STATUS: " + statusCode)
-    } 
-    
+    }
+
     if (statusCode === 401) {
         console.error("You are unauthorized")
         if (token != null) {
             clearCookie(token);
         }
         window.location.href = "/src/html/login-page.html";
-    }else if (statusCode === 419) {
+    } else if (statusCode === 419) {
         console.error("Your token expired")
         if (token != null) {
             clearCookie(token);
@@ -103,16 +139,19 @@ async function loadGarden() {
         window.location.href = "/src/html/login-page.html";
     }
 
-    if(plants == null){
+    if (plants == null) {
         return
     }
     plants.forEach(plant => {
         createPlantCard(plant);
     });
-    
+
 }
 
 function createPlantCard(plant: UserPlant) {
+    if(plant.user_plant_id === null){
+        return
+    }
     const newCard = document.createElement('div');
     newCard.classList.add('plant-card');
 
@@ -130,9 +169,9 @@ function createPlantCard(plant: UserPlant) {
         subTitle = plant.scientific_name || "No scientific name";
     }
 
-    if(plant.last_watered > 0){
+    if (plant.last_watered !== null && plant.last_watered > 0) {
         lastWatered = calculateLastWatered(plant.last_watered);
-    }else{
+    } else {
         lastWatered = "0 h"
     }
     newCard.innerHTML = `
@@ -141,7 +180,7 @@ function createPlantCard(plant: UserPlant) {
             <div class="more-options-menu">
                 <div id="change-nickname-btn" class="more-options-button">Change nickname</div>
                 <div id="delete-plant-btn" class="more-options-button">Delete plant</div>
-
+    
             </div>
         </span>
         <img src="${imageUrl}" alt="Plant" class="plant-image" />
@@ -154,29 +193,29 @@ function createPlantCard(plant: UserPlant) {
     `;
     plantsContainer.insertBefore(newCard, addPlantCard);
     console.log(plant.user_plant_id)
-    attachWaterButtonListener(newCard,plant.user_plant_id);
+    attachWaterButtonListener(newCard, plant.user_plant_id);
     attachOptionsMenu(newCard, plant.user_plant_id)
 }
 
-function calculateLastWatered(waterInMilli: number): string{
+function calculateLastWatered(waterInMilli: number): string {
     const progress = Date.now() - waterInMilli
-    const hours: number = (((progress/1000)/60)/60);
+    const hours: number = (((progress / 1000) / 60) / 60);
 
-    if(hours < 0.5){
+    if (hours < 0.5) {
         return "0h"
     }
 
     const roundedHours: number = Math.ceil(hours);
 
-    if(roundedHours < 24){
+    if (roundedHours < 24) {
         return (roundedHours + "h")
-    } else if (roundedHours == 24){
+    } else if (roundedHours == 24) {
         return "1d"
-    }else{
-        const totalDays: number = Math.floor(roundedHours/24)
-        const totalHours: number = roundedHours - (totalDays*24)
+    } else {
+        const totalDays: number = Math.floor(roundedHours / 24)
+        const totalHours: number = roundedHours - (totalDays * 24)
 
-        if(totalHours == 0){
+        if (totalHours == 0) {
             return (totalDays + "d")
         }
 
@@ -184,12 +223,12 @@ function calculateLastWatered(waterInMilli: number): string{
     }
 }
 
-function attachOptionsMenu(newCard: HTMLElement, user_plant_id: number){
+function attachOptionsMenu(newCard: HTMLElement, user_plant_id: number) {
     const popupContainer = newCard.querySelector(".more-options") as HTMLElement;
     const popupMenu = newCard.querySelector(".more-options-menu") as HTMLElement
-    
 
-    if(popupMenu && popupContainer){
+
+    if (popupMenu && popupContainer) {
         popupContainer.addEventListener("click", () => {
             popupMenu.classList.toggle("active");
         })
@@ -204,12 +243,12 @@ function attachOptionsMenu(newCard: HTMLElement, user_plant_id: number){
         attachChangeNicknameListener(newCard, user_plant_id, popupMenu)
     }
 
-    
+
 }
 
-function attachDeleteListener(card: HTMLElement, plantID : number, popupMenu: HTMLElement): void {
+function attachDeleteListener(card: HTMLElement, plantID: number, popupMenu: HTMLElement): void {
     const deleteIcon = card.querySelector('#delete-plant-btn') as HTMLElement;
-    
+
     if (deleteIcon) {
         deleteIcon.addEventListener('click', (e: Event) => {
             e.stopPropagation();
@@ -221,10 +260,10 @@ function attachDeleteListener(card: HTMLElement, plantID : number, popupMenu: HT
     }
 }
 
-function attachChangeNicknameListener(card: HTMLElement, userPlantId: number, popupMenu: HTMLElement){
+function attachChangeNicknameListener(card: HTMLElement, userPlantId: number, popupMenu: HTMLElement) {
     const changeNickBtn = card.querySelector("#change-nickname-btn") as HTMLElement;
 
-    if(changeNickBtn){
+    if (changeNickBtn) {
         changeNickBtn.addEventListener('click', (e: Event) => {
             e.stopPropagation();
             popupMenu.classList.remove("active");
@@ -239,9 +278,9 @@ function attachWaterButtonListener(card: HTMLElement, userPlantId: number) {
     const waterButton = card.querySelector('.water-button') as HTMLElement;
     const waterTime = card.querySelector(".water-time") as HTMLElement;
 
-    if(waterButton) {
+    if (waterButton) {
         waterButton.addEventListener('click', () => {
-            if(userId !== null && token !== null){
+            if (userId !== null && token !== null) {
                 updateUserPlantLastWatered(userId, token, Date.now(), userPlantId)
                 waterTime.innerHTML = "0h"
             }
@@ -249,20 +288,20 @@ function attachWaterButtonListener(card: HTMLElement, userPlantId: number) {
     }
 }
 
-async function changePlantNickname(newNick: string){
-    if(userId !== null && token !== null && plantToChangeNick !== null && cardToChangeNick !== null){
+async function changePlantNickname(newNick: string) {
+    if (userId !== null && token !== null && plantToChangeNick !== null && cardToChangeNick !== null) {
         const status: number = await updateUserPlantNickname(userId, token, newNick, plantToChangeNick);
         const nicknameElement = cardToChangeNick.querySelector(".plant-name");
 
 
-        if(status === 200){
+        if (status === 200) {
             showSuccessToast("Plant nickname changed.")
-            
-            if(nicknameElement !== null){
+
+            if (nicknameElement !== null) {
                 nicknameElement.innerHTML = newNick;
             }
 
-        }else{
+        } else {
             showErrorToast("There was an error changing the nickname.")
         }
     }
@@ -274,7 +313,8 @@ async function changePlantNickname(newNick: string){
 
 }
 
-function showSuccessToast(message : string){
+
+function showSuccessToast(message: string) {
     const toast = document.getElementById('successToast') as HTMLElement;
     if (toast) {
         toast.textContent = message;
@@ -290,7 +330,7 @@ function showSuccessToast(message : string){
     }
 }
 
-function showErrorToast(message : string){
+function showErrorToast(message: string) {
     const toast = document.getElementById('errorToast') as HTMLElement;
     if (toast) {
         toast.textContent = message;

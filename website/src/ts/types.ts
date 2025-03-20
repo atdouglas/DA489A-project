@@ -9,11 +9,15 @@ export interface Plant {
     description: string | null;
     watering_frequency: number | null;
     poisonous_to_pets: boolean | null;
-    nickname?: string;
 }
 
 export interface UserPlant extends Plant{
-    nickname: string;
-    last_watered: number;
-    user_plant_id: number;
+    nickname: string | null;
+    last_watered: number | null;
+    user_plant_id: number | null;
+}
+
+export interface CareGuide {
+    type: string;
+    description: string;
 }

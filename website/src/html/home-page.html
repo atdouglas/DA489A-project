@@ -47,11 +47,23 @@
 <div id="change-nick-modal" class="modal">
   <div class="modal-content">
     <h3>Enter the new nickname.</h3>
-    <input id="change-nick-input" placeholder="New nickname..."/>
-    <p class="nickname-error">Nickname needs to be at least 3 characters long.</p>
+    <input id="change-nick-input" class="home-page-input" placeholder="New nickname..."/>
+    <p id="nickname-error" class="error-text">Nickname needs to be at least 3 characters long.</p>
     <div>
       <button class="nick-change-button">Change</button>
       <button class="nick-cancel-button">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<div id="add-plant-modal" class="modal">
+  <div class="modal-content">
+    <h3>Search for the plant you want to add.</h3>
+    <input id="search-new-plant-input" class="home-page-input" placeholder="Search..."/>
+    <p id="addPlantError" class="error-text">Can't have empty input.</p>
+    <div>
+      <button class="add-plant-search-button">Search</button>
+      <button class="search-cancel-button">Cancel</button>
     </div>
   </div>
 </div>

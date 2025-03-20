@@ -1,5 +1,6 @@
 import { Plant } from './types'
 import { getCookie } from "./cookieUtil";
+import { postPlantToUserLibrary } from './api_connection';
 
 const commonNameEl = document.querySelector('.common-name') as HTMLElement;
 const scientificNameEl = document.querySelector('.scientific-name') as HTMLElement;
@@ -9,6 +10,8 @@ const plantImageEl = document.querySelector('.plant-image img') as HTMLImageElem
 const maintenanceEl = document.getElementById('maintenance-value') as HTMLElement;
 const poisonsEl = document.getElementById('poisons-value') as HTMLElement;
 const wateringEl = document.getElementById('watering-value') as HTMLElement;
+const lightEl = document.getElementById('light-value') as HTMLElement;
+const careGuidesBtn = document.getElementById('care-guides-btn') as HTMLButtonElement;
 
 const addToGardenButton = document.querySelector('.add-button') as HTMLButtonElement;
 
@@ -25,8 +28,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     try {
         const response = await fetch(`http://localhost:7888/plants/${plantId}`);
         if (!response.ok) throw new Error('Plant not found');
-        const plant: Plant = await response.json();
+        const plant : Plant = await response.json();
         setupPlantDescription(plant)
+        setupCareGuidesBtn(plant)
+
         // Set up add-to-garden with confirmation modal
         if(token != null){
             addToGardenButton.addEventListener('click', () => {
@@ -38,6 +43,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 }
                 confirmAddModal.style.display = 'flex';
             });
+
         }else{
             addToGardenButton.addEventListener('click', () => {
                 window.location.href = "/src/html/login-page.html";
@@ -47,6 +53,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     } catch (error) {
         console.error('Error loading plant:', error);
     }
+
 });
 
 // Global variable for storing the plant to add
@@ -60,6 +67,7 @@ function setupPlantDescription(plant: Plant){
         plantImageEl.src = plant.image_url || "../../public/plant-1573.png";
         maintenanceEl.textContent = plant.maintenance || "No information";
         poisonsEl.textContent = plant.poisonous_to_pets ? "Yes" : "No";
+        lightEl.textContent = plant.light || "Not available."
 
         const msInADay = 86400000;
         const days = plant.watering_frequency ? plant.watering_frequency / msInADay : 0;
@@ -71,14 +79,15 @@ yesAddButton.addEventListener('click', () => {
     if (plantToAdd) {
         const nicknameInput = document.getElementById('plantNickname') as HTMLInputElement;
         let nickname = nicknameInput ? nicknameInput.value.trim() : "";
-        if (nickname) {
-            plantToAdd.nickname = nickname;
-        } else {
-            plantToAdd.nickname = "";
+        
+        if (nickname === null || nickname === "" || nickname === undefined) {
+            if(plantToAdd.common_name != null){
+                addToGarden(plantToAdd,plantToAdd.common_name)
+            }
+        }else{
+            addToGarden(plantToAdd, nickname);
         }
-        addToGarden(plantToAdd);
-        const toastName = plantToAdd.nickname ? plantToAdd.nickname : plantToAdd.common_name || plantToAdd.scientific_name || 'Unknown';
-        showToast(`Perfect, added "${toastName}" to the garden!`);
+        showToast(`Perfect, added the plant to the garden!`);
         plantToAdd = null;
     }
     confirmAddModal.style.display = 'none';
@@ -89,12 +98,23 @@ noAddButton.addEventListener('click', () => {
     confirmAddModal.style.display = 'none';
 });
 
-function addToGarden(plant: Plant) {
-    const stored = localStorage.getItem('myGarden');
-    let garden: Plant[] = stored ? JSON.parse(stored) : [];
-    garden.push(plant);
-    localStorage.setItem('myGarden', JSON.stringify(garden));
+
+function setupCareGuidesBtn(plant : Plant){
+    careGuidesBtn.addEventListener('click', () =>{
+        window.location.href = "care-guides-page.html?plantid=" + plant.id + "&plantName=" + plant.common_name; 
+    });
 }
+
+const addToGarden = (plant: Plant, nickname : string) => {
+    const userid :string|null = getCookie("userId")
+    const accessToken :string|null = getCookie("accessToken")
+    
+    if (userid!= null && accessToken != null && (nickname != null)){
+        postPlantToUserLibrary(userid,accessToken,nickname,plant.id)
+    }else{
+        console.log("failed to addToGarden")
+    }
+};
 
 function showToast(message: string) {
     const toast = document.getElementById('toast') as HTMLElement;

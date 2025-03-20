@@ -1,5 +1,6 @@
 package se.myhappyplants.server;
 
+import com.google.gson.JsonArray;
 import io.javalin.Javalin;
 import io.javalin.json.JsonMapper;
 import com.google.gson.Gson;
@@ -46,6 +47,7 @@ public class Main {
         setupPostUpdatePassword();
         setUpDeleteFromUserLibrary();
         setupUpdateUserLibraryPlant();
+        setupGetCareGuides();
     }
 
     private static void setupGetPlant() {
@@ -285,6 +287,20 @@ public class Main {
                 ctx.status(404).result("An error has occurred.");
             }
 
+        }));
+    }
+
+    public static void setupGetCareGuides(){
+        app.get("/plants/{id}/guides", ctx -> ctx.async(() -> {
+            int plantID = Integer.parseInt(ctx.pathParam("id"));
+
+            JsonArray guides = perenualRepository.getPlantGuides(plantID);
+
+            if (guides == null || guides.isEmpty()) {
+                ctx.status(404).result("No guides for this plant was found.");
+            } else {
+                ctx.status(200).json(guides);
+            }
         }));
     }
 
