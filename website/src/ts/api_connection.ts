@@ -166,6 +166,7 @@ export async function getNotificationsActivated(userID: string, token: string){
     }catch (error){
         console.error("Failed to fetch boolean: ", error);
     }
+    return data;
 }
 
 export async function updateNotificationsActivated(userID: string, token: string, flag: boolean) {

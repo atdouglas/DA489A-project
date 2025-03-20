@@ -1,6 +1,6 @@
 import { UserPlant } from './types'
 import { getCookie, clearCookie } from './cookieUtil';
-import { getUserLibrary, updateUserPlantLastWatered, updateUserPlantNickname } from './api_connection';
+import { getNotificationsActivated, getUserLibrary, updateUserPlantLastWatered, updateUserPlantNickname } from './api_connection';
 import { deleteUserPlantFromLibrary } from './api_connection';
 
 const plantsContainer = document.querySelector('.plants-container') as HTMLElement;
@@ -117,8 +117,18 @@ function handleSearch(){
 async function loadGarden() {
     let plants: UserPlant[] | null = null;
     let statusCode: number | null = null;
+    let notifActivated = true;
 
     if (token != null && userId != null) {
+        const notifActivated = await getNotificationsActivated(userId, token);
+        if(notifActivated === null){
+            console.error("You are unathurized")
+            if (token != null) {
+                clearCookie(token);
+            }
+            window.location.href = "/src/html/login-page.html";
+        }
+
         const { data, status } = await getUserLibrary(userId, token)
         plants = data;
         statusCode = status;
@@ -143,12 +153,12 @@ async function loadGarden() {
         return
     }
     plants.forEach(plant => {
-        createPlantCard(plant);
+        createPlantCard(plant, notifActivated);
     });
 
 }
 
-function createPlantCard(plant: UserPlant) {
+function createPlantCard(plant: UserPlant, notifActivated: Boolean) {
     if(plant.user_plant_id === null){
         return
     }
@@ -179,7 +189,7 @@ function createPlantCard(plant: UserPlant) {
     const lastWateredTime = plant.last_watered || 0;
     const wateringFrequency = plant.watering_frequency || 0;
     const timeSinceWatered = currentTime - lastWateredTime;
-    const needsWater = timeSinceWatered >= (wateringFrequency + (24 * 3600 * 1000)) && wateringFrequency > 0 && true; 
+    const needsWater = timeSinceWatered >= (wateringFrequency + (24 * 3600 * 1000)) && wateringFrequency > 0 && notifActivated; 
     //TODO change the last argument to notifications boolean ^
 
     newCard.innerHTML = `
