@@ -9,6 +9,7 @@ const plantImageEl = document.querySelector('.plant-image img') as HTMLImageElem
 const maintenanceEl = document.getElementById('maintenance-value') as HTMLElement;
 const poisonsEl = document.getElementById('poisons-value') as HTMLElement;
 const wateringEl = document.getElementById('watering-value') as HTMLElement;
+const careGuidesBtn = document.getElementById('care-guides-btn') as HTMLButtonElement;
 
 const addToGardenButton = document.querySelector('.add-button') as HTMLButtonElement;
 
@@ -25,8 +26,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     try {
         const response = await fetch(`http://localhost:7888/plants/${plantId}`);
         if (!response.ok) throw new Error('Plant not found');
-        const plant: Plant = await response.json();
+        const plant : Plant = await response.json();
         setupPlantDescription(plant)
+        setupCareGuidesBtn(plant)
+
         // Set up add-to-garden with confirmation modal
         if(token != null){
             addToGardenButton.addEventListener('click', () => {
@@ -38,6 +41,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 }
                 confirmAddModal.style.display = 'flex';
             });
+
         }else{
             addToGardenButton.addEventListener('click', () => {
                 window.location.href = "/src/html/login-page.html";
@@ -47,6 +51,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     } catch (error) {
         console.error('Error loading plant:', error);
     }
+
 });
 
 // Global variable for storing the plant to add
@@ -88,6 +93,13 @@ noAddButton.addEventListener('click', () => {
     plantToAdd = null;
     confirmAddModal.style.display = 'none';
 });
+
+function setupCareGuidesBtn(plant : Plant){
+    careGuidesBtn.addEventListener('click', () =>{
+        window.location.href = "care-guides-page.html?plantid=" + plant.id + "&plantName=" + plant.common_name; 
+    });
+}
+
 
 function addToGarden(plant: Plant) {
     const stored = localStorage.getItem('myGarden');

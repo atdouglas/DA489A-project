@@ -17,3 +17,8 @@ export interface UserPlant extends Plant{
     last_watered: number;
     user_plant_id: number;
 }
+
+export interface CareGuide {
+    type: string;
+    description: string;
+}

@@ -10,6 +10,7 @@ module se.myhappyplants {
 
     exports se.myhappyplants.shared to com.google.gson;
     opens se.myhappyplants.shared to com.google.gson;
+    opens se.myhappyplants.server.repositories to com.google.gson;
 
     exports se.myhappyplants.server.repositories;
     exports se.myhappyplants.server.addplantsutility;

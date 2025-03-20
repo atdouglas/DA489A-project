@@ -1,5 +1,7 @@
 package se.myhappyplants.server.repositories;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import io.github.cdimascio.dotenv.Dotenv;
@@ -40,13 +42,11 @@ public class PerenualRepository {
         return description;
     }
 
-    //TODO FINISH THIS IMPLEMENTATION
-    public List<String> getPlantGuides(int plantID){
+    public JsonArray getPlantGuides(int plantID){
         String urlString = "https://perenual.com/api/species-care-guide-list"
                 + "?key=" + dotenv.get("PERENUAL_KEY")
                 + "&species_id=" + plantID;
 
-        List<String> guides = new ArrayList<>();
 
         try{
             HttpClient client = HttpClient.newHttpClient();
@@ -59,7 +59,14 @@ public class PerenualRepository {
             String responseBody = response.body();
 
             JsonObject jsonObject = JsonParser.parseString(responseBody).getAsJsonObject();
-            description = jsonObject.get("description").getAsString();
+
+            if(jsonObject == null){
+                return null;
+            }
+
+            return extractCareGuides(jsonObject);
+
+
 
         }catch (Exception e){
             e.printStackTrace();
@@ -67,4 +74,25 @@ public class PerenualRepository {
         return null;
     }
 
+    private JsonArray extractCareGuides(JsonObject data){
+        JsonArray guides = new JsonArray();
+
+        JsonArray sectionArray = data
+                .getAsJsonArray("data")
+                .get(0)
+                .getAsJsonObject()
+                .getAsJsonArray("section");
+
+        for (int i = 0; i < sectionArray.size(); i++) {
+            JsonObject section = sectionArray.get(i).getAsJsonObject();
+            JsonObject guide = new JsonObject();
+            guide.addProperty("type", section.get("type").getAsString());
+            guide.addProperty("description", section.get("description").getAsString());
+            guides.add(guide);
+        }
+
+        return guides;
+    }
 }
+
+

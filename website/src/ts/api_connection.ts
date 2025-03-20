@@ -1,4 +1,4 @@
-import { UserPlant } from "./types";
+import { UserPlant, CareGuide } from "./types";
 
 const URL: string = "http://localhost:7888"
 
@@ -118,6 +118,32 @@ export async function deleteUserPlantFromLibrary(userPlantId: number, userId: st
         console.error("Plant was not deleted: ", error)
     }
     return status;
+}
+
+export async function getCareGuides(plantID : number){
+    let status: number = 404;
+    let data: CareGuide[] | null = null;
+
+    try{
+        const response = await fetch(
+                URL+"/plants/"+plantID+"/guides", {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+
+        status = response.status;
+        data = await response.json()
+        console.log("Care guide fetched.")
+        console.log(data)
+        
+        
+    }catch(error){
+        console.error("Failed to fetch care guide: ", error);
+    }
+
+    return data;
 }
 
 

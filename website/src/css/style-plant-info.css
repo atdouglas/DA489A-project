@@ -93,19 +93,23 @@
     padding: 10px;
 }
 
-.add-button {
+.top-right-right button{
+    white-space: nowrap;
+    display: inline-block;
+    line-height: 1.2;
     background-color: rgba(51, 61, 49, 0.75);
     color: #fff;
     border: none;
-    padding: 10px 50px;
+    padding: 20px 40px;
     cursor: pointer;
     border-radius: 8px;
     font-size: 0.9em;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     transition: background-color 0.3s ease;
+    margin: 10px;
 }
 
-.add-button:hover {
+.top-right-right button:hover {
     background-color: #333d31;
 }
 
