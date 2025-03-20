@@ -174,6 +174,14 @@ function createPlantCard(plant: UserPlant) {
     } else {
         lastWatered = "0 h"
     }
+
+    const currentTime = Date.now();
+    const lastWateredTime = plant.last_watered || 0;
+    const wateringFrequency = plant.watering_frequency || 0;
+    const timeSinceWatered = currentTime - lastWateredTime;
+    const needsWater = timeSinceWatered >= (wateringFrequency + (24 * 3600 * 1000)) && wateringFrequency > 0 && true; 
+    //TODO change the last argument to notifications boolean ^
+
     newCard.innerHTML = `
         <span class="more-options">
             <img id="more_vert_img" src="/more_vert.svg"/>
@@ -187,14 +195,19 @@ function createPlantCard(plant: UserPlant) {
         <h3 class="plant-name">${mainName}</h3>
         <p class="plant-subtitle">${subTitle}</p>
         <div class="plant-water-info">
-          <span class="water-time">${lastWatered}</span>
+
+            <div class="water-status">
+                <span class="water-time">${lastWatered}</span>
+                ${needsWater ? '<span class="water-icon">💧</span>' : ''}
+            </div>
+
           <button class="water-button">Water</button>
         </div>
     `;
     plantsContainer.insertBefore(newCard, addPlantCard);
     console.log(plant.user_plant_id)
     attachWaterButtonListener(newCard, plant.user_plant_id);
-    attachOptionsMenu(newCard, plant.user_plant_id)
+    attachOptionsMenu(newCard, plant.user_plant_id);
 }
 
 function calculateLastWatered(waterInMilli: number): string {
@@ -283,6 +296,12 @@ function attachWaterButtonListener(card: HTMLElement, userPlantId: number) {
             if (userId !== null && token !== null) {
                 updateUserPlantLastWatered(userId, token, Date.now(), userPlantId)
                 waterTime.innerHTML = "0h"
+
+                const waterStatus = card.querySelector('.water-status');
+                const waterIcon = waterStatus?.querySelector('.water-icon');
+                if(waterIcon){
+                    waterIcon.remove();
+                }
             }
         })
     }

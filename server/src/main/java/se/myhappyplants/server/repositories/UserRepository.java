@@ -371,6 +371,23 @@ public class UserRepository extends Repository {
         return base64Encoder.encodeToString(randomBytes);
     }
 
+    public String getEmailByUserID(int userID){
+        String email = null;
+        String query = "SELECT email FROM registered_users WHERE id = ?;";
+
+        try (Connection connection = startConnection()) {
+            PreparedStatement prep = connection.prepareStatement(query);
+            prep.setInt(1, userID);
+            ResultSet result = prep.executeQuery();
+            if (result.next()){
+                email = result.getString("email");
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return email;
+    }
+
 
 
     //This will be deleted later. It's currently used for manual testing of the authentication system.

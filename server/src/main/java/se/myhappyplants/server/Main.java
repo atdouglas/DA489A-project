@@ -48,6 +48,8 @@ public class Main {
         setUpDeleteFromUserLibrary();
         setupUpdateUserLibraryPlant();
         setupGetCareGuides();
+        setupGetNotificationsActivated();
+        setupUpdateNotificationsActivated();
     }
 
     private static void setupGetPlant() {
@@ -301,6 +303,67 @@ public class Main {
             } else {
                 ctx.status(200).json(guides);
             }
+        }));
+    }
+
+    public static void setupGetNotificationsActivated(){
+        app.get("/notif/{user_id}", ctx -> ctx.async(() -> {
+            int userID = Integer.parseInt(ctx.pathParam("user_id"));
+            String token = ctx.queryParam("token");
+
+            TokenStatus tokenStatus = userRepository.verifyAccessToken(userID, token);
+
+            if (tokenStatus == TokenStatus.NO_MATCH){
+                ctx.status(401).result("401 You are unauthorized to access this data.");
+            }else if (tokenStatus == TokenStatus.EXPIRED){
+                ctx.status(419).result("419 Your token has expired.");
+            } else if (tokenStatus == TokenStatus.VALID) {
+                String email = userRepository.getEmailByUserID(userID);
+                User user = userRepository.getUserDetails(email);
+                if (user != null){
+                    ctx.status(200).json(user.areNotificationsActivated());
+                }else{
+                    ctx.status(400).result("User not found");
+                }
+            }else {
+                ctx.status(500).result("Internal server error");
+            }
+        }));
+    }
+
+    public static void setupUpdateNotificationsActivated(){
+        app.patch("/notif/{user_id}", ctx -> ctx.async(() -> {
+            int userID = Integer.parseInt(ctx.pathParam("user_id"));
+            String token = ctx.queryParam("token");
+            String flag =  ctx.queryParam("flag");
+
+            if (flag == null){
+                ctx.status(400).result("Missing flag");
+                return;
+            }
+            boolean booli = Boolean.parseBoolean(flag);
+            TokenStatus tokenStatus = userRepository.verifyAccessToken(userID, token);
+
+            if (tokenStatus == TokenStatus.NO_MATCH){
+                ctx.status(401).result("401 You are unauthorized to access this data.");
+            }else if (tokenStatus == TokenStatus.EXPIRED){
+                ctx.status(419).result("419 Your token has expired.");
+            } else if (tokenStatus == TokenStatus.VALID) {
+                String email = userRepository.getEmailByUserID(userID);
+                if (email == null){
+                    ctx.status(400).result("User not found");
+                    return;
+                }
+                boolean success = userRepository.changeNotifications(email, booli);
+                if (success){
+                    ctx.status(200).result("Notifications updated");
+                }else {
+                    ctx.status(400).result("Updated failed");
+                }
+            }else {
+                ctx.status(500).result("Internal server error");
+            }
+
         }));
     }
 
