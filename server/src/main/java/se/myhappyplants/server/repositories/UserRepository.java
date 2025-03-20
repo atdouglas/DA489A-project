@@ -44,6 +44,9 @@ public class UserRepository extends Repository {
     }
 
     public boolean checkLogin(String email, String password) {
+        if (!checkEmailAndPasswordLegal(email, password)) {
+            return false;
+        }
         boolean isVerified = false;
         String query = """
                 SELECT password FROM registered_users WHERE email = ?;
@@ -64,6 +67,9 @@ public class UserRepository extends Repository {
     }
 
     public String getSecurityQuestion(String email) {
+        if(!checkEmailLegal(email)) {
+            return "";
+        }
         String question = "";
 
         String query = """
@@ -84,6 +90,9 @@ public class UserRepository extends Repository {
     }
 
     public boolean verifySecurityQuestion(String email, String userAnswer) {
+        if(!checkEmailLegal(email)) {
+            return false;
+        }
         boolean verified = false;
 
         String query = """
@@ -107,6 +116,12 @@ public class UserRepository extends Repository {
     }
 
     public boolean updatePasswordWithSecurityQuestion(String email, String userAnswer, String newPassword) {
+        if (!checkEmailAndPasswordLegal(email, newPassword)) {
+            return false;
+        }
+        if (userAnswer == null || userAnswer.isBlank() || userAnswer.length() > 50) {
+            return false;
+        }
         boolean updated = false;
         if(!verifySecurityQuestion(email, userAnswer)){
             return false;
@@ -134,6 +149,9 @@ public class UserRepository extends Repository {
 
 
     public User getUserDetails(String email) {
+        if(!checkEmailLegal(email)) {
+            return null;
+        }
         User user = null;
         String query = """
                 SELECT id, notification_activated FROM registered_users WHERE email = ?;
@@ -155,6 +173,9 @@ public class UserRepository extends Repository {
     }
 
     public boolean deleteAccount(String email, String password) {
+        if (!checkEmailAndPasswordLegal(email, password)) {
+            return false;
+        }
         boolean accountDeleted = false;
         if (checkLogin(email, password)) {
             String query = """
@@ -200,6 +221,9 @@ public class UserRepository extends Repository {
     }
 
     public boolean changeNotifications(String email, boolean notifications) {
+        if (!checkEmailLegal(email)) {
+            return false;
+        }
         boolean notificationsChanged = false;
         String query = """
                 UPDATE registered_users SET notification_activated = ? WHERE email = ?;
@@ -305,18 +329,19 @@ public class UserRepository extends Repository {
      * @author Douglas Almö Thorsell
      */
     public boolean checkEmailAndPasswordLegal(String email, String password){
-        if(password == null || password.length() > 72 || password.length() < 6){
+        if(password == null || password.length() > 50 || password.length() < 6){
             return false;
         }
+        return checkEmailLegal(email);
+    }
 
-        if(email == null || email.isEmpty()){
+    private boolean checkEmailLegal(String email) {
+        if(email == null || email.isEmpty() || email.length() > 50){
             return false;
         }
-
         if(!email.contains("@") || !email.contains(".")){
             return false;
         }
-
         return true;
     }
 
