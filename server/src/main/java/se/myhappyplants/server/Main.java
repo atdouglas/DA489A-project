@@ -58,7 +58,7 @@ public class Main {
 
             String description = perenualRepository.getDescription(plantID);
 
-            if(!description.isEmpty()){
+            if(!description.isBlank()){
                 plant.setDescription(description);
             }
 
@@ -166,7 +166,7 @@ public class Main {
                 question = userRepository.getSecurityQuestion(email);
             }
 
-            if(question == null || question.isEmpty()){
+            if(question == null || question.isBlank()){
                 ctx.status(404).result("Security question could not be found");
             } else {
                 ctx.status(200).json(question);
@@ -236,10 +236,10 @@ public class Main {
                 ctx.status(401).result("401 You are unauthorized to access this data.");
             } else if (tokenStatus == TokenStatus.EXPIRED) {
                 ctx.status(419).result("419 Your token has expired.");
-            } else if(plantIDString == null || plantIDString.isEmpty()) {
+            } else if(plantIDString == null || plantIDString.isBlank()) {
                 ctx.status(400).result("Plant ID can't be empty.");
 
-            } else if(nickname == null || nickname.isEmpty()) {
+            } else if(nickname == null || nickname.isBlank()) {
                 ctx.status(400).result("Nickname can't be empty.");
 
             } else if (tokenStatus == TokenStatus.VALID){
@@ -271,11 +271,11 @@ public class Main {
                 ctx.status(419).result("419 Your token has expired.");
             } else if (tokenStatus == TokenStatus.VALID){
 
-                if(nickname != null && !nickname.isEmpty()){
-                    userPlantRepository.changeNickname(userID, userPlantID, nickname);
+                if(nickname != null && !nickname.isBlank()){
+                    userPlantRepository.changePlantNickname(userID, userPlantID, nickname);
                     ctx.status(200).result("Nickname updated.");
 
-                } else if (lastWateredString != null && !lastWateredString.isEmpty()) {
+                } else if (lastWateredString != null && !lastWateredString.isBlank()) {
                     long lastWatered = Long.parseLong(lastWateredString);
                     userPlantRepository.changeLastWatered(userID, userPlantID, lastWatered);
                     ctx.status(200).result("Last watered changed.");

@@ -336,7 +336,7 @@ public class UserRepository extends Repository {
     }
 
     private boolean checkEmailLegal(String email) {
-        if(email == null || email.isEmpty() || email.length() > 50){
+        if(email == null || email.isBlank() || email.length() > 50){
             return false;
         }
         if(!email.contains("@") || !email.contains(".")){
@@ -346,11 +346,11 @@ public class UserRepository extends Repository {
     }
 
     public boolean checkSecurityQuestionLegal(String question, String answer){
-        if(question.isEmpty() || question.length() > 100){
+        if(question == null || question.isBlank() || question.length() > 100){
             return false;
         }
 
-        if (answer.isEmpty() || answer.length() > 50){
+        if (answer == null || answer.isBlank() || answer.length() > 50){
             return false;
         }
 

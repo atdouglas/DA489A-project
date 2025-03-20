@@ -3,12 +3,9 @@ package server;
 import org.junit.jupiter.api.*;
 import se.myhappyplants.server.repositories.UserPlantRepository;
 import se.myhappyplants.server.repositories.UserRepository;
-import se.myhappyplants.shared.Plant;
 import se.myhappyplants.shared.User;
 import se.myhappyplants.shared.UserPlant;
 
-import java.sql.Date;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -78,6 +75,22 @@ public class UserPlantRepositoryTest {
 
     @Test
     @Order(2)
+    void testSavePlantTooShortNickname() {
+        testUserPlantWorking.setNickname("Hi");
+        boolean result = userPlantRepository.savePlant(testUser, testUserPlantWorking);
+        assertFalse(result);
+    }
+
+    @Test
+    @Order(3)
+    void testSavePlantTooLongNickname() {
+        testUserPlantWorking.setNickname("Hiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii");
+        boolean result = userPlantRepository.savePlant(testUser, testUserPlantWorking);
+        assertFalse(result);
+    }
+
+    @Test
+    @Order(4)
     void testGetUserLibrarySuccess() {
         UserPlant newPlant = new UserPlant(2895, "Eurybia Divaricata", "Asteraceae", "White Wood Aster",
                 "https://perenual.com/storage/species_image/2895_eurybia_divaricata/og/7515068602_0626782d24_b.jpg", "Part shade", "Low",
@@ -93,7 +106,7 @@ public class UserPlantRepositoryTest {
     }
 
     @Test
-    @Order(3)
+    @Order(5)
     void testGetUserLibraryEmpty() {
         List<UserPlant> plants = userPlantRepository.getUserLibrary(testUser.getUniqueId());
         assertEquals(1, plants.size(),
@@ -101,7 +114,7 @@ public class UserPlantRepositoryTest {
     }
 
     @Test
-    @Order(4)
+    @Order(6)
     void testGetUserLibraryNull() {
         userPlantRepository.savePlant(testUser, null);
         List<UserPlant> plants = userPlantRepository.getUserLibrary(testUser.getUniqueId());
@@ -110,7 +123,7 @@ public class UserPlantRepositoryTest {
     }
 
     @Test
-    @Order(5)
+    @Order(7)
     void testDeletePlantSuccess() {
         userPlantRepository.savePlant(testUser, testUserPlantWorking);
         boolean result = userPlantRepository.deletePlant(testUser.getUniqueId(), testUserPlantWorking.getUserPlantId());
@@ -119,7 +132,7 @@ public class UserPlantRepositoryTest {
     }
 
     @Test
-    @Order(6)
+    @Order(8)
     void testDeletePlantIllegalPlantID() {
         boolean result = userPlantRepository.deletePlant(testUser.getUniqueId(), -1);
         assertFalse(result,
@@ -127,7 +140,7 @@ public class UserPlantRepositoryTest {
     }
 
     @Test
-    @Order(7)
+    @Order(9)
     void testChangeLastWateredSuccess() {
         boolean result = userPlantRepository.changeLastWatered(testUser.getUniqueId(), testUserPlantWorking.getUserPlantId(), 0);
         assertTrue(result,
@@ -135,21 +148,21 @@ public class UserPlantRepositoryTest {
     }
 
     @Test
-    @Order(8)
+    @Order(10)
     void testChangeLastWateredCorrectValue() {
         userPlantRepository.changeLastWatered(testUser.getUniqueId(), testUserPlantWorking.getUserPlantId(), 10);
         assertEquals(10, userPlantRepository.getUserPlant(testUser.getUniqueId(), testUserPlantWorking.getUserPlantId()).getLastWatered());
     }
 
     @Test
-    @Order(9)
+    @Order(11)
     void testChangeLastWateredIncorrectValue() {
         userPlantRepository.changeLastWatered(testUser.getUniqueId(), testUserPlantWorking.getUserPlantId(), 100);
         assertNotEquals(10, userPlantRepository.getUserPlant(testUser.getUniqueId(), testUserPlantWorking.getUserPlantId()).getLastWatered());
     }
 
     @Test
-    @Order(10)
+    @Order(12)
     void testChangeLastWateredFailureIllegalUser() {
         boolean result = userPlantRepository.changeLastWatered(-1, testUserPlantWorking.getUserPlantId(), 0);
         assertFalse(result,
@@ -157,55 +170,69 @@ public class UserPlantRepositoryTest {
     }
 
     @Test
-    @Order(11)
+    @Order(13)
     void testChangeLastWateredFailureIllegalLastWatered() {
         assertFalse(userPlantRepository.changeLastWatered(testUser.getUniqueId(), testUserPlantWorking.getUserPlantId(), -1));
     }
 
     @Test
-    @Order(12)
-    void testChangeNicknameSuccess() {
-        boolean result = userPlantRepository.changeNickname(testUser.getUniqueId(), testUserPlantWorking.getUserPlantId(), "Adrian is a g");
+    @Order(14)
+    void testChangePlantNicknameSuccess() {
+        boolean result = userPlantRepository.changePlantNickname(testUser.getUniqueId(), testUserPlantWorking.getUserPlantId(), "Adrian is a g");
         assertTrue(result,
                 "The nickname was not changed :testChangeNicknameSuccess failed");
     }
 
     @Test
-    @Order(13)
-    void testChangeNicknameFailureIllegalID() {
-        boolean result = userPlantRepository.changeNickname(-1, testUserPlantWorking.getUserPlantId(), "Adrian is a g");
+    @Order(15)
+    void testChangePlantNicknameFailureIllegalID() {
+        boolean result = userPlantRepository.changePlantNickname(-1, testUserPlantWorking.getUserPlantId(), "Adrian is a g");
         assertFalse(result,
                 "The nickname was changed :testChangeNicknameFailureIllegalID failed");
     }
 
 
     @Test
-    @Order(14)
-    void testChangeNicknameFailureIllegalPlantID() {
-        boolean result = userPlantRepository.changeNickname(testUser.getUniqueId(), -1, "Adrian is a g");
+    @Order(16)
+    void testChangePlantNicknameFailureIllegalPlantID() {
+        boolean result = userPlantRepository.changePlantNickname(testUser.getUniqueId(), -1, "Adrian is a g");
         assertFalse(result,
                 "The nickname was changed :testChangeNicknameFailureIllegalPlantID failed");
     }
 
 
     @Test
-    @Order(15)
-    void testChangeNicknameFailureNullNickname() {
-        boolean result = userPlantRepository.changeNickname(testUser.getUniqueId(), testUserPlantWorking.getUserPlantId(), null);
+    @Order(17)
+    void testChangeNicknameFailureNullPlantNickname() {
+        boolean result = userPlantRepository.changePlantNickname(testUser.getUniqueId(), testUserPlantWorking.getUserPlantId(), null);
         assertFalse(result,
                 "The nickname was changed :testChangeNicknameFailureNullNickname failed");
     }
 
     @Test
-    @Order(16)
-    void testChangeNicknameFailureNoNickname() {
-        boolean result = userPlantRepository.changeNickname(testUser.getUniqueId(), testUserPlantWorking.getUserPlantId(), "");
+    @Order(18)
+    void testChangeNicknameFailureNoPlantNickname() {
+        boolean result = userPlantRepository.changePlantNickname(testUser.getUniqueId(), testUserPlantWorking.getUserPlantId(), "");
         assertFalse(result,
                 "The nickname was changed :testChangeNicknameFailureNoNickname failed");
     }
 
     @Test
-    @Order(17)
+    @Order(19)
+    void testChangeNicknameFailurePlantNicknameTooShort() {
+        boolean result = userPlantRepository.changePlantNickname(testUser.getUniqueId(), testUserPlantWorking.getUserPlantId(), "Hi");
+        assertFalse(result);
+    }
+
+    @Test
+    @Order(20)
+    void testChangeNicknameFailurePlantNicknameTooLong() {
+        boolean result = userPlantRepository.changePlantNickname(testUser.getUniqueId(), testUserPlantWorking.getUserPlantId(), "Hiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii");
+        assertFalse(result);
+    }
+
+    @Test
+    @Order(21)
     void testWaterAllPlantsSuccess() {
         boolean result = userPlantRepository.changeAllToWatered(testUser.getUniqueId());
         assertTrue(result,
@@ -213,7 +240,7 @@ public class UserPlantRepositoryTest {
     }
 
     @Test
-    @Order(18)
+    @Order(22)
     void testWaterAllPlantFailureIllegalUserID() {
         boolean result = userPlantRepository.changeAllToWatered(-1);
         assertFalse(result,

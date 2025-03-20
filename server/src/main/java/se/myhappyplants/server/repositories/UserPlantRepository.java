@@ -1,12 +1,9 @@
 package se.myhappyplants.server.repositories;
 
-import org.mindrot.jbcrypt.BCrypt;
-import se.myhappyplants.shared.Plant;
 import se.myhappyplants.shared.User;
 import se.myhappyplants.shared.UserPlant;
 
 import java.sql.*;
-import java.time.LocalDate;
 import java.util.ArrayList;
 
 /**
@@ -20,14 +17,17 @@ public class UserPlantRepository extends Repository {
     //TODO Update this class to work on the new implementation.
 
     public boolean savePlant(User user, UserPlant userPlant) {
+        if (userPlant == null) {
+            return false;
+        }
+        if (!checkPlantNickname(userPlant.getNickname())) {
+            return false;
+        }
         boolean success = false;
 
         String query = """
                 INSERT INTO user_plants (user_id, nickname,last_watered, plant_id, image_url) VALUES (?, ?, ?, ?, ?);
                 """;
-        if (userPlant == null) {
-            return success;
-        }
         try (java.sql.Connection connection = startConnection()) {
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                 preparedStatement.setInt(1, user.getUniqueId());
@@ -113,9 +113,6 @@ public class UserPlantRepository extends Repository {
         return userPlant;
     }
 
-    //TODO Update this method to work on the new implementation
-
-
     public boolean deletePlant(int userId, int userPlantId) {
         boolean plantDeleted = false;
 
@@ -138,9 +135,7 @@ public class UserPlantRepository extends Repository {
         return plantDeleted;
     }
 
-    //TODO Update this method to work on the new implementation
-
-
+    //TODO: current unimplemented
 
     public boolean changeLastWatered(int userId, int plant_id, long lastWatered) {
         boolean dateChanged = false;
@@ -164,18 +159,26 @@ public class UserPlantRepository extends Repository {
         return dateChanged;
     }
 
-    //TODO Update this method to work on the new implementation
+    private boolean checkPlantNickname(String plantNickname) {
+        if (plantNickname == null || plantNickname.isBlank()) {
+            return false;
+        }
+        if (plantNickname.length() < 3 || plantNickname.length() > 50) {
+            return false;
+        }
+        return true;
+    }
 
-    public boolean changeNickname(int userId, int plantId, String newNickname) {
+    public boolean changePlantNickname(int userId, int plantId, String newNickname) {
+        if (!checkPlantNickname(newNickname)) {
+            return false;
+        }
         boolean nicknameChanged = false;
         String query = """
                     UPDATE user_plants 
                     SET nickname = ? 
                     WHERE id = ? AND user_id = ?;
                    """;
-        if (newNickname == null || newNickname.isEmpty()) {
-            return nicknameChanged;
-        }
         if (userId <= 0 || plantId <= 0) {
             return nicknameChanged;
         }
@@ -193,8 +196,7 @@ public class UserPlantRepository extends Repository {
         return nicknameChanged;
     }
 
-        // TODO: adjust to new implementation
-
+        // TODO: currently unimplemented
 
     public boolean changeAllToWatered(int userId) {
         boolean dateChanged = false;
@@ -217,34 +219,4 @@ public class UserPlantRepository extends Repository {
         }
         return dateChanged;
     }
-
-
-    //TODO The remaining methods under here will probably get deleted but let the code stay at the moment.
-
-    /*
-
-        public long getWaterFrequency(int plantId) {
-        long waterFrequency = -1;
-        String query = """
-        SELECT watering_frequency FROM species WHERE id = ?;
-        """;
-        try (PreparedStatement preparedStatement = connection.getConnection().prepareStatement(query)) {
-            preparedStatement.setInt(1, plantId);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()) {
-                long waterLong = resultSet.getLong("watering_frequency");
-                int water = (int) waterLong;
-                waterFrequency = WaterCalculator.calculateWaterFrequencyForWatering(water);
-            }
-        }
-        catch (SQLException sqlException) {
-            System.out.println(sqlException.getMessage());
-        } finally {
-            connection.closeConnection();
-        }
-        return waterFrequency;
-
-    }
-     */
-
 }
