@@ -45,6 +45,7 @@ yesDelButton.addEventListener('click', () => {
         cardToDelete = null;
         if (plantToDelete != null && userId != null && token != null) {
             deleteUserPlantFromLibrary(plantToDelete, userId, token)
+            showErrorToast("Plant deleted.")
         } else {
             console.log("Error the plant was not deleted")
         }
@@ -219,6 +220,10 @@ function createPlantCard(plant: UserPlant, notifActivated: boolean | null) {
     console.log(plant.user_plant_id)
     attachWaterButtonListener(newCard, plant.user_plant_id);
     attachOptionsMenu(newCard, plant.user_plant_id);
+    const plantImage = newCard.querySelector('.plant-image') as HTMLImageElement;
+    plantImage.addEventListener('click', () => {
+        window.location.href = `/src/html/plant-info.html?id=${plant.id}`;
+    });
 }
 
 function calculateLastWatered(waterInMilli: number): string {
@@ -307,6 +312,7 @@ function attachWaterButtonListener(card: HTMLElement, userPlantId: number) {
             if (userId !== null && token !== null) {
                 updateUserPlantLastWatered(userId, token, Date.now(), userPlantId)
                 waterTime.innerHTML = "0h"
+                showSuccessToast("Plant watered.");
 
                 const waterStatus = card.querySelector('.water-status');
                 const waterIcon = waterStatus?.querySelector('.water-icon');
