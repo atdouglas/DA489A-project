@@ -14,7 +14,7 @@ In order to run the website, the server needs to be running first.
 > During development the server has been running in IntelliJ. It is therefore recommended to use IntelliJ when running the server and the guide assumes that. If you are using something else to run the server then the instructions may not apply directly to you.
 
 > [!NOTE]
-> The server needs a .env file that should be placed the top of the server folder. If you are a teacher, this .env file will be available in the zip file in the turn in.
+> The server needs a .env file that should be placed at the top of the server folder. If you are a teacher, this .env file will be available in the zip file in the turn in.
 
 1. Make sure you have [JDK version 23](https://www.oracle.com/se/java/technologies/downloads/#java23) installed.
 2. Open the **server** folder as a project in IntelliJ.
