@@ -246,4 +246,12 @@ public class UserPlantRepositoryTest {
         assertFalse(result,
                 "All plants were watered which they should not be :testWaterAllPlantFailureIllegalUserID failed");
     }
+    @Test
+    void testChangeAllToWateredInvalidUserId() {
+        boolean result = userPlantRepository.changeAllToWatered(-1);
+        assertFalse(result, "The method should return false for an invalid user ID.");
+    }
+
+
+
 }

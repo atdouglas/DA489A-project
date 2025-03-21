@@ -63,4 +63,30 @@ public class PlantRepositoryTest {
         assertEquals(0, result.size(),
                 "The size of a search of " + searchQuery + " should be 0 :testSearchListMadeUpValue failed");
     }
+    @Test
+    void testGetPlantDetailsValidId() {
+        int validPlantId = 527; // Assuming this ID exists in the database
+        Plant plant = plantRepository.getPlantDetails(validPlantId);
+
+        assertNotNull(plant, "The plant details should not be null for a valid plant ID.");
+        assertEquals(validPlantId, plant.getId(), "The plant ID should match the requested ID.");
+    }
+
+    @Test
+    void testGetPlantDetailsInvalidId() {
+        int invalidPlantId = -1; // Assuming this ID does not exist in the database
+        Plant plant = plantRepository.getPlantDetails(invalidPlantId);
+
+        assertNull(plant, "The plant details should be null for an invalid plant ID.");
+    }
+
+    @Test
+    void testGetPlantDetailsZeroId() {
+        int zeroPlantId = 0; // Assuming this ID does not exist in the database
+        Plant plant = plantRepository.getPlantDetails(zeroPlantId);
+
+        assertNull(plant, "The plant details should be null for a plant ID of 0.");
+    }
+
+
 }

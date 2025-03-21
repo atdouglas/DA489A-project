@@ -121,6 +121,7 @@ public class UserRepositoryTest {
 
         }
 
+
     }
 
     @Nested
@@ -476,5 +477,45 @@ public class UserRepositoryTest {
         static void close(){
             userRepository.deleteAccount(testUser.getEmail(), newPassword);
         }
+    }
+
+    @Test
+    void testCheckSecurityQuestionLegalValidInput() {
+        String validQuestion = "What is your favorite color?";
+        String validAnswer = "Blue";
+        assertTrue(userRepository.checkSecurityQuestionLegal(validQuestion, validAnswer),
+                "The security question and answer should be valid.");
+    }
+
+    @Test
+    void testCheckSecurityQuestionLegalEmptyQuestion() {
+        String emptyQuestion = "";
+        String validAnswer = "Blue";
+        assertFalse(userRepository.checkSecurityQuestionLegal(emptyQuestion, validAnswer),
+                "The security question should be invalid if it is empty.");
+    }
+
+    @Test
+    void testCheckSecurityQuestionLegalEmptyAnswer() {
+        String validQuestion = "What is your favorite color?";
+        String emptyAnswer = "";
+        assertFalse(userRepository.checkSecurityQuestionLegal(validQuestion, emptyAnswer),
+                "The security answer should be invalid if it is empty.");
+    }
+
+    @Test
+    void testCheckSecurityQuestionLegalQuestionTooLong() {
+        String longQuestion = "What is your favorite color? What is your favorite food? What is your favorite movie? What is your favorite book?";
+        String validAnswer = "Blue";
+        assertFalse(userRepository.checkSecurityQuestionLegal(longQuestion, validAnswer),
+                "The security question should be invalid if it exceeds the maximum length.");
+    }
+
+    @Test
+    void testCheckSecurityQuestionLegalAnswerTooLong() {
+        String validQuestion = "What is your favorite color?";
+        String longAnswer = "BlueBlueBlueBlueBlueBlueBlueBlueBlueBlueBlueBlueBlueBlueBlueBlueBlueBlueBlueBlue";
+        assertFalse(userRepository.checkSecurityQuestionLegal(validQuestion, longAnswer),
+                "The security answer should be invalid if it exceeds the maximum length.");
     }
 }

@@ -91,4 +91,24 @@ public class Plant {
     public long getWaterFrequency() {
         return watering_frequency;
     }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public boolean isPoisonous_to_pets() {
+        return poisonous_to_pets;
+    }
+
+    public long getWatering_frequency() {
+        return watering_frequency;
+    }
+
+    public void setWatering_frequency(long watering_frequency) {
+        this.watering_frequency = watering_frequency;
+    }
+
+    public void setPoisonous_to_pets(boolean poisonous_to_pets) {
+        this.poisonous_to_pets = poisonous_to_pets;
+    }
 }
