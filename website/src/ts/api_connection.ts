@@ -146,5 +146,46 @@ export async function getCareGuides(plantID : number){
     return data;
 }
 
+export async function getNotificationsActivated(userID: string, token: string){
+    let status: number = 404;
+    let data: boolean | null = null;
+
+    try{
+        const response = await fetch(
+            URL + "/notif/" + userID + "?token="+ token, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+
+        status = response.status;
+        data = await response.json();
+        console.log(data);
+        console.log("Notifications_activated boolean fetched");
+
+    }catch (error){
+        console.error("Failed to fetch boolean: ", error);
+    }
+    return data;
+}
+
+export async function updateNotificationsActivated(userID: string, token: string, flag: boolean) {
+    let status: number = 404;
+    console.log('Boolean sent: ',flag);
+    try{
+        const response = await fetch(
+            URL+"/notif/"+ userID + "?token=" + token+ "&flag="+ flag,{
+                method: "PATCH",
+                headers: {"Content-Type": "application/json",
+            }}
+        )
+        status = response.status;
+    }catch(error){
+        console.error("Notification preference was not updated: ", error);
+    }
+    return status;
+}
+
 
 

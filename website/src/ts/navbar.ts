@@ -58,7 +58,12 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     settingsLink?.addEventListener('click', () => {
-        window.location.href = '../html/settings-page.html';
+        const accessToken = getCookie('accessToken');
+        if(accessToken){
+            window.location.href = '../html/settings-page.html';
+        }else {
+            window.location.href = '../html/login-page.html';
+        }
     });
 
     const updateLoginLogoutLink = () => {
